@@ -1,0 +1,185 @@
+Class Flammenwerfer : AxisWeapon replaces PlasmaRifle
+{
+	Bool selected;
+	Default
+	{
+		Weapon.SelectionOrder 100;
+
+		Weapon.AmmoType "FmWLoaded";
+		Weapon.AmmoType2 "AmmoFuel";
+		Inventory.PickupMessage "You got the Flammenwerfer!";
+		Tag "Flammenwerfer";
+		Weapon.UpSound "pistol/select";
+	}
+	Override Void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		other.A_GiveInventory("FmWLoaded", random(10,150));
+	}
+   	Override Bool TryPickup(in out Actor toucher)
+    {
+		If(toucher)
+		{
+			Let weap = toucher.FindInventory("Flammenwerfer");
+			If(!weap) { Self.AmmoGive2 = 0; }
+			Else If(bTOSSED) { Self.AmmoGive2 = random(10,150); }
+			Else { Self.AmmoGive2 = random(10,150); }
+		}
+			Return Super.TryPickup(toucher);
+	}
+	States
+	{
+	Spawn:
+		WP6P A -1;
+		Stop;
+	Select:
+		WP6H A 1 A_Raise(30);
+		Loop;
+	Ready:
+		TNT1 A 0 A_JumpIf(!CountInv("FmWLoaded"), "Empty");
+		TNT1 A 0 A_JumpIf(Invoker.selected == True, 5);
+		WP6H ABCD 2 { Invoker.selected = True; }
+		WP6G ABCD 2 A_WeaponReady(WRF_ALLOWRELOAD);
+		Loop;
+	Empty:
+		TNT1 A 0 A_JumpIf(CountInv("FmWLoaded"), "Ready");
+		WP6H A 1 A_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD);
+		Loop;		
+
+	Deselect:
+		TNT1 A 0 { Invoker.selected = False; }
+		WP6H A 1 A_Lower(30);
+		Loop;
+
+	Fire:
+		WP6F A 0 A_JumpIfInventory("FmWLoaded", 10, 1);
+		Goto Ready;
+		#### A 1 A_Light2;
+		#### B 7 Bright
+		{
+			A_GunFlash();
+			A_AlertMonsters();
+			A_FireProjectile("FmWShot");
+			A_WeaponOffset(0,35,WOF_INTERPOLATE);
+			A_TakeInventory("FmWLoaded", 10);
+		}
+		#### B 1 Bright A_WeaponOffset(0,36,WOF_INTERPOLATE);
+		#### B 1 A_Light0;
+		Goto Ready;
+
+	AltFire:
+		WP6F A 0 A_JumpIfInventory("FmWLoaded", 75, 1);
+		Goto Ready;
+		#### B 7 Bright 
+		{
+			A_GunFlash();
+			A_AlertMonsters();
+			A_FireProjectile("FmWShot_2");
+			A_WeaponOffset(0,35,WOF_INTERPOLATE);
+			A_TakeInventory("FmWLoaded", 75);
+		}
+		#### B 1 Bright A_WeaponOffset(0,36,WOF_INTERPOLATE);
+		#### B 1 A_Light0;
+		Goto Ready;
+
+	Flash:
+	AltFlash:
+		TNT1 A 1 Bright A_Light2;
+		TNT1 A 1 Bright A_Light1;
+		Goto LightDone;
+
+	Reload:
+		TNT1 A 0 A_JumpIfInventory("FmWLoaded", 150, 2);
+		TNT1 A 0 A_JumpIf(CountInv("AmmoFuel") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
+		TNT1 A 0;
+		Goto Ready;
+	ReloadWork:
+		WP6R A 2 A_StartSound("flamer/reload", CHAN_WEAPON);
+		#### BC 2;
+		#### D 70;
+	ReloadLoop:
+		TNT1 A 0
+		{
+           	While(CountInv("AmmoFuel") > 0 && CountInv("FmWLoaded") < 150 || CountInv("PowerInfiniteAmmo") && CountInv("FmWLoaded") < 150)
+			{
+				A_TakeInventory("AmmoFuel", 1, TIF_NOTAKEINFINITE);
+				A_GiveInventory("FmWLoaded", 1);
+			}
+		}
+		TNT1 A 0;
+	ReloadFinish:
+		WP6R CBA 2;
+		Goto Ready;
+	}
+}
+
+Class FmWLoaded : Ammo
+{
+	Default
+	{
+		Tag "Fuel";
+		+INVENTORY.IGNORESKILL
+		Inventory.MaxAmount 150;
+		Inventory.Icon "CELLA0";
+	}
+}
+
+Class FmWShot : FastProjectile
+{
+	Default
+	{
+		SeeSound "weapons/rocklf";
+
+		+DONTSPLASH
+		+NOEXTREMEDEATH
+		+RIPPER
+		+BLOODLESSIMPACT
+		Speed 25;
+		Radius 16;
+		Mass 10;
+		DamageFunction random(1,4);
+		DamageType "Fire";
+		PROJECTILE;
+		RenderStyle "Add";
+		Scale 0.25; // 0.75
+		Alpha 0.7;
+		
+		ProjectileKickback 20;
+	}
+	States
+	{
+	Spawn:
+		FIR3 A 0 NoDelay A_Jump(128,"SpawnMirrored");
+		FIR3 AABBCCDD 1 BRIGHT A_SetScale(Scale.X + 0.05);
+		FIR3 E 0 A_Explode(2,64);
+		FIR3 EE 1 BRIGHT A_SetScale(Scale.X + 0.05);
+		FIR3 FFGGHHII 1 BRIGHT A_SetScale(Scale.X + 0.1);
+		FIR3 JJKKLLMM 1 BRIGHT A_SetScale(Scale.X + 0.15);
+		FIR3 NNOOPP 1 BRIGHT;
+		Stop;
+	SpawnMirrored:
+		FIR3 A 0 A_SetScale(-0.1);
+		FIR3 AABBCCDD 1 BRIGHT A_SetScale(Scale.X - 0.05);
+		FIR3 E 0 A_Explode(2,64);
+		FIR3 EE 1 BRIGHT A_SetScale(Scale.X - 0.05);
+		FIR3 FFGGHHII 1 BRIGHT A_SetScale(Scale.X - 0.1);
+		FIR3 JJKKLLMM 1 BRIGHT A_SetScale(Scale.X - 0.15);
+		FIR3 NNOOPP 1 BRIGHT;
+	Death:
+		FBLX A 1 Bright A_Explode(2,64);
+		FBLX BCDEFGHIJKLMNOP 1 BRIGHT;
+		Stop;
+	}
+}
+
+Class FmWShot_2 : FmWShot
+{
+	States
+	{
+	Death:
+	Crash:
+		TNT1 A 0;
+		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("ArchvileFire");
+		Stop;
+	}
+}

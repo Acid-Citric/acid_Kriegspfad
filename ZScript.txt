@@ -1,0 +1,118 @@
+Version "4.6.1"
+
+#Include "ZScript/Player.txt"
+#Include "ZScript/Ammo.txt"
+
+#Include "ZScript/Weapons/Knife.txt" // Combat Knife
+#Include "ZScript/Weapons/Luger.txt" // Luger P08
+#Include "ZScript/Weapons/Walther.txt" // Walther P38 // upgrade silenced
+#Include "ZScript/Weapons/TrenchGun.txt" // Winchester Model 1897
+#Include "ZScript/Weapons/Browning.txt" // Browning Auto-5
+#Include "ZScript/Weapons/MP40.txt" // Maschinenpistole 40 // upgrade double-mags
+#Include "ZScript/Weapons/STEN.txt" // STEN Mk II
+#Include "ZScript/Weapons/G43.txt" // Walther Mauser Gewehr 43
+#Include "ZScript/Weapons/Kar98k.txt" // Karabiner 98 kurz
+#Include "ZScript/Weapons/Flammenwerfer.txt" // Flammenwerfer
+#Include "ZScript/Weapons/Gatling.txt" // Venom Gun
+
+Class ChainsawSpawner : RandomSpawner replaces Chainsaw
+{
+	Override Name ChooseSpawn()
+    {
+		If(Random(0,2))
+			Return "Walther";
+		Else If(Random(0,2))
+			Return "MP40";
+			Return "G43";
+	}
+}
+
+Class ChaingunSpawner : RandomSpawner replaces Chaingun
+{
+	Override Name ChooseSpawn()
+    {
+		If(Random(0,2))
+			Return "MP40";
+			Return "STEN";
+	}
+}
+
+Class RocketLauncherSpawner : RandomSpawner replaces RocketLauncher
+{
+	Override Name ChooseSpawn()
+    {
+		If(Random(0,2))
+			Return "Kar98k";
+			Return "G43";
+	}
+}
+
+Class AxisWeapon : Weapon
+{
+	Default
+    {
+		+WEAPON.NOALERT
+		Scale 0.3;
+	    Weapon.BobRangeX 0;
+	}
+}
+
+Class BulletPuff_2 : BulletPuff
+{
+	Default
+    {
+	    +NOEXTREMEDEATH
+	}
+}
+
+Class Casing_9MM : Actor
+{
+	Default
+    {
+		Scale 0.2;
+		PROJECTILE;
+		-NOGRAVITY
+		-NOBLOCKMAP
+		+BOUNCEONACTORS
+		BounceType "Doom";
+		BounceSound "bulletcasing/bounce";
+		BounceFactor 0.5;
+		WallBounceFactor 0.2;
+		Mass 5;
+		Radius 3;
+		Height 3;
+	}
+	States
+	{
+	Spawn:
+		CAS0 ABCDEFGH 2;
+		Loop;
+	Death:
+		#### A 0 A_Jump(256, 1, 2, 3);
+		#### ACG 0 A_Jump(256, "Death1");
+		Stop;
+	Death1:
+		#### # 0 A_SetTics(GetCVar("casinglifetime"));
+		#### # 1 A_FadeOut(0.1);
+		Wait;
+	}
+}
+
+Class Casing_Shotgun : Casing_9MM
+{
+	Default
+    {
+		WallBounceSound "shellcasing/bounce";
+		BounceSound "shellcasing/bounce";
+		DeathSound "shellcasing/stop";
+		Scale 0.5;
+	}
+}
+
+Class Casing_MauserRifle : Casing_9MM
+{
+	Default
+    {
+		Scale 0.25;
+	}
+}

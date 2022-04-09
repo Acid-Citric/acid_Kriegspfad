@@ -1,0 +1,130 @@
+Class STEN : AxisWeapon
+{
+	Bool STENSequence;
+	Default
+	{
+		Weapon.SelectionOrder 700;
+
+		Weapon.AmmoGive2 32;
+		Weapon.AmmoType "STENLoaded";
+		Weapon.AmmoType2 "Ammo9mm";
+		Inventory.PickupMessage "You got the STEN Mk II!";
+		Tag "STEN Mk II";
+		Weapon.UpSound "pistol/select";
+	}
+	Override Void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		other.A_GiveInventory("STENLoaded", random(1,32));
+	}
+   	Override Bool TryPickup(in out Actor toucher)
+    {
+		If(toucher)
+		{
+			Let weap = toucher.FindInventory("STEN");
+			If(!weap) { Self.AmmoGive2 = 0; }
+			Else If(bTOSSED) { Self.AmmoGive2 = random(1,32); }
+			Else { Self.AmmoGive2 = random(1,32); }
+		}
+			Return Super.TryPickup(toucher);
+	}
+	States
+	{
+	Spawn:
+		WP9P A -1;
+		Stop;
+	Select:
+		WP9G A 1 A_Raise(30);
+		Loop;
+	Ready:
+		WP9G A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		Loop;
+	Deselect:
+		WP9G A 1 A_Lower(30);
+		Loop;
+
+	Fire:
+		TNT1 A 0 A_JumpIf(!CountInv("STENLoaded"), "Reload");
+		WP9G B 1
+		{
+			A_GunFlash();
+			A_AlertMonsters();
+			A_FireBullets(1.5, 1.5, 1, random(9,14), "BulletPuff_2");
+			A_StartSound("weapons/pistol", CHAN_WEAPON);
+			A_TakeInventory("STENLoaded",1);
+			A_SpawnItemEx("Casing_9MM",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		}
+		#### A 0 A_JumpIf(Invoker.STENSequence == True, 2);
+		#### # 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
+		TNT1 A 0
+		{
+			If(Invoker.STENSequence == True) { Invoker.STENSequence = False; }
+			Else { Invoker.STENSequence = True; }
+		}
+		Goto Ready;
+	Flash:
+		WP9F A 1 Bright A_Light1;
+		Goto LightDone;
+		
+	Reload:
+		TNT1 A 0 A_JumpIfInventory("STENLoaded", 32, 2);
+		TNT1 A 0 A_JumpIf(CountInv("Ammo9mm") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
+		TNT1 A 0;
+		Goto Ready;
+	ReloadWork:
+		WP9G A 1
+		{
+			A_WeaponOffset(0,38,WOF_INTERPOLATE);
+			If(!CountInv("STENLoaded")) { A_StartSound("sten/reload_0", CHAN_WEAPON); }
+			Else { A_StartSound("sten/reload_1", CHAN_WEAPON); }
+		}
+		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,56,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-2,60,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-4,72,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-7,80,WOF_INTERPOLATE);	
+		#### # 1 A_WeaponOffset(-10,82,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-11,84,WOF_INTERPOLATE);
+	ReloadLoop:
+		TNT1 A 0
+		{
+           	While(CountInv("Ammo9mm") > 0 && CountInv("STENLoaded") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("STENLoaded") < 32)
+			{
+				A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
+				A_GiveInventory("STENLoaded", 1);
+			}
+		}
+		TNT1 A 0;
+	ReloadFinish:
+		WP9G A 1 A_WeaponOffset(-10,84,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,90,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,98,WOF_INTERPOLATE);	
+		#### # 1 A_WeaponOffset(-10,110,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,98,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,88,WOF_INTERPOLATE);	
+		#### # 1 A_WeaponOffset(-10,78,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,74,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,70,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-9,68,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-8,60,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-7,54,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-5,48,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-3,42,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-1,36,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		Goto Ready;
+	}
+}
+
+Class STENLoaded : Ammo
+{
+	Default
+	{
+		Tag "9 × 19 mm Parabellum";
+		+INVENTORY.IGNORESKILL
+		Inventory.MaxAmount 32;
+		Inventory.Icon "MGUNA0";
+	}
+}

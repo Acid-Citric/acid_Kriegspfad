@@ -1,0 +1,21 @@
+Actor GreenArmor_2 : GreenArmor replaces GreenArmor
+{
+	Inventory.Icon "VESTA0"
+	States
+	{
+	Spawn:
+		VEST A -1
+		Stop
+	}
+}
+
+Actor BlueArmor_2 : BlueArmor replaces BlueArmor
+{
+	Inventory.Icon "VESTB0"
+	States
+	{
+	Spawn:
+		VEST B -1
+		Stop
+	}
+}

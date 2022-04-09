@@ -1,0 +1,2 @@
+//User Bool Acid_TrenchGun = False;
+Server Int casinglifetime = 35;

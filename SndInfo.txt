@@ -1,0 +1,19 @@
+// knife
+
+luger/fire			Sounds/Weapons/luger/lugerf1.wav
+luger/reload		Sounds/Weapons/luger/luger_reload.wav
+
+P38/fire			Sounds/Weapons/p38/fire_luger_plyr_blnc2.wav
+P38/fire_silenced	Sounds/Weapons/p38/silencerf1.wav
+P38/silencer		Sounds/Weapons/p38/silencerremove.wav
+
+mp40/fire			Sounds/Weapons/mp40/fire_mp40_y7.wav
+mp40/reload			Sounds/Weapons/mp40/mp40_reload.wav
+
+g43/fire			Sounds/Weapons/g43/fire_g43_plyr_blnc2.wav
+
+kar98/fire			Sounds/Weapons/kar98/fire_k98_1b.wav
+kar98/rechamber		Sounds/Weapons/kar98/kar98_rechamber.wav
+
+trenchgun/fire		Sounds/Weapons/trenchgun/fire_shotgun1.wav
+trenchgun/pump		Sounds/Weapons/trenchgun/mrk_12ga_shotgun_pump1.wav

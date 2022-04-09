@@ -1,0 +1,43 @@
+Actor Stimpack_2 : Stimpack replaces Stimpack
+{
+	Inventory.Icon "HEALA0"
+	States
+	{
+	Spawn:
+		HEAL A -1
+		Stop
+	}
+}
+
+Actor Medikit_2 : Medikit replaces Medikit
+{
+	Inventory.Icon "HEALB0"
+	States
+	{
+	Spawn:
+		HEAL B -1
+		Stop
+	}
+}
+
+Actor SoulSphere_2 : SoulSphere replaces SoulSphere
+{
+	Inventory.Icon "HEALC0"
+	States
+	{
+	Spawn:
+		HEAL C -1
+		Stop
+	}
+}
+
+Actor Berserk_2 : Berserk replaces Berserk
+{
+	Inventory.Icon "HEALD0"
+	States
+	{
+	Spawn:
+		HEAL D -1
+		Stop
+	}
+}

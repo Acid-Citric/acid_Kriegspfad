@@ -1,0 +1,48 @@
+class WW2Player : DoomPlayer
+{
+	Default
+	{
+		Player.DisplayName "Marine";
+		Player.CrouchSprite "PLYC";
+		Player.StartItem "Luger";
+		Player.StartItem "Knife";
+		Player.StartItem "LugerLoaded", 8;
+		/*
+		Player.StartItem "WaltherLoaded", 8;
+		Player.StartItem "TrenchGunLoaded", 6;
+		Player.StartItem "BA5Loaded", 5;
+		Player.StartItem "MP40Loaded", 64;
+		Player.StartItem "STENLoaded", 32;
+		Player.StartItem "G43Loaded", 10;
+		Player.StartItem "Kar98kLoaded", 5;
+		Player.StartItem "FmWLoaded", 150;
+		*/
+		Player.StartItem "Ammo9mm", 40;
+		Player.WeaponSlot 1, "Knife";
+		Player.WeaponSlot 2, "Luger", "Walther";
+		Player.WeaponSlot 3, "TrenchGun", "BA5";
+		Player.WeaponSlot 4, "MP40", "STEN";
+		Player.WeaponSlot 5, "G43", "Kar98k";
+		Player.WeaponSlot 6, "Flammenwerfer";
+		Player.WeaponSlot 7, "Gatling";
+	}
+	override void CheatGive(String name, int amount)
+	{
+		Super.CheatGive(name, amount);
+		
+		If(name ~== "all" || name ~== "armor") 
+		{
+			CheatTake("armor", 1);
+			Super.CheatGive("BlueArmor_2", 1);
+		}
+		If(name ~== "all" || name ~== "backpack")
+		{
+			Super.CheatGive("AmmoPouches", 1);
+		}
+		If(name ~== "megasphere")
+		{
+			CheatTake("armor", 1);
+			Super.CheatGive("MegaSphere", 1);
+		}		
+	}
+}

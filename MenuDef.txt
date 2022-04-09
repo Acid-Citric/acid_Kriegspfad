@@ -1,0 +1,7 @@
+AddOptionMenu "OptionsMenu"
+{
+	StaticText "Ac!d's WW2", Gold
+	StaticText ""
+	//Option "Trench Gun Slam Fire",	"Acid_TrenchGun",	"YesNo"
+	Slider "Shell Casing Lifetime", "casinglifetime", 35, 350, 35
+}
