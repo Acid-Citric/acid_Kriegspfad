@@ -81,7 +81,7 @@ Class Kar98k : AxisWeapon
 		WPAG R 1 Bright
 		{
 			A_AlertMonsters();
-			A_FireBullets(0, 0, 1, random(40,65), "Bullet_Puff");
+			A_FireBullets(0, 0, 1, random(40,65), "BulletPuff_2");
 			A_StartSound("kar98/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
 		}
