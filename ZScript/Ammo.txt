@@ -17,7 +17,7 @@ Class Ammo9mm : Ammo
 		Tag "$TAG_AMMO_9MM_BOX";
 		Inventory.Icon "9MM_A0";
 		Inventory.MaxAmount 240;
-		Ammo.BackpackAmount 16;
+		//Ammo.BackpackAmount 16;
 		Ammo.BackpackMaxAmount 480;
 	}
 }
@@ -45,64 +45,124 @@ Class Ammo9mm_2 : Ammo9mm replaces ClipBox
 
 Class Ammo12G : Ammo replaces Shell
 {
-	mixin AmmoPickupMessage;
 	Default
 	{
 		Tag "$TAG_AMMO_12GA";
 		Inventory.Icon "12G_A0";
-		Inventory.Amount 4;
 		Inventory.MaxAmount 60;
-		Ammo.BackpackAmount 4;
+		//Ammo.BackpackAmount 4;
 		Ammo.BackpackMaxAmount 120;
-		Ammo.DropAmount 4;
+	}
+	Override String PickupMessage()
+	{
+		If(Amount == 1) return String.Format("%s (+%d)",GetTag(),Amount);
+		Else return String.Format("%ss (+%d)",GetTag(),Amount);	
+	}
+	Override Void PostBeginPlay()
+	{
+		// variants
+		int dec = Random[Ammo12G](0,3);
+		switch(dec)
+		{
+		case 0:
+		default:
+			SetState(ResolveState("Spawn"));
+			Amount = 4;
+			break;
+		case 1:
+			SetState(ResolveState("Spawn")+1);
+			Amount = 3;
+			break;
+		case 2:
+			SetState(ResolveState("Spawn")+2);
+			Amount = 2;
+			break;
+		case 3:
+			SetState(ResolveState("Spawn")+3);
+			Amount = 1;
+			break;
+		}
 	}
 	States
 	{
 	Spawn:
-		12G_ A -1;
+		12G_ ABCD -1;
 		Stop;
 	}
 }
 Class Ammo12G_2 : Ammo12G replaces ShellBox
 {
+	mixin AmmoPickupMessage;
 	Default	{ Tag "$TAG_AMMO_12GA_BOX"; }
 	Override Void PostBeginPlay() { Amount = Random[Ammo12G](4,12); }
 	States
 	{
 	Spawn:
-		12G_ B -1;
+		12G_ E -1;
 		Stop;
 	}
 }
 
 Class Ammo792M : Ammo
 {
-	mixin AmmoPickupMessage;
 	Default
 	{
 		Tag "$TAG_AMMO_792M";
 		Inventory.Icon "792MA0";
-		Inventory.Amount 5;
 		Inventory.MaxAmount 75;
-		Ammo.BackpackAmount 5;
+		//Ammo.BackpackAmount 5;
 		Ammo.BackpackMaxAmount 150;
-		Ammo.DropAmount 5;
+	}
+	Override String PickupMessage()
+	{
+		If(Amount == 1) return String.Format("%s (+%d)",GetTag(),Amount);
+		Else return String.Format("%ss (+%d)",GetTag(),Amount);	
+	}
+	Override Void PostBeginPlay()
+	{
+		// variants
+		int dec = Random[Ammo12G](0,4);
+		switch(dec)
+		{
+		case 0:
+		default:
+			SetState(ResolveState("Spawn"));
+			Amount = 5;
+			break;
+		case 1:
+			SetState(ResolveState("Spawn")+1);
+			Amount = 4;
+			break;
+		case 2:
+			SetState(ResolveState("Spawn")+2);
+			Amount = 3;
+			break;
+		case 3:
+			SetState(ResolveState("Spawn")+3);
+			Amount = 2;
+			break;
+		case 4:
+			SetState(ResolveState("Spawn")+4);
+			Amount = 1;
+			break;
+		}
 	}
 	States
 	{
 	Spawn:
-		792M A -1;
+		792M ABCDE -1;
 		Stop;
 	}
 }
 Class Ammo792M_2 : Ammo792M
-{ 
+{
+	mixin AmmoPickupMessage;
 	Default	{ Tag "$TAG_AMMO_792M_BOX"; }
 	Override Void PostBeginPlay() { Amount = Random[Ammo792M](5,20); }
 	States
 	{
 	Spawn:
-		792M B -1;
+		792M F -1;
 		Stop;
 	}
 }
@@ -138,7 +198,7 @@ Class AmmoFuel : Ammo replaces CellPack
 		Ammo.BackpackMaxAmount 360;
 		Scale 1.0;
 	}
-	Override Void PostBeginPlay() { Amount = Random[AmmoFuel](75,150); }
+	Override Void PostBeginPlay() { Amount = Random[AmmoFuel](10,150); }
 	States
 	{
 	Spawn:
@@ -156,7 +216,7 @@ Class AmmoRifleGrenade : Ammo
 		Inventory.Icon "R_G_A0";
 		Inventory.Amount 1;
 		Inventory.MaxAmount 30;
-		Ammo.BackpackAmount 1;
+		//Ammo.BackpackAmount 1;
 		Ammo.BackpackMaxAmount 90;
 		Ammo.DropAmount 1;
 	}
@@ -174,8 +234,7 @@ Class AmmoPouches : BackpackItem replaces BackPack
 	States
 	{
 	Spawn:
-		AMM0 # 0 NoDelay A_Jump(256,1,2);
-		#### AB -1;
+		AMM0 A -1;
 		Stop;
 	}
 }
