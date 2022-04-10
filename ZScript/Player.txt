@@ -38,6 +38,12 @@ class WW2Player : DoomPlayer
 		If(name ~== "all" || name ~== "backpack")
 		{
 			Super.CheatGive("AmmoPouches", 1);
+			Super.CheatGive("Ammo9mm", 480);
+			Super.CheatGive("Ammo12G", 120);
+			Super.CheatGive("Ammo792M", 150);
+			Super.CheatGive("Ammo93M", 600);
+			Super.CheatGive("AmmoFuel", 360);
+			Super.CheatGive("AmmoRifleGrenade", 90);
 		}
 		If(name ~== "megasphere")
 		{
