@@ -17,7 +17,7 @@ Class Ammo9mm : Ammo
 		Tag "$TAG_AMMO_9MM_BOX";
 		Inventory.Icon "9MM_A0";
 		Inventory.MaxAmount 240;
-		//Ammo.BackpackAmount 16;
+		Ammo.BackpackAmount 8;
 		Ammo.BackpackMaxAmount 480;
 	}
 }
@@ -47,12 +47,15 @@ Class Ammo12G : Ammo replaces Shell
 {
 	Default
 	{
-		Tag "$TAG_AMMO_12GA";
 		Inventory.Icon "12G_A0";
 		Inventory.MaxAmount 60;
-		//Ammo.BackpackAmount 4;
+		Ammo.BackpackAmount 4;
 		Ammo.BackpackMaxAmount 120;
 	}
+}
+Class Ammo12G_1 : Ammo12G replaces Shell
+{
+	Default	{ Tag "$TAG_AMMO_12GA";	}
 	Override String PickupMessage()
 	{
 		If(Amount == 1) return String.Format("%s (+%d)",GetTag(),Amount);
@@ -107,12 +110,15 @@ Class Ammo792M : Ammo
 {
 	Default
 	{
-		Tag "$TAG_AMMO_792M";
 		Inventory.Icon "792MA0";
 		Inventory.MaxAmount 75;
-		//Ammo.BackpackAmount 5;
+		Ammo.BackpackAmount 5;
 		Ammo.BackpackMaxAmount 150;
 	}
+}
+Class Ammo792M_1 : Ammo792M
+{
+	Default	{ Tag "$TAG_AMMO_792M"; }
 	Override String PickupMessage()
 	{
 		If(Amount == 1) return String.Format("%s (+%d)",GetTag(),Amount);
@@ -167,9 +173,8 @@ Class Ammo792M_2 : Ammo792M
 	}
 }
 
-Class Ammo93M : Ammo replaces Cell
+Class Ammo93M : Ammo
 {
-	mixin AmmoPickupMessage;
 	Default
 	{
 		Tag "$TAG_AMMO_93M_BOX";
@@ -177,6 +182,10 @@ Class Ammo93M : Ammo replaces Cell
 		Inventory.MaxAmount 300;
 		Ammo.BackpackMaxAmount 600;
 	}
+}
+Class Ammo93M_1 : Ammo93M replaces Cell
+{
+	mixin AmmoPickupMessage;
 	Override Void PostBeginPlay() { Amount = Random[Ammo792M](10,20); }
 	States
 	{
@@ -186,9 +195,8 @@ Class Ammo93M : Ammo replaces Cell
 	}
 }
 
-Class AmmoFuel : Ammo replaces CellPack
+Class AmmoFuel : Ammo
 {
-	mixin AmmoPickupMessage;
 	Default
 	{
 		Tag "$TAG_AMMO_FUEL";
@@ -198,6 +206,10 @@ Class AmmoFuel : Ammo replaces CellPack
 		Ammo.BackpackMaxAmount 360;
 		Scale 1.0;
 	}
+}
+Class AmmoFuel_1 : AmmoFuel replaces CellPack
+{
+	mixin AmmoPickupMessage;
 	Override Void PostBeginPlay() { Amount = Random[AmmoFuel](10,150); }
 	States
 	{
@@ -216,7 +228,7 @@ Class AmmoRifleGrenade : Ammo
 		Inventory.Icon "R_G_A0";
 		Inventory.Amount 1;
 		Inventory.MaxAmount 30;
-		//Ammo.BackpackAmount 1;
+		Ammo.BackpackAmount 1;
 		Ammo.BackpackMaxAmount 90;
 		Ammo.DropAmount 1;
 	}
