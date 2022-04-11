@@ -55,7 +55,7 @@ Class Gatling : AxisWeapon replaces BFG9000
 		{
 			A_GunFlash();
 			A_AlertMonsters();
-			A_FireBullets(5, 5, 1, random(40,65), "BulletPuff_2", FBF_USEAMMO);
+			A_FireBullets(5, 5, 1, random(200,270), "BulletPuff_2", FBF_USEAMMO);
 			A_StartSound("weapons/pistol", CHAN_WEAPON);
 			A_WeaponOffset(0,34,WOF_INTERPOLATE);
 			A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
