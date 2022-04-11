@@ -258,7 +258,7 @@ Class RocketAmmoReplacer : Actor replaces RocketAmmo
 		Super.PostBeginPlay();
 		For(int i; i<1; i++)
 		{
-			A_SpawnItemEx("Ammo792M");
+			A_SpawnItemEx("Ammo792M_1");
 			A_SpawnItemEx("AmmoRifleGrenade",Random(-8,8),Random(-8,8));
 		}
 	}
