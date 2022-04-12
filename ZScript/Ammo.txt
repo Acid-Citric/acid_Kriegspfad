@@ -43,7 +43,7 @@ Class Ammo9mm_2 : Ammo9mm replaces ClipBox
 	}
 }
 
-Class Ammo12G : Ammo replaces Shell
+Class Ammo12G : Ammo
 {
 	Default
 	{
