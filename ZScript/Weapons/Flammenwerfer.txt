@@ -14,7 +14,7 @@ Class Flammenwerfer : AxisWeapon replaces PlasmaRifle
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("FmWLoaded", random(10,150));
+		other.A_GiveInventory("FmWLoaded", random(0,150));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
