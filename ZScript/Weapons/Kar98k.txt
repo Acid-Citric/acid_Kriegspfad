@@ -1,6 +1,6 @@
 Class Kar98k : AxisWeapon
 {
-	Bool ADS, rifleempty;
+	Bool ADS;
 	Default
 	{
 		Weapon.SelectionOrder 2500;
@@ -14,7 +14,7 @@ Class Kar98k : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("Kar98kLoaded", random(1,5));
+		other.A_GiveInventory("Kar98kLoaded", random(0,5));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
@@ -33,22 +33,16 @@ Class Kar98k : AxisWeapon
 		WPAP A -1;
 		Stop;
 	Select:
-		WPAG D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
-		WPAG A 0;
-		#### # 1 A_Raise(30);
+		WPAG A 1 A_Raise(30);
 		Loop;
 	Ready:
-		TNT1 A 0 A_JumpIf(Invoker.ADS, 4);
-		WPAG D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
-		WPAG A 0;
-		#### # 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		WPAG A 0 A_JumpIf(Invoker.ADS == True, 2);
+		WPAG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
 		Loop;
-		WPAG R 1 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOBOB);
+		#### R 1 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOBOB);
 		Loop;	
 	Deselect:
-		WPAG D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
-		WPAG A 0;
-		#### # 1 A_Lower(30);
+		WPAG A 1 A_Lower(30);
 		Loop;
 
 	Fire:
@@ -62,23 +56,21 @@ Class Kar98k : AxisWeapon
 			A_StartSound("kar98/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
 		}
-		#### C 1;
+		#### C 1;	
 		#### D 2 A_WeaponOffset(0,40,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-		#### D 0 A_JumpIf(CountInv("Kar98kLoaded"), 1);
-		Goto Empty;
 		#### E 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		#### F 3;
-		#### GHHII 2; //G 2 - HI 4
-		#### J 2 { A_StartSound("kar98/rechamber",CHAN_WEAPON); A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION); }
-		#### MMNNOPPPPQA 2; //MN 4 - O 2 - P 8 - QA 2  
+		#### FGHHII 1;
+		#### J 7 { A_StartSound("kar98/rechamber",CHAN_WEAPON); A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION); }	
+		#### MMNNOPQA 1;
 		Goto Ready;
 	Flash:
 		WPAF A 1 BRIGHT A_Light2;
 		WPAF B 1 BRIGHT A_Light1;
 		Goto LightDone;
+
 	FireScope:
-		WPAG R 1 BRIGHT
+		WPAG R 2 BRIGHT
 		{
 			A_AlertMonsters();
 			A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2");
@@ -86,48 +78,44 @@ Class Kar98k : AxisWeapon
 			A_TakeInventory("Kar98kLoaded",1);
 		}
 		#### R 4;
-		#### D 0 A_JumpIf(CountInv("Kar98kLoaded"), 1);
-		Goto Ready;
-		#### R 14;		
-		#### R 2 A_StartSound("kar98/rechamber",CHAN_WEAPON);
-		#### R 22;
+		#### R 3 A_StartSound("kar98/rechamber",CHAN_WEAPON);
+		#### R 18;
 		Goto Ready;
 	
 	Empty:
-		WPAG D 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		Goto Ready;		
+		WPAG D 1
+		{
+			A_OverlayScale(PSP_WEAPON, 1.00, 1.00, WOF_RELATIVE);
+			A_WeaponOffset(0,32,WOF_INTERPOLATE);
+			//A_WeaponReady(WRF_NOFIRE);
+		}
+		Goto Ready;
 
 	AltFire:
 		TNT1 A 0 A_JumpIf(Invoker.ADS, 2);
-		WPAG R 9 { A_ZoomFactor(5.0, ZOOM_INSTANT); A_WeaponReady(WRF_NOFIRE|WRF_NOBOB); Invoker.ADS = True; }	
+		WPAG R 15 { A_ZoomFactor(5.0, ZOOM_INSTANT); A_WeaponReady(WRF_NOFIRE|WRF_NOBOB); Invoker.ADS = True; }	
 		Goto Ready;
-		WPAG A 9 { A_ZoomFactor(1.0, ZOOM_INSTANT); A_WeaponReady(WRF_NOFIRE); Invoker.ADS = False; }
+		WPAG A 15 { A_ZoomFactor(1.0, ZOOM_INSTANT); A_WeaponReady(WRF_NOFIRE); Invoker.ADS = False; }
 		Goto Ready;
 
 	Reload:
-		TNT1 A 0 A_JumpIfInventory("Kar98kLoaded", 5, 2);
-		TNT1 A 0 A_JumpIf(CountInv("Ammo792M") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
-		TNT1 A 0 { Invoker.rifleempty = True; }
-		Goto Ready;
+		TNT1 A 0 A_JumpIfInventory("Kar98kLoaded", 5, "Ready");
+		TNT1 A 0 A_JumpIf(CountInv("Kar98kLoaded") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
+		TNT1 A 0;
+		Goto ReloadWork_Empty; // No more ammo
+
 	ReloadWork:
+		TNT1 A 0 A_JumpIf(CountInv("Ammo792M") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+        Goto Ready;
 		TNT1 A 0 A_JumpIf(Invoker.ADS, "ReloadADS");
-		//TNT1 A 0 A_Jump(!CountInv("Kar98kLoaded") && CountInv("Ammo792M") < 5, "ReloadWork_2");
+		WPAG QPONM 2;
+		Goto ReloadWork_Continue;
 
-		// To-do
-		// No more ammo : D -> L -> Q
-	/*ReloadWork_2:
-		WPAG DEFGHIJKL 2
-	ReloadFinish_2:
-		WPAG KJMNOPQ 2*/
-
-		// Rifle cocked : Q <- L -> Q
-	/*ReloadWork:
-		WPAG QPONMJKL 2
-		
-		WPAG KJMNOPQ 2*/
-
-		WPAG D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
-		WPAG A 0;
+	ReloadWork_Empty: // No more ammo
+		TNT1 A 0 A_JumpIf(Invoker.ADS, "ReloadADS_Empty");
+		WPAG DEFGHI 2;
+	ReloadWork_Continue:
+		WPAG JKL 2;
 		#### # 6 A_StartSound("kar98/reload", CHAN_WEAPON);
 		#### # 1 A_WeaponOffset(-4,34,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-6,35,WOF_INTERPOLATE);
@@ -159,6 +147,7 @@ Class Kar98k : AxisWeapon
 		}
 		TNT1 A 0;
 	ReloadFinish:
+		WPAG KJMNOPQ 2;
 		WPAG A 5; // A_StartSound("mauser/shut", CHAN_WEAPON);
 		#### # 1 A_WeaponOffset(4,60,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,51,WOF_INTERPOLATE);
@@ -172,6 +161,9 @@ Class Kar98k : AxisWeapon
 	ReloadADS:
 		WPAG A 1 { A_ZoomFactor(1.0, ZOOM_INSTANT); Invoker.ADS = False; }
 		Goto ReloadWork;
+	ReloadADS_Empty:
+		WPAG A 1 { A_ZoomFactor(1.0, ZOOM_INSTANT); Invoker.ADS = False; }
+		Goto ReloadWork_Empty;
 	}
 }
 
