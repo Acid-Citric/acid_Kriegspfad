@@ -5,7 +5,6 @@ Class STEN : AxisWeapon
 	{
 		Weapon.SelectionOrder 700;
 
-		Weapon.AmmoGive2 32;
 		Weapon.AmmoType "STENLoaded";
 		Weapon.AmmoType2 "Ammo9mm";
 		Inventory.PickupMessage "You got the STEN Mk II!";
@@ -15,7 +14,7 @@ Class STEN : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("STENLoaded", random(1,32));
+		other.A_GiveInventory("STENLoaded", random(0,32));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
@@ -55,17 +54,18 @@ Class STEN : AxisWeapon
 			A_SpawnItemEx("Casing_9MM",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
 		#### A 0 A_JumpIf(Invoker.STENSequence == True, 2);
-		#### # 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
-		TNT1 A 0
+		#### # 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+		#### # 0
 		{
 			If(Invoker.STENSequence == True) { Invoker.STENSequence = False; }
 			Else { Invoker.STENSequence = True; }
 		}
+		#### # 0 A_ReFire();
 		Goto Ready;
 	Flash:
-		WP9F A 1 Bright A_Light1;
+		WP9F A 1 BRIGHT A_Light1;
 		Goto LightDone;
 		
 	Reload:
