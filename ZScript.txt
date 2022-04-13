@@ -2,7 +2,7 @@ Version "4.6.1"
 
 #Include "ZScript/Player.txt"
 #Include "ZScript/Ammo.txt"
-#Include "ZScript/BaseStatusBar.zsc"
+#Include "ZScript/BaseStatusBar.txt"
 
 #Include "ZScript/Weapons/Knife.txt" // Combat Knife
 #Include "ZScript/Weapons/Luger.txt" // Luger P08
