@@ -15,7 +15,7 @@ Class Walther : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("WaltherLoaded", random(1,8));
+		other.A_GiveInventory("WaltherLoaded", random(0,8));
 	}
    	Override Bool TryPickup(in out Actor toucher)  
     {
@@ -80,7 +80,7 @@ Class Walther : AxisWeapon
 		#### F 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		Goto Ready;
 	Flash:
-		TNT1 A 1 Bright A_Light1;
+		TNT1 A 1 BRIGHT A_Light1;
 		Goto LightDone;	
 
 	AltFire:
