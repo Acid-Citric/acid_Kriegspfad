@@ -16,7 +16,7 @@ Class BA5 : AxisWeapon replaces SuperShotgun
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("BA5Loaded", random(1,5));
+		other.A_GiveInventory("BA5Loaded", random(0,5));
 	}
    	Override Bool TryPickup(in out Actor toucher)  
     {
@@ -64,11 +64,11 @@ Class BA5 : AxisWeapon replaces SuperShotgun
 		#### A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,34,WOF_INTERPOLATE);
 		#### A 4 A_WeaponOffset(0,33,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);		
+		#### A 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
 		Goto Ready;
 	Flash:
-		WP7F A 1 Bright A_Light2;
-		#### B 2 Bright A_Light1;
+		WP7F A 1 BRIGHT A_Light2;
+		#### B 2 BRIGHT A_Light1;
 		Goto LightDone;
 
 	Reload:
