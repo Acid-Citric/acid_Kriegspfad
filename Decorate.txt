@@ -1,3 +1,0 @@
-#Include "Decorate/Items/Health.txt"
-#Include "Decorate/Items/Armor.txt"
-#Include "Decorate/Items/Powerups.txt"
