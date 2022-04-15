@@ -1,0 +1,85 @@
+/*
+1938 Latour is a vintage wine bottle often found in wine stashes in secret areas in Return to Castle Wolfenstein.
+It holds up to three gulps of wine, each one worth 25 health points.
+*/
+
+Class Small_HealthPack : Health replaces HealthBonus
+{
+	Default
+	{
+		-INVENTORY.ALWAYSPICKUP
+		Inventory.MaxAmount 999;		
+		Inventory.PickupMessage "$GOTHTHBONUS";
+		Inventory.PickupSound "misc/health_pkup";
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
+		If(sk == 1 || sk == 5) { Amount = 10; }
+		Else { Amount = 5; }
+
+		SetState(ResolveState("Spawn")+Random[Small_HealthPack](1,4));
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay;
+		HEAL GHIJ -1;
+		Stop;
+	}
+}
+Class Small_HealthPack_2 : Small_HealthPack replaces ArmorBonus {}
+
+Class Medium_HealthPack : Health replaces Stimpack
+{
+	Default
+	{
+		Inventory.PickupMessage "$GOTHTHBONUS";
+		Inventory.PickupSound "misc/health_pkup";
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
+		If(sk == 1 || sk == 5) { Amount = 25; }
+		Else { Amount = 15; }
+
+		SetState(ResolveState("Spawn")+Random[Medium_HealthPack](1,2));
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay;
+		HEAL AB -1;
+		Stop;
+	}
+}
+
+Class Large_HealthPack : Health replaces Medikit
+{
+	Default
+	{
+		Inventory.PickupMessage "$GOTHTHBONUS";
+		Inventory.PickupSound "misc/health_pkup";
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
+		If(sk == 1 || sk == 5) { Amount = 50; }
+		Else { Amount = 25; }
+
+		SetState(ResolveState("Spawn")+Random[Large_HealthPack](1,4));
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay;
+		HEAL CDEF -1;
+		Stop;
+	}
+}

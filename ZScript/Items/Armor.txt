@@ -1,0 +1,39 @@
+Class ArmoredHelmet : BasicArmorBonus replaces GreenArmor
+{
+	Default
+	{
+		-INVENTORY.ALWAYSPICKUP
+		Inventory.PickupMessage "Armored Helmet";
+		Inventory.Icon "HELMA0";
+		Armor.SaveAmount 25;
+		Armor.MaxSaveAmount 100;
+		Armor.SavePercent 66.665;
+		//Armor.MaxFullAbsorb 50;
+	}
+	States
+	{
+	Spawn:
+		HELM A -1;
+		Stop;
+	}
+}
+
+Class FlakJacket : BasicArmorBonus replaces BlueArmor
+{
+	Default
+	{
+		-INVENTORY.ALWAYSPICKUP
+		Inventory.PickupMessage "Flak Jacket";
+		Inventory.Icon "VESTA0";
+		Armor.SaveAmount 75;
+		Armor.MaxSaveAmount 100;
+		Armor.SavePercent 66.665;
+		//Armor.MaxFullAbsorb 50;
+	}
+	States
+	{
+	Spawn:
+		VEST A -1;
+		Stop;
+	}
+}
