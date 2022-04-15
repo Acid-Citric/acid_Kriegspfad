@@ -18,7 +18,7 @@ Version "4.6.1"
 #Include "ZScript/Weapons/G43.txt" // Walther Mauser Gewehr 43
 #Include "ZScript/Weapons/Kar98k.txt" // Karabiner 98 kurz
 #Include "ZScript/Weapons/Flammenwerfer.txt" // Flammenwerfer
-#Include "ZScript/Weapons/Gatling.txt" // Venom Gun
+#Include "ZScript/Weapons/VenomGun.txt" // Venom Gun
 
 Class ChainsawSpawner : RandomSpawner replaces Chainsaw
 {
