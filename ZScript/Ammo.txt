@@ -24,7 +24,11 @@ Class Ammo9mm : Ammo
 
 Class Ammo9mm_1 : Ammo9mm replaces Clip
 {
-	Override Void PostBeginPlay() { Amount = Random[Ammo9mm](4,16); }
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Amount = Random[Ammo9mm](4,16);
+	}
 	States
 	{
 	Spawn:
@@ -34,7 +38,11 @@ Class Ammo9mm_1 : Ammo9mm replaces Clip
 }
 Class Ammo9mm_2 : Ammo9mm replaces ClipBox
 { 
-	Override Void PostBeginPlay() { Amount = Random[Ammo9mm](8,32); }
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Amount = Random[Ammo9mm](8,32);
+	}
 	States
 	{
 	Spawn:
@@ -63,6 +71,9 @@ Class Ammo12G_1 : Ammo12G replaces Shell
 	}
 	Override Void PostBeginPlay()
 	{
+		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
+		
 		// variants
 		int dec = Random[Ammo12G](0,3);
 		switch(dec)
@@ -73,15 +84,15 @@ Class Ammo12G_1 : Ammo12G replaces Shell
 			Amount = 4;
 			break;
 		case 1:
-			SetState(ResolveState("Spawn")+1);
+			SetState(ResolveState("Spawn")+2);
 			Amount = 3;
 			break;
 		case 2:
-			SetState(ResolveState("Spawn")+2);
+			SetState(ResolveState("Spawn")+3);
 			Amount = 2;
 			break;
 		case 3:
-			SetState(ResolveState("Spawn")+3);
+			SetState(ResolveState("Spawn")+4);
 			Amount = 1;
 			break;
 		}
@@ -89,6 +100,7 @@ Class Ammo12G_1 : Ammo12G replaces Shell
 	States
 	{
 	Spawn:
+		TNT1 A 0 NoDelay;
 		12G_ ABCD -1;
 		Stop;
 	}
@@ -97,7 +109,11 @@ Class Ammo12G_2 : Ammo12G replaces ShellBox
 {
 	mixin AmmoPickupMessage;
 	Default	{ Tag "$TAG_AMMO_12GA_BOX"; }
-	Override Void PostBeginPlay() { Amount = Random[Ammo12G](4,12); }
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Amount = Random[Ammo12G](4,12);
+	}
 	States
 	{
 	Spawn:
@@ -126,6 +142,8 @@ Class Ammo792M_1 : Ammo792M
 	}
 	Override Void PostBeginPlay()
 	{
+		super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
 		// variants
 		int dec = Random[Ammo12G](0,4);
 		switch(dec)
@@ -136,19 +154,19 @@ Class Ammo792M_1 : Ammo792M
 			Amount = 5;
 			break;
 		case 1:
-			SetState(ResolveState("Spawn")+1);
+			SetState(ResolveState("Spawn")+2);
 			Amount = 4;
 			break;
 		case 2:
-			SetState(ResolveState("Spawn")+2);
+			SetState(ResolveState("Spawn")+3);
 			Amount = 3;
 			break;
 		case 3:
-			SetState(ResolveState("Spawn")+3);
+			SetState(ResolveState("Spawn")+4);
 			Amount = 2;
 			break;
 		case 4:
-			SetState(ResolveState("Spawn")+4);
+			SetState(ResolveState("Spawn")+5);
 			Amount = 1;
 			break;
 		}
@@ -156,6 +174,7 @@ Class Ammo792M_1 : Ammo792M
 	States
 	{
 	Spawn:
+		TNT1 A 0 NoDelay;
 		792M ABCDE -1;
 		Stop;
 	}
@@ -164,7 +183,11 @@ Class Ammo792M_2 : Ammo792M
 {
 	mixin AmmoPickupMessage;
 	Default	{ Tag "$TAG_AMMO_792M_BOX"; }
-	Override Void PostBeginPlay() { Amount = Random[Ammo792M](5,20); }
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Amount = Random[Ammo792M](5,20);
+	}
 	States
 	{
 	Spawn:
@@ -173,24 +196,28 @@ Class Ammo792M_2 : Ammo792M
 	}
 }
 
-Class Ammo93M : Ammo
+Class Ammo127M : Ammo
 {
 	Default
 	{
-		Tag "$TAG_AMMO_93M_BOX";
-		Inventory.Icon "93M_A0";
-		Inventory.MaxAmount 300;
-		Ammo.BackpackMaxAmount 600;
+		Tag "$TAG_AMMO_127M_BOX";
+		Inventory.Icon "127MA0";
+		Inventory.MaxAmount 500;
+		Ammo.BackpackMaxAmount 1000;
 	}
 }
-Class Ammo93M_1 : Ammo93M replaces Cell
+Class Ammo127M_1 : Ammo127M replaces Cell
 {
 	mixin AmmoPickupMessage;
-	Override Void PostBeginPlay() { Amount = Random[Ammo792M](10,20); }
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Amount = Random[Ammo127M](10,50);
+	}
 	States
 	{
 	Spawn:
-		93M_ A -1;
+		127M A -1;
 		Stop;
 	}
 }
@@ -201,16 +228,19 @@ Class AmmoFuel : Ammo
 	{
 		Tag "$TAG_AMMO_FUEL";
 		Inventory.Icon "FUELA0";
-		// 11.8 Liters
-		Inventory.MaxAmount 360;
-		Ammo.BackpackMaxAmount 360;
+		Inventory.MaxAmount 150;
+		Ammo.BackpackMaxAmount 150;
 		Scale 1.0;
 	}
 }
 Class AmmoFuel_1 : AmmoFuel replaces CellPack
 {
 	mixin AmmoPickupMessage;
-	Override Void PostBeginPlay() { Amount = Random[AmmoFuel](10,150); }
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Amount = Random[AmmoFuel](10,50);
+	}
 	States
 	{
 	Spawn:
@@ -227,15 +257,22 @@ Class AmmoRifleGrenade : Ammo
 		Tag "$TAG_AMMO_RIFLEGRENADE";
 		Inventory.Icon "R_G_A0";
 		Inventory.Amount 1;
-		Inventory.MaxAmount 30;
+		Inventory.MaxAmount 10;
 		Ammo.BackpackAmount 1;
-		Ammo.BackpackMaxAmount 90;
+		Ammo.BackpackMaxAmount 15;
 		Ammo.DropAmount 1;
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
+		SetState(ResolveState("Spawn")+Random[AmmoRifleGrenade](1,2));
 	}
 	States
 	{
 	Spawn:
-		R_G_ A -1;
+		TNT1 A 0 NoDelay;
+		R_G_ AB -1;
 		Stop;
 	}
 }
@@ -253,7 +290,7 @@ Class AmmoPouches : BackpackItem replaces BackPack
 
 Class RocketAmmoReplacer : Actor replaces RocketAmmo
 {
-	Override void PostBeginPlay()
+	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		For(int i; i<1; i++)
@@ -265,7 +302,7 @@ Class RocketAmmoReplacer : Actor replaces RocketAmmo
 }
 Class RocketBoxReplacer : Actor replaces RocketBox
 {
-	Override void PostBeginPlay()
+	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		For(int i; i<1; i++) { A_SpawnItemEx("Ammo792M_2"); }
