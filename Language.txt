@@ -6,7 +6,7 @@ TAG_AMMO_12GA_BOX = "12 GA Brass Shell Box";
 TAG_AMMO_792M = "7,92 x 57 mm Mauser rounds";
 TAG_AMMO_792M_BOX = "7,92 x 57 mm Mauser Ammo Box";
 TAG_AMMO_93M_BOX = "9,3 x 62 mm Mauser Ammo Box";
-TAG_AMMO_FUEL = "Jerrycan of Fuel";
+TAG_AMMO_FUEL = "Fuel";
 TAG_AMMO_RIFLEGRENADE = "Rifle Grenade";
 
 PICKUP_AMMO_POUCHES = "Picked up some ammo pouches.";
