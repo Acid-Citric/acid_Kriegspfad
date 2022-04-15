@@ -1,7 +1,11 @@
 Version "4.6.1"
 
 #Include "ZScript/Player.txt"
-#Include "ZScript/Ammo.txt"
+
+#Include "ZScript/Items/Health.txt"
+#Include "ZScript/Items/Armor.txt"
+#Include "ZScript/Items/Ammo.txt"
+
 #Include "ZScript/BaseStatusBar.txt"
 
 #Include "ZScript/Weapons/Knife.txt" // Combat Knife
