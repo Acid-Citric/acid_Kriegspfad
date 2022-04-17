@@ -14,7 +14,6 @@ Class Ammo9mm : Ammo
 	mixin AmmoPickupMessage;
 	Default
 	{
-		Tag "$TAG_AMMO_9MM_BOX";
 		Inventory.Icon "9MM_A0";
 		Inventory.MaxAmount 240;
 		Ammo.BackpackAmount 8;
@@ -22,12 +21,13 @@ Class Ammo9mm : Ammo
 	}
 }
 
-Class Ammo9mm_1 : Ammo9mm replaces Clip
+Class Ammo9mm_1 : Ammo9mm
 {
+	Default	{ Tag "$TAG_AMMO_9MM_PMAG"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Amount = Random[Ammo9mm](4,16);
+		Amount = Random[Ammo9mm](1,8);
 	}
 	States
 	{
@@ -36,12 +36,13 @@ Class Ammo9mm_1 : Ammo9mm replaces Clip
 		Stop;
 	}
 }
-Class Ammo9mm_2 : Ammo9mm replaces ClipBox
-{ 
+Class Ammo9mm_2 : Ammo9mm
+{
+	Default	{ Tag "$TAG_AMMO_9MM_BOX"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Amount = Random[Ammo9mm](8,32);
+		Amount = Random[Ammo9mm](8,16);
 	}
 	States
 	{
@@ -61,7 +62,7 @@ Class Ammo12G : Ammo
 		Ammo.BackpackMaxAmount 120;
 	}
 }
-Class Ammo12G_1 : Ammo12G replaces Shell
+Class Ammo12G_1 : Ammo12G
 {
 	Default	{ Tag "$TAG_AMMO_12GA";	}
 	Override String PickupMessage()
@@ -105,7 +106,7 @@ Class Ammo12G_1 : Ammo12G replaces Shell
 		Stop;
 	}
 }
-Class Ammo12G_2 : Ammo12G replaces ShellBox
+Class Ammo12G_2 : Ammo12G
 {
 	mixin AmmoPickupMessage;
 	Default	{ Tag "$TAG_AMMO_12GA_BOX"; }
@@ -233,7 +234,7 @@ Class AmmoFuel : Ammo
 		Scale 1.0;
 	}
 }
-Class AmmoFuel_1 : AmmoFuel replaces CellPack
+Class AmmoFuel_1 : AmmoFuel
 {
 	mixin AmmoPickupMessage;
 	Override Void PostBeginPlay()
@@ -277,7 +278,7 @@ Class AmmoRifleGrenade : Ammo
 	}
 }
 
-Class AmmoPouches : BackpackItem replaces BackPack
+Class AmmoPouches : BackpackItem
 {
 	Default	{ Inventory.PickupMessage "$PICKUP_AMMO_POUCHES"; }
 	States
@@ -288,7 +289,7 @@ Class AmmoPouches : BackpackItem replaces BackPack
 	}
 }
 
-Class RocketAmmoReplacer : Actor replaces RocketAmmo
+Class RocketAmmoReplacer : Actor
 {
 	Override Void PostBeginPlay()
 	{
@@ -300,7 +301,7 @@ Class RocketAmmoReplacer : Actor replaces RocketAmmo
 		}
 	}
 }
-Class RocketBoxReplacer : Actor replaces RocketBox
+Class RocketBoxReplacer : Actor
 {
 	Override Void PostBeginPlay()
 	{
