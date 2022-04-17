@@ -2,6 +2,13 @@ AddOptionMenu "OptionsMenu"
 {
 	StaticText "Ac!d's WW2", Gold
 	StaticText ""
-	//Option "Trench Gun Slam Fire",	"Acid_TrenchGun",	"YesNo"
+	Option "Silencer sounds",		"Acid_Silencer",		"Silencer"
 	Slider "Shell Casing Lifetime", "casinglifetime", 35, 350, 35
+}
+
+OptionValue "Silencer"
+{
+	0, "RtCW"
+	1, "Grisbi or not Grisbi ?"
+	2, "Dr_Cosmobyte edit"
 }
