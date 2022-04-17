@@ -7,6 +7,7 @@ Version "4.6.1"
 #Include "ZScript/Items/Ammo.txt"
 
 #Include "ZScript/BaseStatusBar.txt"
+//#Include "ZScript/EventHandler.txt"
 
 #Include "ZScript/Weapons/Knife.txt" // Combat Knife
 #Include "ZScript/Weapons/Luger.txt" // Luger P08
@@ -19,6 +20,7 @@ Version "4.6.1"
 #Include "ZScript/Weapons/Kar98k.txt" // Karabiner 98 kurz
 #Include "ZScript/Weapons/Flammenwerfer.txt" // Flammenwerfer
 #Include "ZScript/Weapons/VenomGun.txt" // Venom Gun
+//#Include "ZScript/Weapons/Throwables.txt" // Explosives and booby traps.
 
 Class ChainsawSpawner : RandomSpawner replaces Chainsaw
 {
