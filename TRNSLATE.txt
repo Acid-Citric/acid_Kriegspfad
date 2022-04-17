@@ -1,0 +1,2 @@
+// Monsters Killed by Flamethrower - by Jekyll Grim Payne
+Scorched = "0:255=%[0.00,0.00,0.00]:[0.33,0.33,0.33]"
