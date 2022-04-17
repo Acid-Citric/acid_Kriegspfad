@@ -1,12 +1,27 @@
 [enu default]
 
+TAG_AMMO_9MM_PMAG = "9 x 19 mm Parabellum Pistol Magazine";
 TAG_AMMO_9MM_BOX = "9 x 19 mm Parabellum Ammo Box";
-TAG_AMMO_12GA = "12 GA Brass Shells";
+TAG_AMMO_12GA = "12 GA Brass Shell";
 TAG_AMMO_12GA_BOX = "12 GA Brass Shell Box";
-TAG_AMMO_792M = "7,92 x 57 mm Mauser rounds";
+TAG_AMMO_792M = "7,92 x 57 mm Mauser Round";
 TAG_AMMO_792M_BOX = "7,92 x 57 mm Mauser Ammo Box";
-TAG_AMMO_93M_BOX = "9,3 x 62 mm Mauser Ammo Box";
+TAG_AMMO_127M_BOX = "12,7 mm Ammo Box";
 TAG_AMMO_FUEL = "Fuel";
 TAG_AMMO_RIFLEGRENADE = "Rifle Grenade";
+TAG_AMMO_TNT = "Bundle of TNT";
+TAG_AMMO_GRANATE = "Model 24 Stielhandgranate";
 
 PICKUP_AMMO_POUCHES = "Picked up some ammo pouches.";
+
+TAG_WEAPON_KNIFE = "Combat Knife";
+TAG_WEAPON_LUGERP08 = "Luger P08";
+TAG_WEAPON_WALTHERP38 = "Walther P38";
+TAG_WEAPON_WINCHESTERM1897 = "M1897 Trench Gun";
+TAG_WEAPON_BROWINGAUTO5 = "Browning Auto-5";
+TAG_WEAPON_MP401 = "Maschinenpistole 40/1";
+TAG_WEAPON_STENMK2 = "STEN Mk II";
+TAG_WEAPON_GEWEHR43 = "Gewehr 43";
+TAG_WEAPON_KAR98K = "Karabiner 98 kurz";
+TAG_WEAPON_FLAMMENWERFER = "Flammenwerfer";
+TAG_WEAPON_VENOMGUN = "GP-VG MK1 Venom Gun";
