@@ -3,12 +3,12 @@
 It holds up to three gulps of wine, each one worth 25 health points.
 */
 
-Class Small_HealthPack : Health replaces HealthBonus
+Class Small_HealthPack : Health
 {
 	Default
 	{
 		-INVENTORY.ALWAYSPICKUP
-		Inventory.MaxAmount 999;		
+		Inventory.MaxAmount 999;
 		Inventory.PickupMessage "$GOTHTHBONUS";
 		Inventory.PickupSound "misc/health_pkup";
 	}
@@ -30,9 +30,8 @@ Class Small_HealthPack : Health replaces HealthBonus
 		Stop;
 	}
 }
-Class Small_HealthPack_2 : Small_HealthPack replaces ArmorBonus {}
 
-Class Medium_HealthPack : Health replaces Stimpack
+Class Medium_HealthPack : Health
 {
 	Default
 	{
@@ -58,7 +57,7 @@ Class Medium_HealthPack : Health replaces Stimpack
 	}
 }
 
-Class Large_HealthPack : Health replaces Medikit
+Class Large_HealthPack : Health
 {
 	Default
 	{
