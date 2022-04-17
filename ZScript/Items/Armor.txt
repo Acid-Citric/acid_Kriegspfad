@@ -1,4 +1,4 @@
-Class ArmoredHelmet : BasicArmorBonus replaces GreenArmor
+Class ArmoredHelmet : BasicArmorBonus
 {
 	Default
 	{
@@ -8,7 +8,7 @@ Class ArmoredHelmet : BasicArmorBonus replaces GreenArmor
 		Armor.SaveAmount 25;
 		Armor.MaxSaveAmount 100;
 		Armor.SavePercent 66.665;
-		//Armor.MaxFullAbsorb 50;
+		Armor.MaxFullAbsorb 50;
 	}
 	States
 	{
@@ -18,7 +18,7 @@ Class ArmoredHelmet : BasicArmorBonus replaces GreenArmor
 	}
 }
 
-Class FlakJacket : BasicArmorBonus replaces BlueArmor
+Class FlakJacket : BasicArmorBonus
 {
 	Default
 	{
@@ -28,7 +28,7 @@ Class FlakJacket : BasicArmorBonus replaces BlueArmor
 		Armor.SaveAmount 75;
 		Armor.MaxSaveAmount 100;
 		Armor.SavePercent 66.665;
-		//Armor.MaxFullAbsorb 50;
+		Armor.MaxFullAbsorb 50;
 	}
 	States
 	{
