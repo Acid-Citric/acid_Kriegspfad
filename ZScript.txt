@@ -8,7 +8,7 @@ Version "4.6.1"
 #Include "ZScript/Items/Powerups.txt"
 
 #Include "ZScript/BaseStatusBar.txt"
-//#Include "ZScript/EventHandler.txt"
+#Include "ZScript/EventHandler.txt"
 
 #Include "ZScript/Weapons/Weapon.txt"
 #Include "ZScript/Weapons/Knife.txt" // Combat Knife
@@ -22,4 +22,4 @@ Version "4.6.1"
 #Include "ZScript/Weapons/Kar98k.txt" // Karabiner 98 kurz
 #Include "ZScript/Weapons/Flammenwerfer.txt" // Flammenwerfer
 #Include "ZScript/Weapons/VenomGun.txt" // Venom Gun
-//#Include "ZScript/Weapons/Throwables.txt" // Explosives and booby traps.
+#Include "ZScript/Weapons/Throwables.txt" // Explosives and booby traps.
