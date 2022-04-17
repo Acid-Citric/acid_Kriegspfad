@@ -1,5 +1,6 @@
 GameInfo
 {
 	PlayerClasses = "WW2Player"
-	StatusBarClass = "WW2StatusBar"	
+	//AddEventHandlers = "WW2Handler"
+    StatusBarClass = "WW2StatusBar"
 }
