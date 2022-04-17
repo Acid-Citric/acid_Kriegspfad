@@ -1,19 +1,82 @@
 // knife
 
-luger/fire			Sounds/Weapons/luger/lugerf1.wav
-luger/reload		Sounds/Weapons/luger/luger_reload.wav
 
-P38/fire			Sounds/Weapons/p38/fire_luger_plyr_blnc2.wav
 P38/fire_silenced	Sounds/Weapons/p38/silencerf1.wav
 P38/silencer		Sounds/Weapons/p38/silencerremove.wav
 
-mp40/fire			Sounds/Weapons/mp40/fire_mp40_y7.wav
+P38/fire_silenced_3	Sounds/PE2_Silencer.ogg
+
+silencer_1			Sounds/Acid/silenced_1.ogg
+silencer_2			Sounds/Acid/silenced_2.ogg
+silencer_3			Sounds/Acid/silenced_3.ogg
+$random P38/fire_silenced_2		{ silencer_1 silencer_1 silencer_2 silencer_3 silencer_3 silencer_3 }
+
+/*mp40/fire			Sounds/Weapons/mp40/fire_mp40_y7.wav
 mp40/reload			Sounds/Weapons/mp40/mp40_reload.wav
 
 g43/fire			Sounds/Weapons/g43/fire_g43_plyr_blnc2.wav
 
 kar98/fire			Sounds/Weapons/kar98/fire_k98_1b.wav
-kar98/rechamber		Sounds/Weapons/kar98/kar98_rechamber.wav
+kar98/rechamber		Sounds/Weapons/kar98/kar98_rechamber.wav*/
 
-trenchgun/fire		Sounds/Weapons/trenchgun/fire_shotgun1.wav
-trenchgun/pump		Sounds/Weapons/trenchgun/mrk_12ga_shotgun_pump1.wav
+shotgun/fire		Sounds/Weapons/trenchgun/fire_shotgun1.wav
+shotgun/pump		Sounds/Weapons/trenchgun/mrk_12ga_shotgun_pump1.wav
+
+
+//Luger P-08
+luger/fire		lugrfire
+luger/reload	lugrload
+luger/select	pstlsel
+
+//Walther P-38
+walther/fire	waltfir
+walther/reload	loadp38
+walther/select	pstlsel
+
+//M1897 Trenchgun
+//shotgun/fire	SHOTFIRE
+shotgun/load	SHOTLOAD
+//shotgun/pump	SHOTPUMP
+shotgun/select	shotsel
+
+//Browning Auto-5
+browning/fire	ba5fire
+browning/load	ba5load
+browning/cock	ba5cock
+browning/select	shotsel
+
+//MP-40
+mp40/fire 	mp40fire
+mp40/reload	loadmp40
+mp40/select	mp44sel
+
+//Sten MkII
+sten/fire	STENFIRE
+sten/reload	STENLOAD
+sten/select smgsel
+
+//Karabiner 98k
+mauser/fire		DSMAUS
+mauser/cock		DSMCLACK
+mauser/open		DSPOP
+mauser/insert	DSINSERT
+mauser/shut		DSCLACK
+mauser/select	riflesel
+mauser/scope	KSCOPE1
+
+//Gewehr 43
+g43/fire	m1fire
+g43/reload	loadg43
+g43/select	riflesel
+
+//Pyrolight
+flamer/fire		dsfthrow
+flamer/select	hwpnsel
+
+//UMG43
+chaingun/fire	dscgun
+chaingun/start	chaingo
+chaingun/loop	chainlp
+chaingun/stop	chainstp
+chaingun/get	p_cgun
+chaingun/select	hwpnsel
