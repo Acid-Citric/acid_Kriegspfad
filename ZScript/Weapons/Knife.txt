@@ -1,0 +1,32 @@
+Class Knife : AxisWeapon
+{
+	Default
+	{
+		Weapon.SelectionOrder 3700;
+		+WEAPON.MELEEWEAPON
+		+INVENTORY.UNDROPPABLE
+		Inventory.PickupMessage "You got the Knife!";
+		Tag "$TAG_WEAPON_KNIFE";
+	}
+	States
+	{
+	Spawn:
+		WP0P A -1;
+		Stop;
+	Select:
+		WP0G A 1 A_Raise(30);
+		Loop;
+	Ready:
+		WP0G A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		Loop;
+	Deselect:
+		WP0G A 1 A_Lower(30);
+		Loop;
+
+	Fire:
+		WP0G BBCCDD 1;
+		#### EE 1 A_Punch;
+		#### FF 1;
+		Goto Ready;
+	}
+}

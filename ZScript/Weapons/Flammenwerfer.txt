@@ -1,0 +1,132 @@
+Class Flammenwerfer : AxisWeapon replaces PlasmaRifle
+{
+	Int counter;
+	Default
+	{
+		Weapon.SelectionOrder 100;
+
+		Weapon.AmmoType "AmmoFuel";
+		Inventory.PickupMessage "You got the Flammenwerfer!";
+		+WEAPON.AMMO_OPTIONAL
+		Tag "$TAG_WEAPON_FLAMMENWERFER";
+		Weapon.UpSound "flamer/select";
+	}
+   	Override Bool TryPickup(in out Actor toucher)
+    {
+		If(toucher)
+		{
+			Let weap = toucher.FindInventory("Flammenwerfer");
+			If(!weap) { Self.AmmoGive1 = random(50,150); }
+			Else { Self.AmmoGive1 = random(50,150); }
+		}
+			Return Super.TryPickup(toucher);
+	}
+	States
+	{
+	Spawn:
+		WP6P A -1;
+		Stop;
+	Select:
+		WP6H A 1 A_Raise(30);
+		Loop;
+	Ready:
+		//TNT1 A 0 A_JumpIf(WaterLevel >= 2, "Empty");
+		TNT1 A 0 A_JumpIf(!CountInv("AmmoFuel"), "Empty");
+	ReadyLoop:
+		//TNT1 A 0 A_JumpIf(WaterLevel >= 2, "Empty");
+		WP6H ABCD 2 BRIGHT A_JumpIf(!CountInv("AmmoFuel"), "Empty");
+		//TNT1 A 0 A_JumpIf(WaterLevel >= 2, "Empty");
+		WP6G ABCD 2 BRIGHT
+		{
+			A_WeaponReady();
+			return A_JumpIf(!CountInv("AmmoFuel"), "Empty");
+		}
+		Goto ReadyLoop+5; //6
+	Empty:
+		//TNT1 A 0 A_JumpIf(WaterLevel < 2, "ReadyLoop");
+		TNT1 A 0 A_JumpIf(CountInv("AmmoFuel"), "ReadyLoop");
+		WP6H A 1 BRIGHT A_WeaponReady(WRF_NOFIRE);
+		Loop;
+
+	Deselect:
+		WP6H A 1 A_Lower(30);
+		Loop;
+
+	Fire:
+		WP6F A 0 A_JumpIfInventory("AmmoFuel", 1, 1);
+		Goto Empty;
+		#### B 1 BRIGHT
+		{
+			A_GunFlash();
+			A_AlertMonsters();
+
+			A_FireProjectile("FlammenwerferFire", 0, False, 0, 5, 0, FRandom(3, 4));
+			A_FireProjectile("FlammenwerferFireFake",0, False, 0, 5, 0, FRandom(3, 4));
+			A_FireProjectile("FlammenwerferFireFake",0, False, 0, 5, 0, FRandom(3, 4));
+			A_FireProjectile("FlammenwerferFireFake",0, False, 0, 5, 0, FRandom(3, 4));
+
+			A_WeaponOffset(random(1,2),random(33,34),WOF_INTERPOLATE);
+			
+			If(Invoker.counter == 5) { Invoker.counter = 0; A_TakeInventory("AmmoFuel", 1, TIF_NOTAKEINFINITE); }
+			Else { Invoker.counter++; }
+		}
+		#### A 0 A_ReFire();
+		#### B 3 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		Goto ReadyLoop;
+	Flash:
+		TNT1 A 1 BRIGHT A_Light2;
+		TNT1 A 1 BRIGHT A_Light1;
+		Goto LightDone;
+	}
+}
+
+Class FlammenwerferFire : Actor
+{
+	Default
+	{
+		SeeSound "flamer/fire";
+		Radius 2;
+		Height 4;
+		Speed 25;
+		DamageFunction (random(1,2)*10);
+		PROJECTILE;
+		RenderStyle "Add";
+		DamageType "Fire";
+		Scale 0.275;
+		+BLOODLESSIMPACT
+		+NODAMAGETHRUST
+		+STRIFEDAMAGE
+		+DONTSPLASH
+		+CANBOUNCEWATER
+		+FORCEXYBILLBOARD
+		-NOGRAVITY
+		Gravity 0.1;
+		BounceType "Doom";
+		BounceFactor 0.2;
+		WallBounceFactor 0.1;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0;
+		TNT1 A 0 { bPAINLESS = random(0,1); }
+		DB55 DEFGHIJKLMN 1 Bright A_SetScale(Scale.X*1.075,Scale.Y*1.075);
+		TNT1 AAAAAAAAAAAA 0 A_ChangeVelocity(0,0,0.25,CVF_RELATIVE);
+		DB55 OPQRSTUVWXYZ 1 bright A_FadeOut(0.075);
+		Stop;
+	Death:
+		TNT1 A 0 A_SetScale(Scale.X*1.075,Scale.Y*1.075);
+		TNT1 A 0 A_ChangeVelocity(0,0,0.25,CVF_REPLACE);
+		DB56 ABCDEFGHIJK 1 bright A_FadeOut(0.075);
+		Wait;
+	}
+}
+Class FlammenwerferFireFake : FlammenwerferFire
+{
+	Default
+	{
+		DamageFunction 0;
+		+PAINLESS
+		+NOTRIGGER
+	}
+}

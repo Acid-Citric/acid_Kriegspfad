@@ -1,0 +1,49 @@
+/*
+Class Dynamite_Weapon : AxisWeapon
+{
+	Int counter;
+	Default
+	{
+		Tag "TAG_AMMO_DYNAMITE";
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0;
+		Stop;
+	Select:
+		TNT1 A 1 A_Raise(int.max);
+		Loop;
+	Ready:
+		TNT1 A 1 A_WeaponReady();
+		Loop;
+	Deselect:
+		TNT1 A 1 A_Lower(int.max);
+		Loop;
+	}
+}
+
+Class Stielhandgranate_Weapon : AxisWeapon
+{
+	Bool biggranate;
+	Default
+	{
+		Tag "TAG_AMMO_GRANATE";
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0;
+		Stop;
+	Select:
+		TNT1 A 1 A_Raise(int.max);
+		Loop;
+	Ready:
+		TNT1 A 1 A_WeaponReady();
+		Loop;
+	Deselect:
+		TNT1 A 1 A_Lower(int.max);
+		Loop;
+	}
+}
+*/
