@@ -14,7 +14,7 @@ Class Kar98k : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("Kar98kLoaded", random(0,5));
+		other.A_GiveInventory("Kar98kLoaded", random(1,5));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
