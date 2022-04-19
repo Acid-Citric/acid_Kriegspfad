@@ -1,4 +1,4 @@
-Class Flammenwerfer : AxisWeapon replaces PlasmaRifle
+Class Flammenwerfer : AxisWeapon
 {
 	Int counter;
 	Default
