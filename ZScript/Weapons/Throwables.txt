@@ -1,10 +1,28 @@
-/*
+
 Class Dynamite_Weapon : AxisWeapon
 {
 	Int counter;
+	Bool start;	
 	Default
 	{
-		Tag "TAG_AMMO_DYNAMITE";
+		Weapon.AmmoType "AmmoTNT";
+		+WEAPON.AMMO_OPTIONAL
+		Tag "$TAG_AMMO_TNT";
+	}
+	Override Void PostBeginPlay()
+	{
+		counter = 5;
+		Super.PostBeginPlay();
+	}
+	Override Void DoEffect()
+	{
+		if(start && Owner)
+		{
+			if(counter > 0 && CountInv("AmmoTNT") > 0)
+			{
+				Owner.A_Print("seconds before explosion : "..counter, 1);
+			}
+		}
 	}
 	States
 	{
@@ -12,23 +30,157 @@ Class Dynamite_Weapon : AxisWeapon
 		TNT1 A 0;
 		Stop;
 	Select:
-		TNT1 A 1 A_Raise(int.max);
+		WP0G A 0 { invoker.start = True; }
+		WP0G A 1 A_Raise(30);
 		Loop;
 	Ready:
-		TNT1 A 1 A_WeaponReady();
+		WP0G A 0 A_JumpIf(!CountInv("AmmoTNT"), "Empty");
+		WP0G A 1 A_WeaponReady();
 		Loop;
+	Empty:
+		WP0G A 0 A_JumpIf(CountInv("AmmoTNT"), "Ready");
+		WP0G A 1 BRIGHT A_WeaponReady(WRF_NOFIRE);
+		Loop;	
 	Deselect:
-		TNT1 A 1 A_Lower(int.max);
+		WP0G A 0 { invoker.start = False; }
+		WP0G A 1 A_Lower(30);
 		Loop;
+	
+	Fire:
+		WP0G A 10 
+		{
+			If(Invoker.counter == 45) { A_FireProjectile("Dynamite_Thrown_45",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 40) { A_FireProjectile("Dynamite_Thrown_40",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 35) { A_FireProjectile("Dynamite_Thrown_35",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 30) { A_FireProjectile("Dynamite_Thrown_30",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 25) { A_FireProjectile("Dynamite_Thrown_25",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 20) { A_FireProjectile("Dynamite_Thrown_20",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 15) { A_FireProjectile("Dynamite_Thrown_15",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 10) { A_FireProjectile("Dynamite_Thrown_10",0,True,0,0,FPF_NOAUTOAIM); }
+			Else If(Invoker.counter == 5) { A_FireProjectile("Dynamite_Thrown_5",0,True,0,0,FPF_NOAUTOAIM); }
+			
+			A_TakeInventory("AmmoTNT",1);
+		}
+		Goto Ready;
+	AltFire:
+		WP0G A 10
+		{			
+			If(Invoker.counter == 45) { Invoker.counter = 5; }
+			Else { Invoker.counter += 5; }
+		}
+		WP0G A 0;
+		Goto Ready;
 	}
 }
 
-Class Stielhandgranate_Weapon : AxisWeapon
+Class Dynamite_Thrown : Actor
 {
-	Bool biggranate;
 	Default
 	{
-		Tag "TAG_AMMO_GRANATE";
+		Radius 12;
+		Height 12;
+
+		PROJECTILE;
+		Height 10;
+		Radius 10;
+		Speed 5;
+		BounceType "Doom";
+		BounceFactor 0.5;
+		WallBounceFactor 0.2;
+		-NOGRAVITY
+		-NOBLOCKMAP
+		+BOUNCEONACTORS
+		+FORCEXYBILLBOARD
+	}
+	States
+	{
+	Spawn:
+		TNT_ A 1;
+		Loop;
+	Death:
+		TNT_ A 1 BRIGHT
+		{
+			if (self is "Dynamite_Thrown_5") A_SpawnItemEx("Dynamite_Proj_5");
+			else if (self is "Dynamite_Thrown_10") A_SpawnItemEx("Dynamite_Proj_10");
+			else if (self is "Dynamite_Thrown_15") A_SpawnItemEx("Dynamite_Proj_15");
+			else if (self is "Dynamite_Thrown_20") A_SpawnItemEx("Dynamite_Proj_20");
+			else if (self is "Dynamite_Thrown_25") A_SpawnItemEx("Dynamite_Proj_25");
+			else if (self is "Dynamite_Thrown_30") A_SpawnItemEx("Dynamite_Proj_30");
+			else if (self is "Dynamite_Thrown_35") A_SpawnItemEx("Dynamite_Proj_35");
+			else if (self is "Dynamite_Thrown_40") A_SpawnItemEx("Dynamite_Proj_40");
+			else if (self is "Dynamite_Thrown_45") A_SpawnItemEx("Dynamite_Proj_45");
+			return ResolveState(null);
+		}
+		Stop;
+	}
+}
+
+Class Dynamite_Thrown_5 : Dynamite_Thrown {}
+Class Dynamite_Thrown_10 : Dynamite_Thrown {}
+Class Dynamite_Thrown_15 : Dynamite_Thrown {}
+Class Dynamite_Thrown_20 : Dynamite_Thrown {}
+Class Dynamite_Thrown_25 : Dynamite_Thrown {}
+Class Dynamite_Thrown_30 : Dynamite_Thrown {}
+Class Dynamite_Thrown_35 : Dynamite_Thrown {}
+Class Dynamite_Thrown_40 : Dynamite_Thrown {}
+Class Dynamite_Thrown_45 : Dynamite_Thrown {}
+
+Class Dynamite_Proj : Actor
+{
+	Int timer;
+	Default
+	{
+		Health 10;
+		+SHOOTABLE
+		+SOLID
+		+NOBLOOD
+		+DONTGIB
+		+NOICEDEATH
+		+NOTAUTOAIMED
+		+DONTTHRUST
+		+FORCEXYBILLBOARD
+		DamageFactor "Normal", 2.0;
+		DamageFactor "Fire", 2.0;
+		DeathSound "weapons/rocklx";
+	}
+	Override Void Tick()
+	{
+		Super.Tick();
+		If(timer == 0) { SetStateLabel("Explode"); }
+		timer--;
+	}
+	States
+	{
+	Spawn:
+		TNT_ A 1;
+		Loop;
+	Explode:
+	Death:
+		TNT1 A 0 A_SpawnItemEx("gta2_expl_shockwave", 0, 0, 20);
+		TNT1 AA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion", 0, 0, 20); }
+		Stop;
+	}
+}
+
+Class Dynamite_Proj_5 : Dynamite_Proj {	Override Void PostBeginPlay() { timer = 175; Super.PostBeginPlay();	} }
+Class Dynamite_Proj_10 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 350; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_15 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 525; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_20 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 700; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_25 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 875; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_30 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 1050; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_35 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 1225; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_40 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 1400; Super.PostBeginPlay(); } }
+Class Dynamite_Proj_45 : Dynamite_Proj { Override Void PostBeginPlay() { timer = 1575; Super.PostBeginPlay(); } }
+
+
+Class Granate_Weapon : AxisWeapon
+{
+	Bool wmod;
+	Default
+	{
+		Weapon.AmmoType "AmmoGranate";
+		+WEAPON.AMMO_OPTIONAL
+		Tag "$TAG_AMMO_GRANATE";
 	}
 	States
 	{
@@ -36,14 +188,113 @@ Class Stielhandgranate_Weapon : AxisWeapon
 		TNT1 A 0;
 		Stop;
 	Select:
-		TNT1 A 1 A_Raise(int.max);
+		WP0G A 1 A_Raise(30);
 		Loop;
 	Ready:
-		TNT1 A 1 A_WeaponReady();
+		WP0G A 0 A_JumpIf(!CountInv("AmmoGranate"), "Empty");
+		WP0G A 1 A_WeaponReady();
 		Loop;
+	Empty:
+		WP0G A 0 A_JumpIf(CountInv("AmmoGranate"), "Ready");
+		WP0G A 1 BRIGHT A_WeaponReady(WRF_NOFIRE);
+		Loop;	
 	Deselect:
-		TNT1 A 1 A_Lower(int.max);
+		WP0G A 1 A_Lower(30);
+		Loop;
+	Fire:
+		WP0G A 0 A_JumpIf(Invoker.wmod == True, 3);
+		WP0G A 0 A_JumpIf(CountInv("AmmoGranate") >= 1, 1);
+		Goto Empty;
+		WP0G A 9
+		{
+			A_FireProjectile("Granate_Thrown_A",0,False,0,0,FPF_NOAUTOAIM);
+			A_TakeInventory("AmmoGranate",1);
+		}
+		WP0G A 0 A_JumpIf(CountInv("AmmoGranate") >= 1, 1);
+		Goto Empty;
+		WP0G A 1;
+		Goto Ready;
+		WP0G A 0 A_JumpIf(CountInv("AmmoGranate") >= 5, 1);
+		Goto Empty;
+		WP0G A 9	
+		{
+			A_FireProjectile("Granate_Thrown_B",0,False,0,0,FPF_NOAUTOAIM);
+			A_TakeInventory("AmmoGranate",5);
+		}
+		WP0G A 0 A_JumpIf(CountInv("AmmoGranate") >= 5, 1);
+		Goto Empty;
+		WP0G A 1;
+		Goto Ready;
+	AltFire:
+		WP0G A 25
+		{
+			If(Invoker.wmod == True) { Invoker.wmod = False; A_Log("Big Grenade OFF"); }
+			Else { Invoker.wmod = True; A_Log("Big Grenade ON"); }
+		}
+		WP0G A 10;
+		Goto Ready;
+	}
+}
+
+Class Granate_Thrown_A : Actor
+{
+	Int timer;
+	Default
+	{
+		+ROLLSPRITE
+		+ROLLCENTER
+		+FORCEXYBILLBOARD
+
+		Radius 4;
+		Height 3;
+		Speed 40;
+		Damage (1);
+		PROJECTILE;
+		-NOGRAVITY
+		-NOTELEPORT
+		+CANBOUNCEWATER
+		Obituary "%o failed to field %k's fragmenting fastball.";
+		BounceType "Doom";
+		BounceFactor 0.2;
+		WallBounceFactor 0.6;
+		BounceSound "grenade/bounce";
+	}
+	Override Void Tick()
+	{
+		Super.Tick();
+		If(timer == 70) { SetStateLabel("Explode"); }
+		timer++;
+	}
+	Override Void PostBeginPlay() { bSPRITEFLIP = random(0,1); Super.PostBeginPlay(); }
+	States
+	{
+	Spawn:
+		SHG_ X 1 A_SetRoll(Roll + 45.0, SPF_INTERPOLATE);
+		Loop;
+	Death:
+		SHG_ X 0 A_SetRoll(Roll = 0);
+	DeathLoop:
+		SHG_ X 1 A_SetRoll(Roll = 90);
+		Loop;
+	Explode:
+		TNT1 A 0 A_StartSound("weapons/rocklx"); 
+		TNT1 A 0 A_SpawnItemEx("gta2_expl_shockwave", 0, 0, 20);
+		TNT1 AA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion", 0, 0, 20); }
+		Stop;
+	}
+}
+
+Class Granate_Thrown_B : Granate_Thrown_A
+{
+	States
+	{
+	Spawn:
+		SHG_ Y 1 A_SetRoll(Roll + 45.0, SPF_INTERPOLATE);
+		Loop;
+	Death:
+		SHG_ X 0 A_SetRoll(Roll = 0);
+	DeathLoop:
+		SHG_ Y 1 A_SetRoll(Roll = 90);
 		Loop;
 	}
 }
-*/
