@@ -14,7 +14,7 @@ Class Luger : AxisWeapon replaces Pistol
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("LugerLoaded", random(0,8));
+		other.A_GiveInventory("LugerLoaded", random(1,8));
 	}
    	Override Bool TryPickup(in out Actor toucher)  
     {
