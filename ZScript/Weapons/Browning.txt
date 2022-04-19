@@ -16,7 +16,7 @@ Class BA5 : AxisWeapon replaces SuperShotgun
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("BA5Loaded", random(0,5));
+		other.A_GiveInventory("BA5Loaded", random(1,5));
 	}
    	Override Bool TryPickup(in out Actor toucher)  
     {
@@ -24,8 +24,8 @@ Class BA5 : AxisWeapon replaces SuperShotgun
 		{
 			Let weap = toucher.FindInventory("BA5");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED) { Self.AmmoGive2 = random(1,5); }
-			Else { Self.AmmoGive2 = random(1,5); }
+			Else If(bTOSSED) { Self.AmmoGive2 = random(1,3); }
+			Else { Self.AmmoGive2 = random(1,3); }
 		}
 			Return Super.TryPickup(toucher);
 	}
