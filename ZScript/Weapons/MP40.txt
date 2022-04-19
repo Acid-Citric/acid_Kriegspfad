@@ -16,7 +16,7 @@ Class MP40 : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("MP40Loaded", random(0,64));
+		other.A_GiveInventory("MP40Loaded", random(1,64));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
