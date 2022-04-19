@@ -1,4 +1,4 @@
-Class BA5 : AxisWeapon replaces SuperShotgun
+Class BA5 : AxisWeapon
 {
 	Bool shotgunreload, shotgunempty, shotgunlower;
 	Default
