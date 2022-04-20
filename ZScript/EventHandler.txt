@@ -33,7 +33,11 @@ Class WW2Handler : EventHandler
 		Else If (cls == 'PlasmaRifle')								e.Replacement = "Flammenwerfer";
 		Else If (cls == 'BFG9000')									e.Replacement = "VenomGun";
 
-		Else If ((cls == 'HealthBonus') || (cls == 'ArmorBonus'))	e.Replacement = "Small_HealthPack";
+		Else If((cls == 'HealthBonus') || (cls == 'ArmorBonus'))
+		{
+			If(Random(0,1))	e.Replacement = "Small_HealthPack";
+			Else e.Replacement = 'Nothing';
+		}
 		Else If (cls == 'Stimpack')									e.Replacement = "Medium_HealthPack";
 		Else If (cls == 'Medikit')									e.Replacement = "Large_HealthPack";
 
