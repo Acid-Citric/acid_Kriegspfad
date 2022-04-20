@@ -11,6 +11,8 @@ Version "4.6.1"
 #Include "ZScript/EventHandler.txt"
 
 #Include "ZScript/Weapons/Weapon.txt"
+#Include "ZScript/Weapons/Effects.txt"
+
 #Include "ZScript/Weapons/Knife.txt" // Combat Knife
 #Include "ZScript/Weapons/Luger.txt" // Luger P08
 #Include "ZScript/Weapons/Walther.txt" // Walther P38 // upgrade silenced
