@@ -14,7 +14,8 @@ Class G43 : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("G43Loaded", random(1,10));
+		If(bTOSSED) { other.A_GiveInventory("G43Loaded", random(1,5)); }
+		Else { other.A_GiveInventory("G43Loaded", random(1,10)); }
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
