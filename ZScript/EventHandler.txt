@@ -44,16 +44,16 @@ Class WW2Handler : EventHandler
 		Else If (cls == 'GreenArmor')								e.Replacement = "ArmoredHelmet";
 		Else If (cls == 'BlueArmor')								e.Replacement = "FlakJacket";	
 
-		Else If (cls == 'SoulSphere')								e.Replacement = "SuperCharge";
-		Else If (cls == 'MegaSphere')								e.Replacement = "Megasphere";
-		//Else If (cls == 'Berserk')								e.Replacement = "";
+		Else If(cls == 'SoulSphere')								e.Replacement = "SuperCharge";
+		Else If(cls == 'MegaSphere')								e.Replacement = "Megasphere";
+		Else If(cls == 'Berserk')									e.Replacement = "BerserkSphere";
 		
 		
-		// Else If (cls == "RadSuit")								e.Replacement = " ";
-		// Else If (cls == 'Infrared')								e.Replacement = " ";
-		// Else If (cls == 'AllMap')								e.Replacement = " ";
-		Else If (cls == 'InvulnerabilitySphere')					e.Replacement = "InvulnSphere";
-		Else If (cls == 'BlurSphere')								e.Replacement = "InvisSphere";
+		// Else If(cls == "RadSuit")								e.Replacement = " ";
+		// Else If(cls == 'Infrared')								e.Replacement = " ";
+		// Else If(cls == 'AllMap')									e.Replacement = " ";
+		Else If(cls == 'InvulnerabilitySphere')						e.Replacement = "InvulnSphere";
+		Else If(cls == 'BlurSphere')								e.Replacement = "InvisSphere";
 
 
 		Else If (cls == 'Clip')										e.Replacement = "Ammo9mm_1";
