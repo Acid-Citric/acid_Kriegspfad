@@ -14,7 +14,8 @@ Class STEN : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("STENLoaded", random(1,32));
+		If(bTOSSED) { other.A_GiveInventory("STENLoaded", random(1,16)); }
+		Else { other.A_GiveInventory("STENLoaded", random(1,32)); }
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
