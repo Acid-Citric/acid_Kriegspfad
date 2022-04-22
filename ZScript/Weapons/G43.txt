@@ -11,7 +11,7 @@ Class G43 : AxisWeapon
 		Tag "$TAG_WEAPON_GEWEHR43";
 		Weapon.UpSound "g43/select";
 	}
-	Override Void AttachToOwner(Actor other)
+	Override Void AttachToOwner(Actor oher)
 	{
 		Super.AttachToOwner(other);
 		If(bTOSSED) { other.A_GiveInventory("G43Loaded", random(1,5)); }
@@ -49,7 +49,7 @@ Class G43 : AxisWeapon
 		{
 			A_AlertMonsters();
 			If(Invoker.RGrenade == False) { A_GunFlash(); A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2"); }
-			Else { A_FireProjectile("G43RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
+			Else { A_FireProjectile("RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
 			A_StartSound("g43/fire", CHAN_WEAPON);
 			A_TakeInventory("G43Loaded",1);
 			A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
@@ -142,7 +142,7 @@ Class G43Loaded : Ammo
 	}
 }
 
-Class G43RifleGrenade : Rocket
+Class RifleGrenade : Rocket
 {
 	Default
 	{
