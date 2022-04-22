@@ -59,7 +59,7 @@ Class Kar98k : AxisWeapon
 		{
 			A_AlertMonsters();
 			If(Invoker.RGrenade == False) { A_GunFlash(); A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2"); }
-			Else { A_FireProjectile("G43RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
+			Else { A_FireProjectile("RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
 			A_StartSound("mauser/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
 		}
@@ -102,7 +102,7 @@ Class Kar98k : AxisWeapon
 		{
 			A_AlertMonsters();
 			If(Invoker.RGrenade == False) { A_GunFlash(); A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2"); }
-			Else { A_FireProjectile("G43RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
+			Else { A_FireProjectile("RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
 			A_StartSound("mauser/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
 		}
