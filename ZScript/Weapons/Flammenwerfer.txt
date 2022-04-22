@@ -97,13 +97,9 @@ Class FlammenwerferFire : Actor
 		+NODAMAGETHRUST
 		+STRIFEDAMAGE
 		+DONTSPLASH
-		+CANBOUNCEWATER
 		+FORCEXYBILLBOARD
 		-NOGRAVITY
 		Gravity 0.1;
-		BounceType "Doom";
-		BounceFactor 0.2;
-		WallBounceFactor 0.1;
 	}
 	States
 	{
