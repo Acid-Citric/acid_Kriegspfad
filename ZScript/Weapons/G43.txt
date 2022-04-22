@@ -11,7 +11,7 @@ Class G43 : AxisWeapon
 		Tag "$TAG_WEAPON_GEWEHR43";
 		Weapon.UpSound "g43/select";
 	}
-	Override Void AttachToOwner(Actor oher)
+	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
 		If(bTOSSED) { other.A_GiveInventory("G43Loaded", random(1,5)); }
