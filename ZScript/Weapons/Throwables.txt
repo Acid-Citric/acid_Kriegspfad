@@ -140,7 +140,7 @@ Class Dynamite_Proj : Actor
 		+FORCEXYBILLBOARD
 		DamageFactor "Normal", 2.0;
 		DamageFactor "Fire", 2.0;
-		DeathSound "weapons/rocklx";
+		DeathSound "granate/explode";
 	}
 	Override Void Tick()
 	{
@@ -257,6 +257,7 @@ Class Granate_Thrown_A : Actor
 		BounceFactor 0.2;
 		WallBounceFactor 0.6;
 		BounceSound "grenade/bounce";
+		SeeSound "granate/throw";
 	}
 	Override Void Tick()
 	{
@@ -276,7 +277,7 @@ Class Granate_Thrown_A : Actor
 		SHG_ X 1 A_SetRoll(Roll = 90);
 		Loop;
 	Explode:
-		TNT1 A 0 A_StartSound("weapons/rocklx"); 
+		TNT1 A 0 A_StartSound("granate/explode");
 		TNT1 A 0 A_SpawnItemEx("gta2_expl_shockwave_2");
 		TNT1 AA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion_2"); }
 		Stop;
@@ -291,7 +292,7 @@ Class Granate_Thrown_B : Granate_Thrown_A
 		SHG_ Y 1 A_SetRoll(Roll + 45.0, SPF_INTERPOLATE);
 		Loop;
 	Death:
-		SHG_ X 0 A_SetRoll(Roll = 0);
+		SHG_ Y 0 A_SetRoll(Roll = 0);
 	DeathLoop:
 		SHG_ Y 1 A_SetRoll(Roll = 90);
 		Loop;
