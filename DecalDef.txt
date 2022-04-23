@@ -1,0 +1,14 @@
+Generator Knife					BulletChip
+Generator Luger					BulletChip
+Generator Walther				BulletChip
+Generator TrenchGun				BulletChip
+Generator BA5					BulletChip
+Generator MP40					BulletChip
+Generator STEN					BulletChip
+Generator G43					BulletChip
+Generator Kar98k				BulletChip
+Generator VenomGun				BulletChip
+
+Generator RifleGrenade			Scorch
+Generator FlammenwerferFire		Scorch
+Generator FlammenwerferFireFake	Scorch
