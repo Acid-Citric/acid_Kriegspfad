@@ -9,7 +9,7 @@ Class Small_HealthPack : Health
 	{
 		-INVENTORY.ALWAYSPICKUP
 		Inventory.MaxAmount 999;
-		Inventory.PickupMessage "$GOTHTHBONUS";
+		Inventory.PickupMessage "$PICKUP_HEALTH_S";
 		Inventory.PickupSound "misc/health_pkup";
 	}
 	Override Void PostBeginPlay()
@@ -17,7 +17,7 @@ Class Small_HealthPack : Health
 		Super.PostBeginPlay();
 
 		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
-		If(sk == 1 || sk == 5) { Amount = 10; }
+		If(sk == 1 || sk >= 5) { Amount = 10; }
 		Else { Amount = 5; }
 
 		SetState(ResolveState("Spawn")+Random[Small_HealthPack](1,4));
@@ -35,7 +35,7 @@ Class Medium_HealthPack : Health
 {
 	Default
 	{
-		Inventory.PickupMessage "$GOTHTHBONUS";
+		Inventory.PickupMessage "$PICKUP_HEALTH_M";
 		Inventory.PickupSound "misc/health_pkup";
 	}
 	Override Void PostBeginPlay()
@@ -43,10 +43,20 @@ Class Medium_HealthPack : Health
 		Super.PostBeginPlay();
 
 		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
-		If(sk == 1 || sk == 5) { Amount = 25; }
+		If(sk == 1 || sk >= 5) { Amount = 25; }
 		Else { Amount = 15; }
 
 		SetState(ResolveState("Spawn")+Random[Medium_HealthPack](1,2));
+	}
+	Override Bool Used(Actor User)
+	{
+		If(User && User.Player && User.Player.Health > 0 && GetCVar('Acid_Health') == True)
+		{
+			User.GiveBody(Amount, 999);
+			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
+			Destroy();
+		}
+		Return Super.Used(User);
 	}
 	States
 	{
@@ -61,7 +71,7 @@ Class Large_HealthPack : Health
 {
 	Default
 	{
-		Inventory.PickupMessage "$GOTHTHBONUS";
+		Inventory.PickupMessage "$PICKUP_HEALTH_L";
 		Inventory.PickupSound "misc/health_pkup";
 	}
 	Override Void PostBeginPlay()
@@ -69,10 +79,20 @@ Class Large_HealthPack : Health
 		Super.PostBeginPlay();
 
 		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
-		If(sk == 1 || sk == 5) { Amount = 50; }
+		If(sk == 1 || sk >= 5) { Amount = 50; }
 		Else { Amount = 25; }
 
 		SetState(ResolveState("Spawn")+Random[Large_HealthPack](1,4));
+	}
+	Override Bool Used(Actor User)
+	{
+		If(User && User.Player && User.Player.Health > 0 && GetCVar('Acid_Health') == True)
+		{
+			User.GiveBody(Amount, 999);
+			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
+			Destroy();
+		}
+		Return Super.Used(User);
 	}
 	States
 	{
