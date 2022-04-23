@@ -90,7 +90,7 @@ Class Walther : AxisWeapon
 		WP8U A 7 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 		Goto Ready;
 	Flash:
-		TNT1 A 1 BRIGHT A_Light1;
+		WP8F A 1 BRIGHT A_Light1;
 		Goto LightDone;	
 
 	AltFire:
