@@ -1,14 +1,24 @@
-Class ArmoredHelmet : BasicArmorBonus
+Class ArmoredHelmet : BasicArmorPickup
 {
 	Default
 	{
 		-INVENTORY.ALWAYSPICKUP
+		Radius 20;
+		Height 16;
 		Inventory.PickupMessage "Armored Helmet";
 		Inventory.Icon "HELMA0";
-		Armor.SaveAmount 25;
-		Armor.MaxSaveAmount 100;
 		Armor.SavePercent 66.665;
-		Armor.MaxFullAbsorb 50;
+		Armor.SaveAmount 25;
+		Armor.MaxFullAbsorb 5;
+	}
+	Override Bool Used(Actor User)
+	{
+		If(User && User.Player && Amount > 0)
+		{
+			User.A_GiveInventory("ArmoredHelmet_2");
+			Destroy();
+		}
+		Return Super.Used(User);
 	}
 	States
 	{
@@ -18,22 +28,54 @@ Class ArmoredHelmet : BasicArmorBonus
 	}
 }
 
-Class FlakJacket : BasicArmorBonus
+Class ArmoredHelmet_2 : BasicArmorBonus
+{
+	Default
+	{
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 25;
+		Armor.MaxSaveAmount 200;
+		Armor.MaxFullAbsorb 5;
+	}
+}
+
+Class FlakJacket : BasicArmorPickup
 {
 	Default
 	{
 		-INVENTORY.ALWAYSPICKUP
+		Radius 20;
+		Height 16;
 		Inventory.PickupMessage "Flak Jacket";
 		Inventory.Icon "VESTA0";
-		Armor.SaveAmount 75;
-		Armor.MaxSaveAmount 100;
 		Armor.SavePercent 66.665;
-		Armor.MaxFullAbsorb 50;
+		Armor.SaveAmount 75;
+		Armor.MaxFullAbsorb 25;
+	}
+	Override Bool Used(Actor User)
+	{
+		If(User && User.Player && User.Player.Health > 0)
+		{
+			User.A_GiveInventory("FlakJacket_2");
+			Destroy();
+		}
+		Return Super.Used(User);
 	}
 	States
 	{
 	Spawn:
 		VEST A -1;
 		Stop;
+	}
+}
+
+Class FlakJacket_2 : BasicArmorBonus
+{
+	Default
+	{
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 75;
+		Armor.MaxSaveAmount 200;
+		Armor.MaxFullAbsorb 25;
 	}
 }
