@@ -1,4 +1,4 @@
-class WW2Player : DoomPlayer
+Class WW2Player : DoomPlayer
 {
 	Default
 	{
@@ -6,8 +6,12 @@ class WW2Player : DoomPlayer
 		Player.CrouchSprite "PLYC";	
 		Player.StartItem "Luger";
 		Player.StartItem "Knife";
+		Player.StartItem "Granate_Weapon";
+		Player.StartItem "Dynamite_Weapon";
 		Player.StartItem "LugerLoaded", 8;
 		Player.StartItem "Ammo9mm", 40;
+		Player.StartItem "AmmoGranate", 2;
+		Player.StartItem "AmmoTNT", 1;
 		Player.WeaponSlot 1, "Knife";
 		Player.WeaponSlot 2, "Luger", "Walther";
 		Player.WeaponSlot 3, "TrenchGun", "BA5";
@@ -15,24 +19,32 @@ class WW2Player : DoomPlayer
 		Player.WeaponSlot 5, "G43", "Kar98k";
 		Player.WeaponSlot 6, "Flammenwerfer";
 		Player.WeaponSlot 7, "VenomGun";
+
+		Player.WeaponSlot 0, "Dynamite_Weapon", "Granate_Weapon";
 	}
 
-	Int QuakeMegaHealth;	
+	Int Ov; // OverHealth
 	Override Void Tick()
 	{
-		If(QuakeMegaHealth == 35) // Every 3 second on the level/hub.
+		If(Health > 0 && GetCVar('Acid_Health') == True)
 		{
-			If(Health <= 100) // If player's HP is 100 or below...
+			If(Health > 500 && Ov == 5 || Health > 250 && Ov == 10 || Health > 100 && Ov == 20)
 			{
-				QuakeMegaHealth = 0; // ... do nothing.
+				A_SetHealth(Health - 1);
+				Ov = 0;
 			}
-			Else
+			Else If(Health < 20 && Ov == 5 || Health < 40 && Ov == 5 || Health < 60 && Ov == 5 || Health < 80 && Ov == 5 || Health < 100 && Ov == 5)
 			{
-				A_SetHealth(Health - 1); // Else, remove 1 HP
-				QuakeMegaHealth = 0;
+				A_SetHealth(Health + 1);
+				Ov = 0;
+			}
+			Else If(Health == 20 || Health == 40 || Health == 60 || Health == 80 || Health == 100) // (Health <= MaxHealth) // GetMaxHealth()
+			{
+				Ov = 0; // ... do nothing.
 			}
 		}
-		QuakeMegaHealth++;
+		Ov++;
+
 		Super.Tick();
 	}
 
@@ -44,14 +56,10 @@ class WW2Player : DoomPlayer
 			CheatTake("armor", 1);
 			Super.CheatGive("FlakJacket", 1);
 		}
-		If(name ~== "all" || name ~== "backpack")
-		{
-			Super.CheatGive("AmmoPouches", 1);
-		}
 		If(name ~== "megasphere")
 		{
 			CheatTake("armor", 1);
-			Super.CheatGive("MegaSphere", 1);
-		}		
+			Super.CheatGive("MegaCharge", 1);
+		}
 	}
 }
