@@ -11,17 +11,11 @@ silencer_2			Sounds/Acid/silenced_2.ogg
 silencer_3			Sounds/Acid/silenced_3.ogg
 $random P38/fire_silenced_2		{ silencer_1 silencer_1 silencer_2 silencer_3 silencer_3 silencer_3 }
 
-/*mp40/fire			Sounds/Weapons/mp40/fire_mp40_y7.wav
-mp40/reload			Sounds/Weapons/mp40/mp40_reload.wav
 
-g43/fire			Sounds/Weapons/g43/fire_g43_plyr_blnc2.wav
 
-kar98/fire			Sounds/Weapons/kar98/fire_k98_1b.wav
-kar98/rechamber		Sounds/Weapons/kar98/kar98_rechamber.wav*/
 
-shotgun/fire		Sounds/Weapons/trenchgun/fire_shotgun1.wav
-shotgun/pump		Sounds/Weapons/trenchgun/mrk_12ga_shotgun_pump1.wav
-
+granate/throw		Sounds/granate/german_grenade_throw.wav
+granate/explode		Sounds/granate/mrk_grenade_3.wav
 
 //Luger P-08
 luger/fire		lugrfire
@@ -34,9 +28,9 @@ walther/reload	loadp38
 walther/select	pstlsel
 
 //M1897 Trenchgun
-//shotgun/fire	SHOTFIRE
+shotgun/fire		Sounds/Weapons/trenchgun/fire_shotgun1.wav
 shotgun/load	SHOTLOAD
-//shotgun/pump	SHOTPUMP
+shotgun/pump		Sounds/Weapons/trenchgun/mrk_12ga_shotgun_pump1.wav
 shotgun/select	shotsel
 
 //Browning Auto-5
