@@ -25,7 +25,7 @@ Class Knife : AxisWeapon
 
 	Fire:
 		WP0G BBCCDD 1;
-		#### EE 1 A_Punch;
+		#### EE 1 A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "imp/melee", "*grunt");
 		#### FF 1;
 		Goto Ready;
 	}
