@@ -1,3 +1,5 @@
+misc/secret			Sounds/SOS_Secret.ogg
+
 // knife
 
 
