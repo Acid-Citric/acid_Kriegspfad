@@ -1,7 +1,25 @@
-/*
-1938 Latour is a vintage wine bottle often found in wine stashes in secret areas in Return to Castle Wolfenstein.
-It holds up to three gulps of wine, each one worth 25 health points.
-*/
+Class Health_1938_Latour : HealthPickup
+{
+	Default
+	{
+		Health 25;
+		+INVENTORY.INVBAR
+		Inventory.Amount 3;
+		Inventory.MaxAmount 3;
+		Inventory.InterHubAmount 3;
+		Inventory.Icon "HEALK0";
+		Inventory.PickupSound "misc/p_pkup";
+		Inventory.PickupMessage "$TXT_ARTIHEALTH";
+		Tag "$TAG_ARTIHEALTH";
+		HealthPickup.AutoUse 1;
+	}
+	States
+	{
+	Spawn:
+		HEAL K -1;
+		Stop;
+	}
+}
 
 Class Small_HealthPack : Health
 {
