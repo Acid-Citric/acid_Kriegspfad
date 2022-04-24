@@ -140,7 +140,6 @@ Class Dynamite_Proj : Actor
 		+FORCEXYBILLBOARD
 		DamageFactor "Normal", 2.0;
 		DamageFactor "Fire", 2.0;
-		DeathSound "granate/explode";
 	}
 	Override Void Tick()
 	{
@@ -155,6 +154,7 @@ Class Dynamite_Proj : Actor
 		Loop;
 	Explode:
 	Death:
+		TNT1 A 0 A_StartSound("granate/explode");
 		TNT1 A 0 A_SpawnItemEx("gta2_expl_shockwave_3");
 		TNT1 AA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion_3"); }
 		Stop;
