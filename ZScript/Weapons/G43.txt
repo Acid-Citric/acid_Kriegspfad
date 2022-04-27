@@ -103,7 +103,7 @@ Class G43 : AxisWeapon
 				Else { Invoker.RGrenade = True; A_Log("Rifle Grenade ON"); }
 			}
 		}
-		TNT1 A 0 A_JumpIf(Invoker.wmod && Invoker.RGrenade, 3);
+		TNT1 A 0 A_JumpIf(Invoker.wmod && Invoker.RGrenade || Invoker.wmod, 3);
 	ReloadLoop:
 		TNT1 A 0
 		{
