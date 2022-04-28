@@ -1,3 +1,3 @@
 Server Int Acid_Silencer = 0;
-Server Bool Acid_Health = False;
+//Server Bool Acid_Health = False;
 Server Int casinglifetime = 35;
