@@ -25,8 +25,31 @@ Class Knife : AxisWeapon
 
 	Fire:
 		WP0G BBCCDD 1;
-		#### EE 1 A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "imp/melee", "*grunt");
-		#### FF 1;
+		#### E 1
+		{
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "", "");
+			A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		}
+		#### E 1
+		{
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "", "");
+			A_WeaponOffset(-5,37,WOF_INTERPOLATE);
+		}
+		#### E 1
+		{
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "", "");
+			A_WeaponOffset(-10,42,WOF_INTERPOLATE);
+		}
+		#### E 1
+		{
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "", "");
+			A_WeaponOffset(-15,47,WOF_INTERPOLATE);
+		}
+		#### F 1 A_WeaponOffset(-20,52,WOF_INTERPOLATE);
+		#### F 1 A_WeaponOffset(-25,57,WOF_INTERPOLATE);
+		#### F 1 A_WeaponOffset(-30,62,WOF_INTERPOLATE);
+		#### F 1 A_WeaponOffset(-35,67,WOF_INTERPOLATE);
+		TNT1 A 10 A_WeaponOffset(0,32,WOF_INTERPOLATE); 
 		Goto Ready;
 	}
 }
