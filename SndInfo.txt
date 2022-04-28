@@ -66,7 +66,8 @@ g43/reload	loadg43
 g43/select	riflesel
 
 //Pyrolight
-flamer/fire		dsfthrow
+flamer/start	Sounds/Weapons/flame/fl_start.wav
+flamer/fire		Sounds/Weapons/flame/fl_fire.wav
 flamer/select	hwpnsel
 
 //UMG43
