@@ -23,6 +23,7 @@ Class WW2Player : DoomPlayer
 		Player.WeaponSlot 0, "Dynamite_Weapon", "Granate_Weapon";
 	}
 
+/*
 	Int Ov; // OverHealth
 	Override Void Tick()
 	{
@@ -47,6 +48,7 @@ Class WW2Player : DoomPlayer
 
 		Super.Tick();
 	}
+*/
 
 	Override Void CheatGive(String name, int amount)
 	{
