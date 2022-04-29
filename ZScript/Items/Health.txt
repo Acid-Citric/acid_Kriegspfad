@@ -34,8 +34,8 @@ Class Small_HealthPack : Health
 	{
 		Super.PostBeginPlay();
 
-		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
-		If(sk == 1 || sk >= 5) { Amount = 10; }
+		Int sk = G_SkillPropertyInt(SKILLP_ACSReturn);
+		If(sk == 0 || sk == 4) { Amount = 10; }
 		Else { Amount = 5; }
 
 		SetState(ResolveState("Spawn")+Random[Small_HealthPack](1,4));
@@ -60,8 +60,8 @@ Class Medium_HealthPack : Health
 	{
 		Super.PostBeginPlay();
 
-		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
-		If(sk == 1 || sk >= 5) { Amount = 25; }
+		Int sk = G_SkillPropertyInt(SKILLP_ACSReturn);
+		If(sk == 0 || sk == 4) { Amount = 25; }
 		Else { Amount = 15; }
 
 		SetState(ResolveState("Spawn")+Random[Medium_HealthPack](1,2));
@@ -96,8 +96,8 @@ Class Large_HealthPack : Health
 	{
 		Super.PostBeginPlay();
 
-		Int sk = G_SkillPropertyInt(SKILLP_SpawnFilter);
-		If(sk == 1 || sk >= 5) { Amount = 50; }
+		Int sk = G_SkillPropertyInt(SKILLP_ACSReturn);
+		If(sk == 0 || sk == 4) { Amount = 50; }
 		Else { Amount = 25; }
 
 		SetState(ResolveState("Spawn")+Random[Large_HealthPack](1,4));
