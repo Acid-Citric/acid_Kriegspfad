@@ -1,13 +1,22 @@
-Sprites : Ninlhil (weapons), BigDaveHasSomeToo (pickups), Captain J (mp40 ammo pickups), Bungie (Marathon HD fire effects)
+Sprites :
+- Ninlhil (weapons & bullet casings)
+- BigDaveHasSomeToo (ammo & health pickups)
+- Captain J (MP40 ammo pouches, pistol magazine (edited by Ac!d))
+- DBThanatos (flames effects)
+- DMA Design / Tarantula Studios (gta 2 explosion)
 
-Code : WildWeasel (ww-nazis-v2)
+Code :
+- WildWeasel (ww-nazis-v2)
+- freshlycutgrass (gta 2 explosion)
 
-Sounds : Call Of Duty 2, Return To Castle Wolfenstein
+Sounds : 
+- Call Of Duty 2
+- Return To Castle Wolfenstein
+- Dr_Cosmobyte
 
 
 Special Thanks :
-- WildWeasel, for creating ww-nazis-v2, which was the main inspiration of that minimod, and giving me permission to use his code.
-- Ninlhil, for theses beautiful weapons sprites
+- WildWeasel, for creating ww-nazis-v2, which was the main inspiration of that minimod, and giving me his permission to use his code.
+- Ninlhil, for his weapons sprites
 - BigDaveHasSomeToo, for the pickups sprites I've edited to make it look like his own artstyle.
-- ZikShadow
 - GOLDƎИ MOBSTƎЯ72
