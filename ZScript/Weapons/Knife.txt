@@ -24,7 +24,7 @@ Class Knife : AxisWeapon
 		Loop;
 
 	Fire:
-		WP0G BBCCDD 1;
+		WP0G BCD 1;
 		#### E 1
 		{
 			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "", "");
