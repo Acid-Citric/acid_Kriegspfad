@@ -47,7 +47,7 @@ mp40/reload	loadmp40
 mp40/select	mp44sel
 
 //Sten MkII
-sten/fire	STENFIRE
+sten/fire	sten_01
 sten/reload	STENLOAD
 sten/select smgsel
 
