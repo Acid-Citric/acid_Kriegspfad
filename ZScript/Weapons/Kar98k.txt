@@ -101,7 +101,7 @@ Class Kar98k : AxisWeapon
 		WPAG R 2 BRIGHT
 		{
 			A_AlertMonsters();
-			If(Invoker.RGrenade == False) { A_GunFlash(); A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2"); }
+			If(Invoker.RGrenade == False) { A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2"); }
 			Else { A_FireProjectile("RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1); }
 			A_StartSound("mauser/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
