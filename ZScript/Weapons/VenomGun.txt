@@ -55,6 +55,8 @@ Class VenomGun : AxisWeapon replaces BFG9000
 		WP5F A 1
 		{
 			A_GunFlash();
+			A_Overlay(-2, "VenomFlash");
+			A_OverlayFlags(-2, PSPF_FORCESTYLE, True);
 			A_AlertMonsters();
 			A_FireBullets(5, 5, 1, random(75,130), "BulletPuff_2", FBF_USEAMMO);
 			A_StartSound("chaingun/fire", CHAN_WEAPON);
@@ -70,5 +72,15 @@ Class VenomGun : AxisWeapon replaces BFG9000
 		TNT1 A 1 BRIGHT A_Light2;
 		TNT1 A 3 BRIGHT A_Light1;
 		Goto LightDone;
+	VenomFlash:
+		WP5F # 0 A_Jump(256,1,2,3,4);
+		#### E 1 BRIGHT;
+		Stop;
+		#### F 1 BRIGHT;
+		Stop;
+		#### G 1 BRIGHT;
+		Stop;
+		#### H 1 BRIGHT;
+		Stop;
 	}
 }
