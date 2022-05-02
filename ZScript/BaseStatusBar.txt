@@ -147,14 +147,14 @@ class WW2StatusBar : BaseStatusBar
 			If(CheckWeaponSelected('VenomGun')) { DrawImage("WEAPON_5", (-66, -141), DI_ITEM_OFFSETS); }
 			DrawString(mSmallFont, FormatNumber(ammotype1.Amount, 3), (-30, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		}
-		
-		Let tnt = Dynamite_Weapon(CPlayer.mo.FindInventory('Dynamite_Weapon'));
+
+		Let tnt = AmmoTNT(CPlayer.mo.FindInventory('AmmoTNT'));
 		DrawImage("Graphics/Hud/HUD_DYNAMITE.png", (-130, -21), DI_ITEM_OFFSETS);
 		DrawString(mSmallFont, FormatNumber(Ammo_TNT.Amount, 3), (-122, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		DrawString(mSmallFont, FormatNumber(tnt.counter, 3), (-122, -22), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
-		
-		Let shg = Granate_Weapon(CPlayer.mo.FindInventory('Granate_Weapon'));
-		If(shg.wmod == True) { DrawImage("Graphics/Hud/HUD_HGRENADE_2.png", (-150, -21), DI_ITEM_OFFSETS); }
+
+		Let shg = AmmoGranate(CPlayer.mo.FindInventory('AmmoGranate'));
+		If(shg.shgmod == True) { DrawImage("Graphics/Hud/HUD_HGRENADE_2.png", (-150, -21), DI_ITEM_OFFSETS); }
 		Else { DrawImage("Graphics/Hud/HUD_HGRENADE.png", (-145, -21), DI_ITEM_OFFSETS); }
 		DrawString(mSmallFont, FormatNumber(Ammo_HG.Amount, 3), (-140, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 
