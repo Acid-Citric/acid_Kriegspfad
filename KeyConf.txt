@@ -1,0 +1,10 @@
+ClearPlayerClasses
+AddPlayerClass WW2Player
+
+AddKeySection "Ac!d's Kriegspfad Controls" Ac!d
+
+AddMenuKey "Grenade" "use AmmoGranate"
+DefaultBind G "use AmmoGranate"
+
+AddMenuKey "Dynamite" "use AmmoTNT"
+DefaultBind H "use AmmoTNT"
