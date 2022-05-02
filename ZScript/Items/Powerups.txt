@@ -73,9 +73,9 @@ Class InvulnSphere : InvulnerabilitySphere
 	{
 		+INVENTORY.FANCYPICKUPSOUND
 		+INVENTORY.NOSCREENFLASH
+		Powerup.Color "GoldMap";
 		Inventory.PickupMessage "$GOTINVUL"; // "Invulnerability!"
 		Inventory.PickupSound "powerups/invuln";
-		Powerup.Color "GoldMap";
 	}
 	Override Bool TryPickup(In Out Actor Toucher)
 	{
@@ -109,5 +109,21 @@ Class InvisSphere : BlurSphere
 	Spawn:
 		POW2 ABCD 6 Bright;
 		Loop;
+	}
+}
+
+Class NightVision : Infrared
+{
+	Default
+	{
+		+INVENTORY.NOSCREENFLASH
+		Powerup.Type "PowerTorch";
+		Inventory.PickupMessage "$GOTVISOR";
+		//Inventory.PickupSound "powerups/berserk";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("FFFFFF",0.4,35);
+		Return Super.TryPickup(Toucher);
 	}
 }
