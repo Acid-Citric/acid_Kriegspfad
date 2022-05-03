@@ -4,7 +4,7 @@ Decal KnifeShlash
 	Translucent 0.75
 	Shade "00 00 00"
 	X-Scale 0.5
-	Y-Scale 0.2
+	Y-Scale 0.025
 	RandomFlipX
 	RandomFlipY
 }
