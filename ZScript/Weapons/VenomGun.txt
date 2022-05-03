@@ -17,8 +17,8 @@ Class VenomGun : AxisWeapon replaces BFG9000
 		If(toucher)
 		{
 			Let weap = toucher.FindInventory("VenomGun");
-			If(!weap) { Self.AmmoGive1 = random(50,500); }
-			Else { Self.AmmoGive1 = random(50,500); }
+			If(!weap) { Self.AmmoGive1 = random(50,250); }
+			Else { Self.AmmoGive1 = random(50,250); }
 		}
 			Return Super.TryPickup(toucher);
 	}
