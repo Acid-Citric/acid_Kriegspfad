@@ -18,7 +18,7 @@ Class Knife : AxisWeapon
 		WP0G A 1 A_Raise(30);
 		Loop;
 	Ready:
-		WP0G A 1 A_WeaponReady(WRF_ALLOWUSER1|WRF_ALLOWUSER2);
+		WP0G A 1 A_WeaponReady();
 		Loop;
 	Deselect:
 		WP0G A 1 A_Lower(30);
