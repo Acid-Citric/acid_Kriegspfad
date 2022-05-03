@@ -67,7 +67,9 @@ g43/select	riflesel
 
 //Pyrolight
 flamer/start	Sounds/Weapons/flame/fl_start.wav
-flamer/fire		Sounds/Weapons/flame/fl_fire.wav
+flamer/fire1	Sounds/Weapons/flame/Fire1Shot1.wav
+flamer/fire5	Sounds/Weapons/flame/Fire1Shot5.wav
+$random flamer/fire { flamer/fire1 flamer/fire5 }
 flamer/select	hwpnsel
 
 //UMG43
