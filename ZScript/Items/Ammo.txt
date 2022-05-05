@@ -56,6 +56,7 @@ Class Ammo9mm_2 : Ammo9mm
 }
 Class Ammo9mm_3 : Ammo9mm
 {
+	Default	{ XScale 0.65; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -308,15 +309,15 @@ Class AmmoTNT : Ammo
     Override void DoEffect()
     {
         Super.DoEffect();
-        If(Owner is "PlayerPawn" && Owner.GetPlayerInput(MODINPUT_BUTTONS) & BT_USER2)
+        If(Owner is "PlayerPawn" && Owner.GetPlayerInput(MODINPUT_BUTTONS) & BT_USER2 && !Owner.FindInventory("AmmoTNT_TimerCooldown"))
 		{
-			If(counter == 45) { counter = 5; }
-			Else { counter += 5; }
+			If(counter == 45) { counter = 5; Owner.A_GiveInventory("AmmoTNT_TimerCooldown"); }
+			Else { counter += 5; Owner.A_GiveInventory("AmmoTNT_TimerCooldown"); }
 		}
     }
 	Override Bool Use(bool pickup)
 	{
-		If(Owner && Self.Amount > 0)
+		If(Owner && Self.Amount > 0 && !Owner.FindInventory("AmmoTNT_AmmoCooldown"))
 		{
 			If(counter == 45) { Owner.A_SpawnProjectile("Dynamite_Thrown_45",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
 			Else If(counter == 40) { Owner.A_SpawnProjectile("Dynamite_Thrown_40",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
@@ -327,7 +328,9 @@ Class AmmoTNT : Ammo
 			Else If(counter == 15) { Owner.A_SpawnProjectile("Dynamite_Thrown_15",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
 			Else If(counter == 10) { Owner.A_SpawnProjectile("Dynamite_Thrown_10",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
 			Else If(counter == 5) { Owner.A_SpawnProjectile("Dynamite_Thrown_5",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-
+			
+			Owner.A_GiveInventory("AmmoTNT_AmmoCooldown");
+			
 			Self.Amount --;
 		}
 		Return 0;
@@ -339,6 +342,8 @@ Class AmmoTNT : Ammo
 		Stop;
 	}
 }
+Class AmmoTNT_TimerCooldown : Powerup { Default { Powerup.Duration 10; } }
+Class AmmoTNT_AmmoCooldown : Powerup { Default { Powerup.Duration 20; } }
 
 Class AmmoGranate : Ammo
 {
@@ -364,18 +369,32 @@ Class AmmoGranate : Ammo
     Override void DoEffect()
     {
         Super.DoEffect();
-        If(Owner is "PlayerPawn" && Owner.GetPlayerInput(MODINPUT_BUTTONS) & BT_USER1)
+        If(Owner is "PlayerPawn" && Owner.GetPlayerInput(MODINPUT_BUTTONS) & BT_USER1 && !Owner.FindInventory("AmmoGranate_TimerCooldown"))
         {
-			If(shgmod == True) { shgmod = False; }
-			Else { shgmod = True; }
+			If(shgmod == True) { shgmod = False; Owner.A_GiveInventory("AmmoGranate_TimerCooldown"); }
+			Else { shgmod = True; Owner.A_GiveInventory("AmmoGranate_TimerCooldown"); }
 		}
     }
 	Override Bool Use(bool pickup)
 	{
-		If(Owner && Self.Amount > 0)
+		If(Owner && Self.Amount > 0 && !Owner.FindInventory("AmmoGranate_AmmoCooldown"))
 		{
-			If(shgmod == True && Self.Amount >= 5) { Owner.A_SpawnProjectile("Granate_Thrown_B",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); Self.Amount -= 5; }
-			Else { Owner.A_SpawnProjectile("Granate_Thrown_A",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); Self.Amount --; }
+			If(shgmod == True && Self.Amount >= 5)
+			{
+				Owner.A_SpawnProjectile("Granate_Thrown_B",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0);
+				Owner.A_GiveInventory("AmmoGranate_AmmoCooldown");
+
+				Self.Amount -= 5;
+			}
+			Else
+			{ 
+				shgmod = False;
+
+				Owner.A_SpawnProjectile("Granate_Thrown_A",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0);
+				Owner.A_GiveInventory("AmmoGranate_AmmoCooldown");
+
+				Self.Amount --;
+			}
 		}
 		Return 0;
 	}
@@ -387,6 +406,8 @@ Class AmmoGranate : Ammo
 		Stop;
 	}
 }
+Class AmmoGranate_TimerCooldown : Powerup { Default { Powerup.Duration 10; } }
+Class AmmoGranate_AmmoCooldown : Powerup { Default { Powerup.Duration 20; } }
 
 Class AmmoPouches : BackpackItem
 {
