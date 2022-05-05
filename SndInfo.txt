@@ -1,4 +1,5 @@
 misc/secret			Sounds/SOS_Secret.ogg
+*regenerate			Sounds/mrk_heartbeat_01.wav
 
 // knife
 knife/slash			Sounds/bullet_flesh_mega.wav
