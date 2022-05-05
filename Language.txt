@@ -3,8 +3,8 @@
 TAG_AMMO_9MM = "9 x 19 mm Parabellum round";
 TAG_AMMO_12GA = "12 GA Brass Shell";
 TAG_AMMO_792M = "7,92 x 57 mm Mauser round";
-TAG_AMMO_127M = "12,7 mm rounds";
-TAG_AMMO_FUEL = "Fuel";
+TAG_AMMO_127M = "12,7 mm round";
+TAG_AMMO_FUEL = "Fuel unit";
 TAG_AMMO_RIFLEGRENADE = "Rifle Grenade";
 TAG_AMMO_TNT = "Bundle of TNT";
 TAG_AMMO_GRANATE = "Model 24 Stielhandgranate";
