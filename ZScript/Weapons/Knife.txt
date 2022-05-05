@@ -28,7 +28,7 @@ Class Knife : AxisWeapon
 		WP0G BBCCDD 1;
 		#### E 1
 		{
-			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 60 : 5), False, CPF_PULLIN|CPF_NORANDOMPUFFZ, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 50 : 5), False, CPF_PULLIN, "BulletPuff_2", 80,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
 			A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		}
 		#### E 1 A_WeaponOffset(-5,37,WOF_INTERPOLATE);
@@ -38,8 +38,16 @@ Class Knife : AxisWeapon
 		#### F 1 A_WeaponOffset(-25,57,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-30,62,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-35,67,WOF_INTERPOLATE);
-		TNT1 A 5 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		TNT1 A 0 A_ReFire();
-		Goto Select;
+		TNT1 A 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		WP0G A 0 A_ReFire();	
+		WP0G # 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
+		#### # 01 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		Goto Ready;
 	}
 }
