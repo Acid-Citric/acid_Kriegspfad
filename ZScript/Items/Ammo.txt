@@ -267,7 +267,7 @@ Class AmmoRifleGrenade : Ammo
 		Inventory.Icon "R_G_A0";
 		Inventory.Amount 1;
 		Inventory.MaxAmount 10;
-		Ammo.BackpackAmount 1;
+		Ammo.BackpackAmount 0;
 		Ammo.BackpackMaxAmount 15;
 		Ammo.DropAmount 1;
 	}
