@@ -28,6 +28,11 @@ Class Kar98k : AxisWeapon
 		}
 			Return Super.TryPickup(toucher);
 	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		For(int i; i<2; i++) { A_SpawnItemEx("AmmoRifleGrenade",Random(-8,8),Random(-8,8),failchance: 128); }
+	}
 	States
 	{
 	Spawn:
