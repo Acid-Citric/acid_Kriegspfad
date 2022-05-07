@@ -1,0 +1,142 @@
+Class SuperCharge : PowerupGiver
+{
+	Default
+	{
+		+FLOATBOB
+		FloatBobStrength 0.5;
+		+INVENTORY.NOSCREENFLASH
+		+COUNTITEM
+		+INVENTORY.AUTOACTIVATE
+		+INVENTORY.ALWAYSPICKUP
+		+INVENTORY.BIGPOWERUP
+		Inventory.MaxAmount 0;
+		Powerup.Type "PowerRegeneration";
+		Inventory.PickupMessage "$GOTSUPER"; // "Supercharge!"
+		//Inventory.PickupSound "powerups/soul";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("00FF00",0.4,35);
+		Return Super.TryPickup(Toucher);
+	}
+	States
+	{
+	Spawn:
+		POW4 ABCDCB 6 Bright;
+		Loop;
+	}
+}
+
+Class MegaChargeHealth : Health
+{
+	Default
+	{
+		Inventory.Amount 200;
+		Inventory.MaxAmount 999;
+		+INVENTORY.ALWAYSPICKUP
+	}
+}
+Class MegaCharge : Megasphere
+{
+	Default
+	{
+		+FLOATBOB
+		FloatBobStrength 0.5;
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("FlakJacket", 1);
+		TNT1 A 0 A_GiveInventory("MegaChargeHealth", 1);
+		Stop;
+	}
+} 
+
+Class BerserkSphere : Berserk
+{
+	Default
+	{
+		+FLOATBOB
+		FloatBobStrength 0.5;
+		+INVENTORY.FANCYPICKUPSOUND
+		+INVENTORY.NOSCREENFLASH
+		Inventory.PickupMessage "$GOTBERSERK";
+		//Inventory.PickupSound "powerups/berserk";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("FF0000",0.4,35);
+		Return Super.TryPickup(Toucher);
+	}
+	States
+	{
+	Spawn:
+		POW3 ABCD 6 Bright;
+		Loop;
+	}
+}
+
+Class InvulnSphere : InvulnerabilitySphere
+{
+	Default
+	{
+		+FLOATBOB
+		FloatBobStrength 0.5;
+		+INVENTORY.FANCYPICKUPSOUND
+		+INVENTORY.NOSCREENFLASH
+		Powerup.Color "GoldMap";
+		Inventory.PickupMessage "$GOTINVUL"; // "Invulnerability!"
+		Inventory.PickupSound "powerups/invuln";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("FFFF66",0.4,35);
+		Return Super.TryPickup(Toucher);
+	}
+	States
+	{
+	Spawn:
+		POW1 ABCDCB 6 Bright;
+		Loop;
+	}
+}
+
+Class InvisSphere : BlurSphere
+{
+	Default
+	{
+		+FLOATBOB
+		FloatBobStrength 0.5;
+		+INVENTORY.FANCYPICKUPSOUND
+		+INVENTORY.NOSCREENFLASH
+		Inventory.PickupMessage "$GOTINVIS"; // "Partial Invisibility"
+		Inventory.PickupSound "powerups/invuln";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("0000FF",0.4,35);
+		Return Super.TryPickup(Toucher);
+	}
+	States
+	{
+	Spawn:
+		POW2 ABCD 6 Bright;
+		Loop;
+	}
+}
+
+Class NightVision : Infrared
+{
+	Default
+	{
+		+INVENTORY.NOSCREENFLASH
+		Powerup.Type "PowerTorch";
+		Inventory.PickupMessage "$GOTVISOR";
+		//Inventory.PickupSound "powerups/berserk";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("FFFFFF",0.4,35);
+		Return Super.TryPickup(Toucher);
+	}
+}

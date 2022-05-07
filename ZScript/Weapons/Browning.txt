@@ -1,0 +1,144 @@
+Class BA5 : AxisWeapon
+{
+	Bool shotgunreload, shotgunempty, shotgunlower;
+	Default
+	{
+		Weapon.SelectionOrder 400;
+		
+		Weapon.AmmoType "BA5Loaded";
+		Weapon.AmmoType2 "Ammo12G";
+		Inventory.PickupMessage "You got the Browning Auto-5!";
+		+WEAPON.NOAUTOFIRE
+		Scale 0.45;
+		Tag "$TAG_WEAPON_BROWINGAUTO5";
+		Weapon.UpSound "browning/select";
+	}
+	Override Void AttachToOwner(Actor other)
+	{
+		Super.AttachToOwner(other);
+		If(bTOSSED) { other.A_GiveInventory("BA5Loaded", random(1,3)); }
+		Else { other.A_GiveInventory("BA5Loaded", random(1,5)); }
+	}
+   	Override Bool TryPickup(in out Actor toucher)  
+    {
+		If(toucher)
+		{
+			Let weap = toucher.FindInventory("BA5");
+			If(!weap) { Self.AmmoGive2 = 0; }
+			Else If(bTOSSED) { Self.AmmoGive2 = random(1,3); }
+			Else { Self.AmmoGive2 = random(1,3); }
+		}
+			Return Super.TryPickup(toucher);
+	}
+	States
+	{
+	Spawn:
+		WP7P A -1;
+		Stop;
+	Select:
+		WP7G A 1 A_Raise(12);
+		Loop;
+	Ready:
+		WP7G A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		Loop;
+	Deselect:
+		TNT1 A 0 { Invoker.shotgunlower = True; }
+		TNT1 A 0 A_JumpIf(Invoker.shotgunreload, "ReloadFinish");
+		TNT1 A 0 { Invoker.shotgunreload = False; Invoker.shotgunlower = False; }
+		WP7G A 1 A_Lower(12);
+		Loop;
+
+	Fire:
+		TNT1 A 0 A_JumpIf(!CountInv("BA5Loaded"), "Reload");
+		TNT1 A 0 A_JumpIf(Invoker.shotgunreload, "ReloadFinish");
+		WP7G B 2
+		{
+			A_GunFlash();
+			A_AlertMonsters();
+			A_FireBullets(4, 4, 7, random(5,15), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_StartSound("browning/fire", CHAN_WEAPON);
+			A_TakeInventory("BA5Loaded",1);
+			A_SpawnItemEx("Casing_Shotgun",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		}
+		#### B 1 A_WeaponOffset(0,42,WOF_INTERPOLATE); 
+		#### A 1 A_WeaponOffset(0,47,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,34,WOF_INTERPOLATE);
+		#### A 2 A_WeaponOffset(0,33,WOF_INTERPOLATE);
+		#### A 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### # 0 A_ReFire();
+		Goto Ready;
+	Flash:
+		WP7F A 1 BRIGHT A_Light2;
+		#### B 2 BRIGHT A_Light1;
+		Goto LightDone;
+
+	Reload:
+		TNT1 A 0 A_JumpIfInventory("BA5Loaded", 5, "Ready");
+		TNT1 A 0 A_JumpIf(CountInv("BA5Loaded") > 0, "ReloadWork");
+		TNT1 A 0 { Invoker.shotgunempty = True; }
+	ReloadWork:
+		TNT1 A 0 A_JumpIf(CountInv("Ammo12G") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+        Goto Ready;
+		TNT1 A 0 { Invoker.shotgunreload = True; }
+		WP7G C 1 A_WeaponOffset(-1,33,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-4,41,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-6,46,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-7,55,WOF_INTERPOLATE);
+	ReloadLoop:
+		TNT1 A 0 A_JumpIf(CountInv("BA5Loaded") == 5 || CountInv("Ammo12G") < 1 && !CountInv("PowerInfiniteAmmo"), "ReloadFinish");
+		WP7G C 1
+		{
+			A_WeaponOffset(-8,58,WOF_INTERPOLATE);
+			A_StartSound("browning/load", CHAN_5);
+			A_TakeInventory("Ammo12G",1,TIF_NOTAKEINFINITE);
+			A_GiveInventory("BA5Loaded",1);
+		}
+		#### C 1 A_WeaponOffset(-9,64,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-10,70,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-10,68,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-9,66,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-9,64,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-9,62,WOF_INTERPOLATE);
+		#### C 1 { A_WeaponOffset(-8,61,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### C 2 { A_WeaponOffset(-8,60,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### C 3 { A_WeaponOffset(-8,59,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### C 4 { A_WeaponOffset(-8,58,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		TNT1 A 0 A_JumpIf(CountInv("BA5Loaded") == 4 && Invoker.shotgunempty || CountInv("Ammo12G") < 1 && !CountInv("PowerInfiniteAmmo") && Invoker.shotgunempty, "ReloadFinish");
+		TNT1 A 0 A_JumpIf(CountInv("BA5Loaded") == 5 || CountInv("Ammo12G") < 1 && !CountInv("PowerInfiniteAmmo"), "ReloadFinish");
+		Goto ReloadLoop;
+	ReloadFinish:
+		WP7G C 1
+		{
+			A_WeaponOffset(-8,58,WOF_INTERPOLATE);
+			If(Invoker.shotgunempty) { A_StartSound("browning/cock", CHAN_WEAPON); }
+		}
+		#### C 1 A_WeaponOffset(-8,60,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-8,63,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-9,67,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-9,72,WOF_INTERPOLATE);
+		#### C 0 A_JumpIf(Invoker.shotgunempty == False, 5);
+		#### C 1 A_WeaponOffset(-10,75,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-10,77,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-11,78,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-10,76,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-8,68,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-6,58,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-4,46,WOF_INTERPOLATE);
+		#### C 1 A_WeaponOffset(-2,33,WOF_INTERPOLATE);
+		#### C 1 { A_WeaponOffset(-1,32,WOF_INTERPOLATE); Invoker.shotgunempty = False; Invoker.shotgunreload = False; }
+		TNT1 A 0 A_JumpIf(Invoker.shotgunlower, "Deselect");
+		Goto Ready;
+	}
+}
+
+Class BA5Loaded : Ammo
+{
+	Default
+	{
+		Tag "12 Gauge";
+		+INVENTORY.IGNORESKILL
+		Inventory.MaxAmount 5;
+		Inventory.Icon "SHOTA0"; //"SGN2A0"
+	}
+}

@@ -1,0 +1,99 @@
+Class ArmoredHelmet : CustomInventory
+{
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "Armored Helmet";
+	}
+	States
+	{
+	Spawn:
+		HELM A -1;
+		Stop;
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",200,"ArmorFull");
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",1,"Pickup_2");
+		TNT1 A 0 A_GiveInventory("ArmoredHelmet_BasicArmor",1);
+		Stop;
+	ArmorFull:
+		TNT1 A 0;
+		Fail;
+	Pickup_2:
+		TNT1 A 0 A_GiveInventory("ArmoredHelmet_ArmorBonus",1);
+		Stop;
+	}
+}
+
+Class ArmoredHelmet_BasicArmor : BasicArmorPickup
+{
+	Default
+	{
+		Inventory.Icon "HELMA0";
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 25;
+		Armor.MaxFullAbsorb 5;
+	}
+}
+
+Class ArmoredHelmet_ArmorBonus : BasicArmorBonus
+{
+	Default
+	{
+		Inventory.Icon "HELMA0";
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 25;
+		Armor.MaxSaveAmount 200;
+		Armor.MaxFullAbsorb 5;
+	}
+}
+
+Class FlakJacket : CustomInventory
+{
+	Default
+	{
+		Radius 20;
+		Height 16;
+		Inventory.PickupMessage "Flak Jacket";
+	}
+	States
+	{
+	Spawn:
+		VEST A -1;
+		Stop;
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",200,"ArmorFull");
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",1,"Pickup_2");
+		TNT1 A 0 A_GiveInventory("FlakJacket_BasicArmor",1);
+		Stop;
+	ArmorFull:
+		TNT1 A 0;
+		Fail;
+	Pickup_2:
+		TNT1 A 0 A_GiveInventory("FlakJacket_ArmorBonus",1);
+		Stop;
+	}
+}
+
+Class FlakJacket_BasicArmor : BasicArmorPickup
+{
+	Default
+	{
+		Inventory.Icon "VESTA0";
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 75;
+		Armor.MaxFullAbsorb 25;
+	}
+}
+
+Class FlakJacket_ArmorBonus : BasicArmorBonus
+{
+	Default
+	{
+		Inventory.Icon "VESTA0";
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 75;
+		Armor.MaxSaveAmount 200;
+		Armor.MaxFullAbsorb 25;
+	}
+}
