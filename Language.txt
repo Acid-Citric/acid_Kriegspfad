@@ -3,7 +3,7 @@
 TAG_AMMO_9MM = "9 x 19 mm Parabellum round";
 TAG_AMMO_12GA = "12 GA Brass Shell";
 TAG_AMMO_792M = "7,92 x 57 mm Mauser round";
-TAG_AMMO_127M = "12,7 mm round";
+TAG_AMMO_762M = "7,62 mm round";
 TAG_AMMO_FUEL = "Fuel unit";
 TAG_AMMO_RIFLEGRENADE = "Rifle Grenade";
 TAG_AMMO_TNT = "Bundle of TNT";
@@ -21,7 +21,7 @@ TAG_WEAPON_STENMK2 = "STEN Mk II";
 TAG_WEAPON_GEWEHR43 = "Gewehr 43";
 TAG_WEAPON_KAR98K = "Karabiner 98 kurz";
 TAG_WEAPON_FLAMMENWERFER = "Flammenwerfer";
-TAG_WEAPON_VENOMGUN = "GP-VG MK1 Venom Gun";
+TAG_WEAPON_MG43 = "MaschinenGewehr 43";
 
 PICKUP_HEALTH_S = "Picked up a small health pack";
 PICKUP_HEALTH_M = "Picked up a health pack";
