@@ -1,6 +1,10 @@
 misc/secret			Sounds/SOS_Secret.ogg
 *regenerate			Sounds/mrk_heartbeat_01.wav
 
+$random casing/bounce	{ casing/pistol casing/rifle }
+casing/pistol	Sounds/pistol_shell.wav
+casing/rifle	Sounds/rifle_shell.wav
+
 // knife
 knife/slash			Sounds/bullet_flesh_mega.wav
 
@@ -46,9 +50,10 @@ mp40/reload	loadmp40
 mp40/select	mp44sel
 
 //Sten MkII
-sten/fire	sten_01
-sten/reload	STENLOAD
-sten/select smgsel
+sten/fire			sten_01
+sten/fire_silenced	STENFIRE
+sten/reload			STENLOAD
+sten/select 		smgsel
 
 //Karabiner 98k
 mauser/fire		DSMAUS
