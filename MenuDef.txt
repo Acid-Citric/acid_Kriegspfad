@@ -1,6 +1,6 @@
 AddOptionMenu "OptionsMenu"
 {
-	StaticText "Ac!d's WW2", Gold
+	StaticText "Ac!d's Kriegspfad", Gold
 	StaticText ""
 	Option "Silencer sounds for the Walther P38",		"Acid_Silencer",		"Silencer"
 	Slider "Shell Casing Lifetime", "casinglifetime", 35, 350, 35
