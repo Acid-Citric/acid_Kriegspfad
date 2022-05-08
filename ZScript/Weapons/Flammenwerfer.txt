@@ -128,13 +128,13 @@ Class FlammenwerferFireFake : FlammenwerferFire
 	}
 }
 
-Class BulletPuff_3 : BulletPuff_2
+Class FlamerPuff : BulletPuff_2
 {
 	Default	{ Scale 0.075; DamageType "Fire"; }
 	States
 	{
 	Spawn:
-		DB56 ABCDEFGHIJK 1 Bright { A_Explode(random(0,1), 56, XF_HURTSOURCE|XF_NOSPLASH, False, 56); A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		DB56 ABCDEFGHIJK 1 Bright { A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
 		Stop;
 	}
 }
