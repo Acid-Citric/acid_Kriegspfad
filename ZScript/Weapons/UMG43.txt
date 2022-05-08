@@ -1,4 +1,4 @@
-Class MG43 : AxisWeapon
+Class UMG43 : AxisWeapon
 {
 	Default
 	{
@@ -6,9 +6,9 @@ Class MG43 : AxisWeapon
 
 		Weapon.AmmoUse 1;
 		Weapon.AmmoType "Ammo762M";
-		Inventory.PickupMessage "You got the MaschinenGewehr 43!";
+		Inventory.PickupMessage "You got the ÜberMaschinenGewehr 43!";
 		+WEAPON.AMMO_OPTIONAL
-		Tag "$TAG_WEAPON_MG43";
+		Tag "$TAG_WEAPON_UMG43";
 		Inventory.PickupSound "chaingun/get";
 		Weapon.UpSound "chaingun/select";
 	}
@@ -16,7 +16,7 @@ Class MG43 : AxisWeapon
     {
 		If(toucher)
 		{
-			Let weap = toucher.FindInventory("MG43");
+			Let weap = toucher.FindInventory("UMG43");
 			If(!weap) { Self.AmmoGive1 = random(50,150); }
 			Else { Self.AmmoGive1 = random(50,150); }
 		}
