@@ -21,7 +21,7 @@ TAG_WEAPON_STENMK2 = "STEN Mk II";
 TAG_WEAPON_GEWEHR43 = "Gewehr 43";
 TAG_WEAPON_KAR98K = "Karabiner 98 kurz";
 TAG_WEAPON_FLAMMENWERFER = "Flammenwerfer";
-TAG_WEAPON_MG43 = "MaschinenGewehr 43";
+TAG_WEAPON_UMG43 = "ÜberMaschinenGewehr 43";
 
 PICKUP_HEALTH_S = "Picked up a small health pack";
 PICKUP_HEALTH_M = "Picked up a health pack";
