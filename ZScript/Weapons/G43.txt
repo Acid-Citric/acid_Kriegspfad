@@ -60,7 +60,7 @@ Class G43 : AxisWeapon
 		#### C 1 { A_WeaponOffset(0,40,WOF_INTERPOLATE); Invoker.RGrenade = False; }
 		#### A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		#### A 9 A_WeaponReady(WRF_NOFIRE);
+		#### A 9 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
 		Goto Ready;
 	Flash:
 		WP4F A 1 BRIGHT A_Light2;
