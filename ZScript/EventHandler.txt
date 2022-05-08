@@ -36,7 +36,7 @@ Class WW2Handler : EventHandler
 			Else e.Replacement = 'G43';
 		}
 		Else If(cls == 'PlasmaRifle')								e.Replacement = "Flammenwerfer";
-		Else If(cls == 'BFG9000')									e.Replacement = "MG43";
+		Else If(cls == 'BFG9000')									e.Replacement = "UMG43";
 
 		Else If((cls == 'HealthBonus') || (cls == 'ArmorBonus'))
 		{
@@ -123,8 +123,7 @@ Class FirePainEffect : Inventory
 		Super.DoEffect();
 		If(Owner && Owner.Health > 0 && !Owner.FindState("Pain.Fire", True))
 		{
-			Owner.height = self.height; //Reset the height
-			Owner.A_SpawnItemEx("BulletPuff_3",Pos.X,random(0,16),random(0,32),Vel.X,Vel.Y,Vel.Z,Random(0,360),SXF_NOCHECKPOSITION|SXF_ABSOLUTEMOMENTUM);
+			Owner.A_SpawnItemEx("FlamerPuff",Pos.X,random((Owner.Radius/4),(Owner.Radius/2)),random((Owner.Height/4),(Owner.Height/2)),Vel.X,Vel.Y,Vel.Z,Random(0,360),SXF_NOCHECKPOSITION|SXF_ABSOLUTEMOMENTUM);
 		}
 	}
 } 
