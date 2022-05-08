@@ -18,7 +18,7 @@ Generator MP40					BulletChip
 Generator STEN					BulletChip
 Generator G43					BulletChip
 Generator Kar98k				BulletChip
-Generator MG43					BulletChip
+Generator UMG43					BulletChip
 
 Generator RifleGrenade			Scorch
 Generator FlammenwerferFire		Scorch
