@@ -17,7 +17,7 @@ Class WW2Player : DoomPlayer
 		Player.WeaponSlot 4, "MP40", "STEN";
 		Player.WeaponSlot 5, "G43", "Kar98k";
 		Player.WeaponSlot 6, "Flammenwerfer";
-		Player.WeaponSlot 7, "MG43";
+		Player.WeaponSlot 7, "UMG43";
 	}
 	/*Override Void PostBeginPlay()
 	{
@@ -27,30 +27,6 @@ Class WW2Player : DoomPlayer
 		If(sk == 4) { A_SetHealth(999); }
 		Else { A_SetHealth(100); }
 	}*/
-	Int Ov; // OverHealth
-	Override Void Tick()
-	{
-		If(Health > 0 && GetCVar('Acid_Health') == True)
-		{
-			If(Health > 500 && Ov == 5 || Health > 250 && Ov == 10 || Health > 100 && Ov == 20)
-			{
-				A_SetHealth(Health - 1);
-				Ov = 0;
-			}
-			Else If(Health < 20 && Ov == 5 || Health < 40 && Ov == 5 || Health < 60 && Ov == 5 || Health < 80 && Ov == 5 || Health < 100 && Ov == 5)
-			{
-				A_SetHealth(Health + 1);
-				Ov = 0;
-			}
-			Else If(Health == 20 || Health == 40 || Health == 60 || Health == 80 || Health == 100) // (Health <= MaxHealth) // GetMaxHealth()
-			{
-				Ov = 0; // ... do nothing.
-			}
-		}
-		Ov++;
-
-		Super.Tick();
-	}
 
 	Override Void CheatGive(String name, int amount)
 	{
