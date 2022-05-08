@@ -23,5 +23,5 @@ Version "4.6.1"
 #Include "ZScript/Weapons/G43.txt" // Walther Mauser Gewehr 43 // alt-fire rifle grenades
 #Include "ZScript/Weapons/Kar98k.txt" // Karabiner 98 kurz // alt-fire scope
 #Include "ZScript/Weapons/Flammenwerfer.txt" // Flammenwerfer
-#Include "ZScript/Weapons/MG43.txt" // MaschinenGewehr 43
+#Include "ZScript/Weapons/UMG43.txt" // ÜberMaschinenGewehr 43
 #Include "ZScript/Weapons/Throwables.txt" // Explosives and booby traps.
