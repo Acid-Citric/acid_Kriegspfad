@@ -2,8 +2,7 @@ AddOptionMenu "OptionsMenu"
 {
 	StaticText "Ac!d's WW2", Gold
 	StaticText ""
-	Option "Silencer sounds",		"Acid_Silencer",		"Silencer"
-	//Option "Partial regeneration and OverCharge ability",		"Acid_Health",		"YesNo"
+	Option "Silencer sounds for the Walther P38",		"Acid_Silencer",		"Silencer"
 	Slider "Shell Casing Lifetime", "casinglifetime", 35, 350, 35
 }
 
