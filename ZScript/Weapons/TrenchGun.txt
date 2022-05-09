@@ -1,6 +1,6 @@
 Class TrenchGun : AxisWeapon
 {
-	Bool shotgunreload,	shotgunempty, shotgunlower;
+	Bool shotgunreload, shotgunempty, shotgunlower;
 	Default
 	{
 		Weapon.SelectionOrder 400;
@@ -67,9 +67,7 @@ Class TrenchGun : AxisWeapon
 		}
 		#### # 1 A_WeaponOffset(0,32,WOF_INTERPOLATE); 
 		#### # 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
-		#### # 0 A_JumpIf(GetPlayerInput(MODINPUT_BUTTONS) & BT_ATTACK, "SlamPump");
-	NormalPump:
-/**/	WP2E A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+		WP2E A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,34,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,33,WOF_INTERPOLATE);		
 		WP2E A 7 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOFIRE); }
@@ -92,25 +90,6 @@ Class TrenchGun : AxisWeapon
 		WP2E A 0 A_JumpIf(!CountInv("TrenchGunLoaded"), 2);
 		WP2G A 0;
 		#### A 1 A_WeaponOffset(5,34,WOF_INTERPOLATE);
-		#### A 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
-		#### # 0 A_ReFire();
-		Goto Ready;
-
-	SlamPump:
-/**/	#### A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,34,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,33,WOF_INTERPOLATE);
-		#### H 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOFIRE); }
-		#### G 1 { A_WeaponOffset(0,38,WOF_INTERPOLATE); A_StartSound("shotgun/pump", CHAN_5); }
-		#### # 1
-		{
-			A_WeaponOffset(0,35,WOF_INTERPOLATE);
-			If(Invoker.shotgunreload == False) { A_SpawnItemEx("Casing_Shotgun",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION); }
-			Else { Invoker.shotgunreload = False; }
-		}
-		#### # 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		WP2E A 0 A_JumpIf(!CountInv("TrenchGunLoaded"), 2);
-		WP2G A 0;
 		#### A 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
 		#### # 0 A_ReFire();
 		Goto Ready;
@@ -183,9 +162,7 @@ Class TrenchGunLoaded : Ammo
 {
 	Default
 	{
-		Tag "12 Gauge";
 		+INVENTORY.IGNORESKILL
 		Inventory.MaxAmount 6;
-		Inventory.Icon "SHOTA0";
 	}
 }
