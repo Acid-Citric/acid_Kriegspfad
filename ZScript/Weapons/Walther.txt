@@ -50,7 +50,9 @@ Class Walther : AxisWeapon
 		WP8U B 1
 		{
 			A_FireBullets(0.5, 0.5, -1, random(3,17), "BulletPuff_2", FBF_NORANDOMPUFFZ);
-			A_StartSound("P38/fire_silenced", CHAN_WEAPON);
+			If(GetCVar('Acid_Silencer') == 2) { A_StartSound("P38/fire_silenced_3", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
+			Else If(GetCVar('Acid_Silencer') == 1) { A_StartSound("P38/fire_silenced_2", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
+			Else { A_StartSound("P38/fire_silenced", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
 			A_AlertMonsters(256);
 			A_TakeInventory("WaltherLoaded",1);
 			A_SpawnItemEx("Casing_9MM",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
