@@ -92,7 +92,7 @@ Class FlammenwerferFire : Actor
 		Radius 2;
 		Height 4;
 		Speed 25;
-		DamageFunction (random(1,5));
+		DamageFunction (random(1,2)*10);
 		PROJECTILE;
 		RenderStyle "Add";
 		DamageType "Fire";
@@ -123,8 +123,7 @@ Class FlammenwerferFireFake : FlammenwerferFire
 	Default
 	{
 		DamageFunction 0;
-		+PAINLESS
-		+NOTRIGGER
+		+PAINLESS +NOTRIGGER
 	}
 }
 
@@ -134,7 +133,7 @@ Class FlamerPuff : BulletPuff_2
 	States
 	{
 	Spawn:
-		DB56 ABCDEFGHIJK 1 Bright { A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		DB56 ABCDEFGHIJK 1 Bright { A_Explode(random(0,1), 56, XF_HURTSOURCE|XF_NOSPLASH, False, 56); A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
 		Stop;
 	}
 }
