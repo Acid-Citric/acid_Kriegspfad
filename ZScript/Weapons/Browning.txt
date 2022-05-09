@@ -4,7 +4,7 @@ Class BA5 : AxisWeapon
 	Default
 	{
 		Weapon.SelectionOrder 400;
-		
+
 		Weapon.AmmoType "BA5Loaded";
 		Weapon.AmmoType2 "Ammo12G";
 		Inventory.PickupMessage "You got the Browning Auto-5!";
@@ -136,9 +136,7 @@ Class BA5Loaded : Ammo
 {
 	Default
 	{
-		Tag "12 Gauge";
 		+INVENTORY.IGNORESKILL
 		Inventory.MaxAmount 5;
-		Inventory.Icon "SHOTA0"; //"SGN2A0"
 	}
 }
