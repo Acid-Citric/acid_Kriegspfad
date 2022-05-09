@@ -167,7 +167,7 @@ class WW2StatusBar : BaseStatusBar
 		Else If(CPlayer.ReadyWeapon.Ammo1)
 		{
 			If(CheckWeaponSelected('Flammenwerfer')) { DrawImage("WEAPON_6", (-61, -162), DI_ITEM_OFFSETS); }
-			If(CheckWeaponSelected('MG43')) { DrawImage("WEAPON_5", (-66, -141), DI_ITEM_OFFSETS); }
+			If(CheckWeaponSelected('UMG43')) { DrawImage("WEAPON_5", (-66, -141), DI_ITEM_OFFSETS); }
 			DrawString(mSmallFont, FormatNumber(ammotype1.Amount, 3), (-30, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		}
 
