@@ -18,6 +18,7 @@ silencer_2			Sounds/Acid/silenced_2.ogg
 silencer_3			Sounds/Acid/silenced_3.ogg
 $random P38/fire_silenced_2		{ silencer_1 silencer_1 silencer_2 silencer_3 silencer_3 silencer_3 }
 
+dynamite/bomb_ticker	Sounds/dry_fire.wav
 
 granate/throw		Sounds/granate/german_grenade_throw.wav
 granate/explode		Sounds/granate/mrk_grenade_3.wav
