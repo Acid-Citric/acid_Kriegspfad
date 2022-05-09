@@ -52,7 +52,7 @@ Class Dynamite_Thrown_45 : Dynamite_Thrown {}
 
 Class Dynamite_Proj : Actor
 {
-	Int timer;
+	Int timer, ticking;
 	Default
 	{
 		Health 10;
@@ -70,6 +70,13 @@ Class Dynamite_Proj : Actor
 	}
 	Override Void Tick()
 	{
+		If(ticking >= 35)
+		{
+			A_StartSound("dynamite/bomb_ticker",CHAN_BODY,CHANF_DEFAULT,1);
+			ticking = 0;
+		} 		
+		ticking++;
+
 		Super.Tick();
 		If(timer == 0) { SetStateLabel("Explode"); }
 		timer--;
