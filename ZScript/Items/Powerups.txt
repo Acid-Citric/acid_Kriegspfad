@@ -140,3 +140,22 @@ Class NightVision : Infrared
 		Return Super.TryPickup(Toucher);
 	}
 }
+
+
+Class HazmatSuit : Radsuit
+{
+	Default
+	{
+		XScale 1.1;
+		YScale 0.9;
+		+INVENTORY.NOSCREENFLASH
+		Powerup.Type "PowerMask";
+		Inventory.PickupMessage "$GOTSUIT";
+		//Inventory.PickupSound "powerups/berserk";
+	}
+	Override Bool TryPickup(In Out Actor Toucher)
+	{
+		Toucher.A_SetBlend("00FF00",0.4,35);
+		Return Super.TryPickup(Toucher);
+	}
+}
