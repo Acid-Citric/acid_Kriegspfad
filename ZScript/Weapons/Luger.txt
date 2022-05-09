@@ -55,8 +55,8 @@ Class Luger : AxisWeapon replaces Pistol
 		{
 			A_GunFlash();
 			A_AlertMonsters();
-			A_FireBullets(1, 1, 1, random(3,17), "BulletPuff_2", FBF_NORANDOMPUFFZ);
-			A_StartSound("luger/fire", CHAN_WEAPON, CHANF_DEFAULT, 0.5);
+			A_FireBullets(1, 1, -1, random(6,18), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_StartSound("luger/fire", CHAN_WEAPON, CHANF_DEFAULT, 1);
 			A_TakeInventory("LugerLoaded",1);
 			A_SpawnItemEx("Casing_9MM",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
@@ -84,9 +84,9 @@ Class Luger : AxisWeapon replaces Pistol
 		Goto Ready;
 
 	ReloadWork:
-		WP1E C 0 A_JumpIf(!CountInv("LugerLoaded"), 2);
-		WP1G F 0;
-		#### # 1
+		WP1G E 1 A_JumpIf(!CountInv("LugerLoaded"), 2);
+		#### # 1;
+		#### H 1
 		{
 			A_WeaponOffset(0,35,WOF_INTERPOLATE);
 			If(!CountInv("LugerLoaded")) { A_StartSound("luger/reload", CHAN_WEAPON); }
@@ -113,10 +113,10 @@ Class Luger : AxisWeapon replaces Pistol
 		WP1G F 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
 		Goto Ready;
 	}
 }
@@ -125,9 +125,7 @@ Class LugerLoaded : Ammo
 {
 	Default
 	{
-		Tag "9 × 19 mm Parabellum";
 		+INVENTORY.IGNORESKILL
 		Inventory.MaxAmount 8;
-		Inventory.Icon "PISTA0";
 	}
 }
