@@ -1,6 +1,5 @@
 Class Walther : AxisWeapon
 {
-	Bool silenced, wmod;
 	Default
 	{
 		Weapon.SelectionOrder 2100;
@@ -11,7 +10,8 @@ Class Walther : AxisWeapon
 		Tag "$TAG_WEAPON_WALTHERP38";
 		Weapon.UpSound "walther/select";
 		Weapon.Kickback 60;
-		Inventory.Icon "WP8PA0";
+		Inventory.Icon "WP8PB0";
+		+WEAPON.NOAUTOFIRE
 	}
 	Override Void AttachToOwner(Actor other)
 	{
@@ -30,55 +30,28 @@ Class Walther : AxisWeapon
 		}
 			Return Super.TryPickup(toucher);
 	}
-	Override Void DoEffect()
-	{
-		If (!Owner || !Owner.Player)	return;
-		Let plr = Owner.Player;
-		Super.DoEffect();
-		If (!Default.icon)
-		{
-			If (silenced == True) icon = texman.CheckForTexture("WP8PB0", TexMan.Type_Any);
-			Else icon = texman.CheckForTexture("WP8PA0", TexMan.Type_Any);
-		}
-	}
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay;
-		WP8P B 0 A_JumpIf(Invoker.silenced, 2);
-		WP8P A 0;
-		#### # -1;
+		WP8P B -1;
 		Stop;
 	Select:
-		WP8U A 0 A_JumpIf(Invoker.silenced, 2);
-		WP8G A 0;
-		#### # 1 A_Raise(12);
+		WP8U A 1 A_Raise(12);
 		Loop;
 	Ready:
-		WP8U A 0 A_JumpIf(Invoker.silenced, 2);
-		WP8G A 0;
-		#### # 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		WP8U A 1 A_WeaponReady(WRF_ALLOWRELOAD);
 		Loop;
 	Deselect:
-		WP8U A 0 A_JumpIf(Invoker.silenced, 2);
-		WP8G A 0;
-		#### # 1 A_Lower(12);
+		WP8U A 1 A_Lower(12);
 		Loop;
 
 	Fire:
 		TNT1 A 0 A_JumpIf(!CountInv("WaltherLoaded"), "Reload");
-		WP8U A 0 A_JumpIf(Invoker.silenced, 2);
-		WP8G A 0;
-		#### B 1
+		WP8U B 1
 		{
-			A_FireBullets(1, 1, 1, random(6,18), "BulletPuff_2", FBF_NORANDOMPUFFZ);
-			If(Invoker.silenced == False) { A_StartSound("walther/fire", CHAN_WEAPON); A_AlertMonsters(); A_GunFlash(); }
-			Else
-			{
-				If(GetCVar('Acid_Silencer') == 2) { A_StartSound("P38/fire_silenced_3", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
-				Else If(GetCVar('Acid_Silencer') == 1) { A_StartSound("P38/fire_silenced_2", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
-				Else { A_StartSound("P38/fire_silenced", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
-			}
+			A_FireBullets(0.5, 0.5, -1, random(3,17), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_StartSound("P38/fire_silenced", CHAN_WEAPON);
+			A_AlertMonsters(256);
 			A_TakeInventory("WaltherLoaded",1);
 			A_SpawnItemEx("Casing_9MM",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
@@ -86,47 +59,26 @@ Class Walther : AxisWeapon
 		#### D 1 A_WeaponOffset(0,41,WOF_INTERPOLATE);
 		#### E 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		WP8U A 0 A_JumpIf(Invoker.silenced, 1);
-		Goto Ready;
 		WP8U A 7 A_WeaponReady(WRF_NOFIRE|WRF_NOBOB);
-		Goto Ready;
-	Flash:
-		WP8F A 1 BRIGHT A_Light1;
-		Goto LightDone;	
-
-	AltFire:
-		TNT1 A 0 { Invoker.wmod = True; }
-		Goto ReloadWork;
-	
+		Goto Ready;	
 	Reload:
 		TNT1 A 0 A_JumpIfInventory("WaltherLoaded", 8, 2);
 		TNT1 A 0 A_JumpIf(CountInv("Ammo9mm") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
 		TNT1 A 0;
 		Goto Ready;
 	ReloadWork:
-		WP8U A 0 A_JumpIf(Invoker.silenced, 2);
-		WP8G A 0;
-		#### # 1
+		WP8U G 1
 		{
 			A_WeaponOffset(0,35,WOF_INTERPOLATE);
-			If(Invoker.wmod) { A_StartSound("P38/silencer", CHAN_WEAPON); }
-			Else { A_StartSound("walther/reload", CHAN_WEAPON); }
+			A_StartSound("walther/reload", CHAN_WEAPON);
 		}
-		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
-		TNT1 A 11
-		{
-			If(Invoker.wmod == True)
-			{
-				If(Invoker.silenced == True) { Invoker.silenced = False; }
-				Else { Invoker.silenced = True; }
-			}
-		}
-		TNT1 A 0 A_JumpIf(Invoker.wmod && Invoker.silenced, 3);
+		#### G 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
+		#### G 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### E 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
+		#### E 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
+		#### E 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
+		#### E 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
+		TNT1 A 11;
 	ReloadLoop:
 		TNT1 A 0
 		{
@@ -138,21 +90,14 @@ Class Walther : AxisWeapon
 		}
 		TNT1 A 0;
 	ReloadFinish:
-		WP8U A 0 A_JumpIf(Invoker.wmod && Invoker.silenced, 4);
-		WP8G A 0 A_JumpIf(Invoker.wmod, 3);
-		WP8U A 0 A_JumpIf(Invoker.silenced, 2);
-		WP8G A 0;
-		#### # 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		#### # 0 A_JumpIf(Invoker.wmod, 1);
-		Goto Ready;
-		#### # 0 { Invoker.wmod = False; }
+		WP8U D 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
+		#### D 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
+		#### D 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
+		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		Goto Ready;
 	}
 }
@@ -161,9 +106,7 @@ Class WaltherLoaded : Ammo
 {
 	Default
 	{
-		Tag "9 × 19 mm Parabellum";
 		+INVENTORY.IGNORESKILL
 		Inventory.MaxAmount 8;
-		Inventory.Icon "PISTA0";
 	}
 }
