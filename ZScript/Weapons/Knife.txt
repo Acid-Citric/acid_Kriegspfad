@@ -25,28 +25,23 @@ Class Knife : AxisWeapon
 		Loop;
 
 	Fire:
-		WP0G BBCCDD 1;
+		#### A 0 A_StartSound("knife/swing", CHAN_WEAPON);
+		WP0G BCD 1;
 		#### E 1
 		{
-			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "BulletPuff_2", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "KnifePuff", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
 			A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		}
 		#### E 1
 		{
-			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "BulletPuff_2", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "KnifePuff", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
 			A_WeaponOffset(-5,37,WOF_INTERPOLATE);
 		}
 		#### E 1
 		{
-			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "BulletPuff_2", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
-			A_WeaponOffset(-10,42,WOF_INTERPOLATE);
-		}		
-		#### E 1
-		{
-			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "BulletPuff_2", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
+			A_CustomPunch((CountInv("PowerStrength") >= 1 ? 20 : 2), False, CPF_PULLIN, "KnifePuff", 64,(CountInv("PowerStrength") >= 1 ? 1 : 0), 100, "ArmorBonus", "knife/slash", "");
 			A_WeaponOffset(-15,47,WOF_INTERPOLATE);
 		}
-		#### F 1 A_WeaponOffset(-20,52,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-25,57,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-30,62,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-35,67,WOF_INTERPOLATE);
@@ -59,7 +54,7 @@ Class Knife : AxisWeapon
 		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
-		#### # 01 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		#### # 11 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		Goto Ready;
 	}
 }
