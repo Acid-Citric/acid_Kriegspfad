@@ -6,6 +6,18 @@ Class AxisWeapon : Weapon
 		Scale 0.3;
 	    Weapon.BobRangeX 0;
 	}
+	//Credit Agent_Ash aka Jekyll Grim Payne and Boondorl
+	//Changes ammo type
+	Action Void SetAmmoType1(bool set, Class<Ammo> AmmoClass)
+	{
+		If(set) 
+		{
+			Invoker.AmmoType1 = AmmoClass;
+			Invoker.Ammo1 = Ammo(FindInventory(AmmoClass));
+			Return;
+		}
+		Invoker.Ammo1 = null;
+	}
 }
 
 Class BulletPuff_2 : BulletPuff
@@ -17,6 +29,15 @@ Class BulletPuff_2 : BulletPuff
 		Scale 0.4;
 		VSpeed 0;
 	    +NOEXTREMEDEATH
+	}
+}
+
+Class KnifePuff : BulletPuff
+{
+	Default
+    {
+		AttackSound "knife/hitwall";
+		SeeSound "knife/slash";
 	}
 }
 
