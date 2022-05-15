@@ -43,8 +43,9 @@ class WW2StatusBar : BaseStatusBar
 
 	protected void DrawFullScreenStuff ()
 	{
+		let berserk = CPlayer.mo.FindInventory("PowerStrength");
 		DrawBar("Graphics/Hud/HUD_HEALTH.png", "", CPlayer.Health, 100, (10, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
-		DrawString(mSmallFont, FormatNumber(CPlayer.Health, 3), (30, -12), translation:Font.CR_WHITE);
+		DrawString(mSmallFont, FormatNumber(CPlayer.Health, 3), (30, -12), translation: berserk? Font.CR_RED : Font.CR_WHITE);
 		
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
