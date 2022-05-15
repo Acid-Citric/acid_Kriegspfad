@@ -131,6 +131,7 @@ Class NightVision : Infrared
 	{
 		+INVENTORY.NOSCREENFLASH
 		Powerup.Type "PowerTorch";
+		Powerup.Color "FF0000", 0.5;
 		Inventory.PickupMessage "$GOTVISOR";
 		//Inventory.PickupSound "powerups/berserk";
 	}
@@ -138,6 +139,12 @@ Class NightVision : Infrared
 	{
 		Toucher.A_SetBlend("FFFFFF",0.4,35);
 		Return Super.TryPickup(Toucher);
+	}
+	States
+	{
+	Spawn:
+		NVIS A -1 Bright;
+		Stop;
 	}
 }
 
