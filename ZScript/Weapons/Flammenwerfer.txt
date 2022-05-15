@@ -17,7 +17,7 @@ Class Flammenwerfer : AxisWeapon
 		{
 			Let weap = toucher.FindInventory("Flammenwerfer");
 			If(!weap) { Self.AmmoGive1 = random(50,150); }
-			Else { Self.AmmoGive1 = random(50,150); }
+			Else { Self.AmmoGive1 = random(10,50); }
 		}
 			Return Super.TryPickup(toucher);
 	}
@@ -63,10 +63,7 @@ Class Flammenwerfer : AxisWeapon
 		{
 			A_GunFlash();
 			A_AlertMonsters();
-
-			A_FireProjectile("FlammenwerferFire", 0, False, 0, 5, 0, FRandom(3, 4));
-			For(int i; i<3; i++) { A_FireProjectile("FlammenwerferFireFake",0, False, 0, 5, 0, FRandom(4, 5)); }
-
+			A_FireProjectile("FlammenwerferProjectile", 0, False, 0, 5, 0, FRandom(3, 4));
 			A_WeaponOffset(random(-2,2),random(30,34),WOF_INTERPOLATE);
 			
 			If(Invoker.counter == 5) { Invoker.counter = 0; A_TakeInventory("AmmoFuel", 1, TIF_NOTAKEINFINITE); }
@@ -84,56 +81,171 @@ Class Flammenwerfer : AxisWeapon
 	}
 }
 
-Class FlammenwerferFire : Actor
+Class FlammenwerferProjectile : FastMissile
 {
 	Default
 	{
-		SeeSound "flamer/fire";
-		Radius 2;
-		Height 4;
-		Speed 25;
-		DamageFunction (random(1,2)*10);
-		PROJECTILE;
-		RenderStyle "Add";
-		DamageType "Fire";
+		Radius 36.5;
+		Height 60;
+		FastMissile.RadiusScale 0.1;
+		FastMissile.HeightScale 0.1;
+		FastMissile.RadiusScaleFactor 0.03;
+		FastMissile.HeightScaleFactor 0.03;
+		
+		FastMissile.DOTType "BurnDOT";
+		
 		Scale 0.275;
-		+BLOODLESSIMPACT
-		+NODAMAGETHRUST
-		+STRIFEDAMAGE
-		+DONTSPLASH
+		FastMissile.XScaleFactor 0.03;
+		FastMissile.YScaleFactor 0.03;
+		
+		DamageFunction 10;
+		DamageType "Fire";
+		Speed 24;
+		RenderStyle "Add";
+		Alpha 0.75;
+		Obituary "%o was burned to death by %k.";
+		
 		+FORCEXYBILLBOARD
-		-NOGRAVITY
-		Gravity 0.1;
+		+NOBLOOD
+		+PAINLESS
+		+FASTMISSILE.HITONCE
 	}
 	States
 	{
 	Spawn:
 		TNT1 A 0;
 		TNT1 A 0 { bPAINLESS = random(0,1); }
-		DB55 DEFGHIJKLMN 1 Bright { A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
-		DB55 OPQRSTUVWXYZ 1 Bright { A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		DB55 A 1 Bright ThrustThingZ(0,16,0,1); //
+	Move:		
+		DB55 DEFGHIJKLMN 1 Bright; //{ A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		DB55 OPQRSTUVWXYZ 1 Bright; //{ A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
 		Stop;
 	Death:
-		DB56 ABCDEFGHIJK 1 Bright { A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		TNT1 A 0 
+		{
+			A_AreaOfEffect("FireAoE", 12);
+			A_StartSound("weapons/flamethrower/hit");
+		}
+		DB56 ABCDEFGHIJK 1 Bright { A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); A_Splash(32, radius*2, XF_NOSPLASH); }
 		Wait;
 	}
 }
-Class FlammenwerferFireFake : FlammenwerferFire
+
+class BurnDOT : CustomDOT
 {
 	Default
 	{
-		DamageFunction 0;
-		+PAINLESS +NOTRIGGER
+		DamageType "Fire";
+		CustomDOT.EffectRate 4;
+		CustomDOT.EffectActor "FlameEffect";
+		Inventory.MaxAmount 7;
+		DamageFunction 5;
+		
+		+PAINLESS
+		+NOBLOOD
 	}
 }
 
-Class FlamerPuff : BulletPuff_2
+class FlameEffect : DOTEffect
 {
-	Default	{ Scale 0.075; DamageType "Fire"; }
+	Default
+	{
+		RenderStyle "Add";
+		Alpha 0.4;
+		Scale 0.2;
+		
+		+DOTEFFECT.NOWARP
+		+NOBLOOD
+	}
+	
 	States
 	{
 	Spawn:
-		DB56 ABCDEFGHIJK 1 Bright { A_Explode(random(0,1), 56, XF_HURTSOURCE|XF_NOSPLASH, False, 56); A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		FIRE ABCDEFGH 2 Bright;
 		Stop;
+	}
+	
+	override void Effect()
+	{
+		scale.x -= min(0.01, scale.x);
+		scale.y -= min(0.01, scale.y);
+	}
+}
+
+class FireAoE : AoE
+{
+	static const String noSpawn[] =
+	{
+		"FWATER1", "FWATER2", "FWATER3", "FWATER4",
+		"BLOOD1", "BLOOD2", "BLOOD3"
+	};
+	
+	Default
+	{
+		Radius 16;
+		Height 24;
+		DamageFunction 5;
+		DamageType "Fire";
+		
+		AoE.DOTType "BurnDOT";
+		AoE.EffectRate 4;
+		AoE.EffectActor "GroundFireFlame";
+		
+		+PAINLESS
+		+NOBLOOD
+		+AOE.NOLIQUIDS
+	}
+	
+	States
+	{
+	Spawn:
+		TNT1 A 70;
+		Stop;
+	}
+	
+	override void BeginPlay()
+	{
+		super.BeginPlay();
+		
+		TextureID offLimits;
+		for (int i = 0; i < noSpawn.Size(); ++i)
+		{
+			offLimits = TexMan.CheckForTexture(noSpawn[i], TexMan.Type_Flat);
+			if (floorpic == offLimits)
+			{
+				Destroy();
+				return;
+			}
+		}
+	}
+}
+
+class GroundFireFlame : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Alpha 0.4;
+		Scale 0.3;
+		
+		+NOINTERACTION
+	}
+	
+	States
+	{
+	Spawn:
+		FIRE ABCDEFGH 2 Bright;
+		Stop;
+	}
+	
+	override void Tick()
+	{
+		super.Tick();
+		
+		if (bDestroyed || IsFrozen())
+			return;
+		
+		scale.x -= min(0.02, scale.x);
+		scale.y -= min(0.02, scale.y);
 	}
 }
