@@ -21,6 +21,5 @@ Generator Kar98k				BulletChip
 Generator UMG43					BulletChip
 
 Generator RifleGrenade			Scorch
-Generator FlammenwerferFire		Scorch
-Generator FlammenwerferFireFake	Scorch
+Generator FlammenwerferProjectile		Scorch
 
