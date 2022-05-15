@@ -5,13 +5,9 @@ Class WW2Handler : EventHandler
 		PlayerInfo player = players[e.PlayerNumber];
 		player.mo.TakeInventory("FireDeathEffect", 1);
 	}
-	Override Void WorldThingDamaged(WorldEvent e)
-	{
-   	     If(e.Inflictor && e.Inflictor.DamageType == "Fire") { e.Thing.GiveInventory("FirePainEffect",1); }
-	}	
     Override Void WorldThingDied(WorldEvent e) // Credits to jarewill on the ZDoom Forums
 	{
-   	     If(e.Inflictor && e.Inflictor.DamageType == "Fire") { e.Thing.TakeInventory("FirePainEffect",1); e.Thing.GiveInventory("FireDeathEffect",1); }
+   	     If(e.Inflictor && e.Inflictor.DamageType == "Fire") { e.Thing.GiveInventory("FireDeathEffect",1); }
 	}
     Override Void WorldThingRevived(WorldEvent e) { e.Thing.TakeInventory("FireDeathEffect",1); }
 
@@ -40,7 +36,9 @@ Class WW2Handler : EventHandler
 
 		Else If((cls == 'HealthBonus') || (cls == 'ArmorBonus'))
 		{
-			If(Random(0,1))	e.Replacement = "Small_HealthPack";
+			If(Random(0,19) == 0)									e.Replacement = "Small_HealthPack";
+			Else If(Random(0,19) == 19)								e.Replacement = "AmmoGranate";
+			Else If(Random(0,19) == 9)								e.Replacement = "AmmoTNT";			
 			Else e.Replacement = 'Nothing';
 		}
 
@@ -59,7 +57,7 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Berserk')									e.Replacement = "BerserkSphere";
 
 
-		// Else If(cls == "RadSuit")								e.Replacement = " ";
+		Else If(cls == "RadSuit")									e.Replacement = "HazmatSuit";
 		Else If(cls == 'Infrared')									e.Replacement = "NightVision";
 		// Else If(cls == 'AllMap')									e.Replacement = " ";
 		Else If(cls == 'InvulnerabilitySphere')						e.Replacement = "InvulnSphere";
@@ -88,12 +86,12 @@ Class WW2Handler : EventHandler
 		}
 		Else If(cls == 'RocketAmmo')
 		{
-			If (Random[RocketAmmo](0,1)) e.Replacement = 'RocketAmmoReplacer';
+			If (Random[RocketAmmo](0,1)) e.Replacement = 'Ammo792M_1';
 			Else e.Replacement = 'Ammo9mm_1';
 		}
 		Else If(cls == 'RocketBox')
 		{
-			If (Random[RocketBox](0,1)) e.Replacement = 'RocketBoxReplacer';
+			If (Random[RocketBox](0,1)) e.Replacement = 'Ammo792M_2';
 			Else e.Replacement = 'ClipBox';
 		}
 		Else If(cls == 'Cell')
@@ -109,24 +107,6 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Backpack')									e.Replacement = "AmmoPouches";
 	}
 }
-
-
-Class FirePainEffect : Inventory
-{
-	Override Void AttachToOwner(Actor other)
-	{
-		self.height = other.height; //Store the monster's height
-		Super.AttachToOwner(other);
-	}
-	Override Void DoEffect()
-	{
-		Super.DoEffect();
-		If(Owner && Owner.Health > 0 && !Owner.FindState("Pain.Fire", True))
-		{
-			Owner.A_SpawnItemEx("FlamerPuff",Pos.X,random((Owner.Radius/4),(Owner.Radius/2)),random((Owner.Height/4),(Owner.Height/2)),Vel.X,Vel.Y,Vel.Z,Random(0,360),SXF_NOCHECKPOSITION|SXF_ABSOLUTEMOMENTUM);
-		}
-	}
-} 
 
 Class FireDeathEffect : Inventory // Credits to jarewill on the ZDoom Forums
 {
