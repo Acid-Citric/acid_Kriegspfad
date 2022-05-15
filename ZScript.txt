@@ -9,6 +9,7 @@ Version "4.6.1"
 
 #Include "ZScript/BaseStatusBar.txt"
 #Include "ZScript/EventHandler.txt"
+#Include "ZScript/Libraries/base_thrower.txt"
 
 #Include "ZScript/Weapons/Weapon.txt"
 #Include "ZScript/Weapons/Effects.txt"
