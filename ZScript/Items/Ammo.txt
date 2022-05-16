@@ -2,14 +2,15 @@ mixin Class AmmoPickupMessage
 {
 	Default
 	{
-		+INVENTORY.IGNORESKILL
 		Scale 0.75;
 		Inventory.PickupSound "misc/ammo_pkup";
 	}
-	override String PickupMessage()
+	Override String PickupMessage()
 	{
-		if(Amount == 1) return String.Format("+%d %s",Amount,GetTag());
-		else return String.Format("+%d %ss",Amount,GetTag());	
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		int result = int(Amount * factor);
+		if(result == 1) return String.Format("+%d %s",result,GetTag());
+		else return String.Format("+%d %ss",result,GetTag());	
 	}
 }
 Class Ammo9mm : Ammo
@@ -38,11 +39,16 @@ Class Ammo9mm_1 : Ammo9mm
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo9mm](1,8);
+		
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		int result = int(Amount * factor);
+		If(result > 8 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
 	}
 	States
 	{
 	Spawn:
-		9MM_ A -1;
+		TNT1 A 0 NoDelay;
+		9MM_ AB -1;
 		Stop;
 	}
 }
@@ -99,7 +105,7 @@ Class Ammo12G_1 : Ammo12G
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		bSPRITEFLIP = Random(0,1);	
+		bSPRITEFLIP = Random(0,1);
 		// variants
 		int dec = Random[Ammo12G](0,3);
 		switch(dec)
@@ -122,12 +128,17 @@ Class Ammo12G_1 : Ammo12G
 			Amount = 1;
 			break;
 		}
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		int result = int(Amount * factor);
+		If(result == 2 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")+3); }
+		Else If(result == 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")); }
+		Else If(result > 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+5); }
 	}
 	States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay;
-		12G_ ABCD -1;
+		12G_ ABCDE -1;
 		Stop;
 	}
 }
@@ -202,12 +213,17 @@ Class Ammo792M_1 : Ammo792M
 			Amount = 1;
 			break;
 		}
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		int result = int(Amount * factor);
+		If(result == 2 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")+4); }
+		Else If(result == 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")+2); }
+		Else If(result > 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+6); }
 	}
 	States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay;
-		792M ABCDE -1;
+		792M ABCDEF -1;
 		Stop;
 	}
 }
@@ -294,7 +310,6 @@ Class AmmoFuel_1 : AmmoFuel
 
 Class AmmoRifleGrenade : Ammo
 {
-	mixin AmmoPickupMessage;
 	Default
 	{
 		Tag "$TAG_AMMO_RIFLEGRENADE";
@@ -304,7 +319,9 @@ Class AmmoRifleGrenade : Ammo
 		Ammo.BackpackAmount 0;
 		Ammo.BackpackMaxAmount 15;
 		Ammo.DropAmount 1;
+		+INVENTORY.IGNORESKILL
 	}
+	Override String PickupMessage()	{ return String.Format("+%d %s",Amount,GetTag()); }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -322,7 +339,6 @@ Class AmmoRifleGrenade : Ammo
 
 Class AmmoTNT : Ammo
 {
-	mixin AmmoPickupMessage;
 	int counter;
 	Default
 	{
@@ -334,7 +350,9 @@ Class AmmoTNT : Ammo
 		Ammo.BackpackMaxAmount 5;
 		Ammo.DropAmount 1;
 		Scale 1.0;
+		+INVENTORY.IGNORESKILL
 	}
+	Override String PickupMessage()	{ return String.Format("+%d %s",Amount,GetTag()); }
 	Override Void PostBeginPlay()
 	{
 		counter = 5;
@@ -381,7 +399,6 @@ Class AmmoTNT_AmmoCooldown : Powerup { Default { Powerup.Duration 20; } }
 
 Class AmmoGranate : Ammo
 {
-	mixin AmmoPickupMessage;
 	bool shgmod;
 	Default
 	{
@@ -392,7 +409,10 @@ Class AmmoGranate : Ammo
 		Ammo.BackpackAmount 0;
 		Ammo.BackpackMaxAmount 15;
 		Ammo.DropAmount 1;
+		Scale 0.75;
+		+INVENTORY.IGNORESKILL
 	}
+	Override String PickupMessage()	{ return String.Format("+%d %s",Amount,GetTag()); }
 	Override Void PostBeginPlay()
 	{
 		shgmod = False;
