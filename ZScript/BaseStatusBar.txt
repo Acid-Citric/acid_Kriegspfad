@@ -45,7 +45,7 @@ class WW2StatusBar : BaseStatusBar
 	{
 		let berserk = CPlayer.mo.FindInventory("PowerStrength");
 		DrawBar("Graphics/Hud/HUD_HEALTH.png", "", CPlayer.Health, 100, (10, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
-		DrawString(mSmallFont, FormatNumber(CPlayer.Health, 3), (30, -12), translation: berserk? Font.CR_RED : Font.CR_WHITE);
+		DrawString(mSmallFont, FormatNumber(CPlayer.Health), (30, -12), translation: berserk? Font.CR_RED : Font.CR_WHITE);
 		
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
@@ -180,9 +180,9 @@ class WW2StatusBar : BaseStatusBar
 		DrawBar("Graphics/Hud/HUD_ARMOR.png", "", bomb.timer, 45, (-9, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);*/
 
 		Let shg = AmmoGranate(CPlayer.mo.FindInventory('AmmoGranate'));
-		If(shg.shgmod == True && Ammo_HG.Amount > 5) { DrawImage("Graphics/Hud/HUD_HGRENADE_2.png", (-150, -21), DI_ITEM_OFFSETS); }
+		If(shg.shgmod == True && Ammo_HG.Amount >= 5) { DrawImage("Graphics/Hud/HUD_HGRENADE_2.png", (-150, -21), DI_ITEM_OFFSETS); }
 		Else { DrawImage("Graphics/Hud/HUD_HGRENADE.png", (-145, -21), DI_ITEM_OFFSETS); }
-		DrawString(mSmallFont, FormatNumber(Ammo_HG.Amount, 3), (-140, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+		DrawString(mSmallFont, FormatNumber(Ammo_HG.Amount, 3), (-140, -12), DI_TEXT_ALIGN_RIGHT, shg.shgmod? Font.CR_RED : Font.CR_WHITE);
 
 		int invY = -20;
 		if (!isInventoryBarVisible() && !level.NoInventoryBar && CPlayer.mo.InvSel != null)
