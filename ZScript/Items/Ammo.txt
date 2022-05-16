@@ -319,6 +319,7 @@ Class AmmoRifleGrenade : Ammo
 		Ammo.BackpackAmount 0;
 		Ammo.BackpackMaxAmount 15;
 		Ammo.DropAmount 1;
+		Scale 0.75;
 		+INVENTORY.IGNORESKILL
 	}
 	Override String PickupMessage()	{ return String.Format("+%d %s",Amount,GetTag()); }
