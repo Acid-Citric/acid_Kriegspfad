@@ -72,12 +72,17 @@ Class Ammo9mm_3 : Ammo9mm
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo9mm](8,32);
+
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		int result = int(Amount * factor);
+		If(result > 32 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
 	}
 	States
 	{
 	Spawn:
-		9MM_ C -1;
+		9MM_ CD -1;
 		Stop;
 	}
 }
