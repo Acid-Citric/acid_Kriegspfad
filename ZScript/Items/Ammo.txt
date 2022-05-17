@@ -172,7 +172,6 @@ Class Ammo792M : Ammo
 		Inventory.MaxAmount 40;
 		Ammo.BackpackAmount 5;
 		Ammo.BackpackMaxAmount 100;
-		Scale 1.0;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -234,6 +233,7 @@ Class Ammo792M_1 : Ammo792M
 }
 Class Ammo792M_2 : Ammo792M
 {
+	Default	{ Scale 1.0; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
