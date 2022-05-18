@@ -64,19 +64,14 @@ Class Kar98k : AxisWeapon
 	Fire:
 		TNT1 A 0 A_JumpIf(!CountInv("Kar98kLoaded"), "Reload");
 		TNT1 A 0 A_JumpIf(Invoker.riflereload, "ReloadFinish");
-		WPAG B 1
+		WPAG # 1
 		{
-			If(Invoker.ADS == False) { A_GunFlash(); }
+			If(Invoker.ADS == False) { A_GunFlash(); frame = 1; } //Translates to letter B. 0 is A, 1 is B, 2 is C, etc.
+			Else If(Invoker.ADS == True) { frame = 17; } //Translates to letter R.
 			A_AlertMonsters();
-			A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2", FBF_NORANDOMPUFFZ, 8192, "Kar98k_Tracer", -2);
 			A_StartSound("mauser/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
-			
-			If(Invoker.ADS == True)
-			{
-				 sprite = GetSpriteIndex("WPAG");
-				 frame = 17; //Translates to letter R. 0 is A, 1 is B, 2 is C, etc.
-			}
 		}
 	Reloading:
 		#### C 1 { A_WeaponOffset(0,44,WOF_INTERPOLATE); A_ZoomFactor(1.0, ZOOM_INSTANT); }
