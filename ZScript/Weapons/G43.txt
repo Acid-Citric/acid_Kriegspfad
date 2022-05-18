@@ -51,8 +51,18 @@ Class G43 : AxisWeapon
 		WP4G B 1
 		{
 			A_AlertMonsters();
-			If(Invoker.RGrenade == False) { A_GunFlash(); A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2", FBF_NORANDOMPUFFZ); A_StartSound("g43/fire", CHAN_WEAPON); }
-			Else { A_FireProjectile("RifleGrenade"); A_TakeInventory("AmmoRifleGrenade", 1, TIF_NOTAKEINFINITE); A_StartSound("g43/grenadeshot", CHAN_WEAPON); }		
+			If(Invoker.RGrenade == False)
+			{
+				A_GunFlash();
+				A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2", FBF_NORANDOMPUFFZ, 8192, "G43_Tracer", -2);
+				A_StartSound("g43/fire", CHAN_WEAPON);
+			}
+			Else 
+			{ 
+				A_FireProjectile("RifleGrenade");
+				A_TakeInventory("AmmoRifleGrenade", 1, TIF_NOTAKEINFINITE);
+				A_StartSound("g43/grenadeshot", CHAN_WEAPON);
+			}		
 			A_TakeInventory("G43Loaded",1);
 			A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
