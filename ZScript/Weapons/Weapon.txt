@@ -41,6 +41,48 @@ Class KnifePuff : BulletPuff
 	}
 }
 
+Class Kar98k_Tracer : FastProjectile
+{
+	Default
+    {
+		PROJECTILE;
+		Alpha .9;
+		RenderStyle "Add";
+		Scale 0.4;
+		Radius 0;
+		Height 0;
+		+BLOODSPLATTER
+		+RIPPER
+	    +NOEXTREMEDEATH
+		ProjectileKickback 100;
+		DamageFunction (random(40,65));
+		Speed 180;
+	}
+	States
+	{
+	Spawn:
+		PUFF A 1 BRIGHT;
+		Loop;
+	Crash:
+		PUFF A 4 Bright;
+		PUFF BCD 4;
+		Stop;
+	Death:
+	XDeath:
+		TNT1 A 1;
+		Stop;
+	}
+}
+
+Class G43_Tracer : Kar98k_Tracer
+{
+	Default
+    {
+		DamageFunction (random(26,55));
+		Speed 150;
+	}
+}
+
 Class Casing_9MM : Actor
 {
 	Default
