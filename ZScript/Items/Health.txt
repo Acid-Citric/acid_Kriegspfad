@@ -43,13 +43,12 @@ Class Small_HealthPack : Health
 		If(sk == 0 || sk == 4) { Amount = 10; }
 		Else { Amount = 5; }
 
-		SetState(ResolveState("Spawn")+Random[Small_HealthPack](1,4));
+		frame = random[Small_HealthPack](6,9); //G,H,I,J
 	}
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay;
-		HEAL GHIJ -1;
+		HEAL # -1;
 		Stop;
 	}
 }
@@ -69,7 +68,22 @@ Class Medium_HealthPack : Health
 		If(sk == 0 || sk == 4) { Amount = 25; }
 		Else { Amount = 15; }
 
-		SetState(ResolveState("Spawn")+Random[Medium_HealthPack](1,2));
+		frame = random[Medium_HealthPack](0,1); //A,B
+	}
+    Override Bool TryPickup(in out Actor Toucher)
+    {
+		Int Hp;
+		Int sk = G_SkillPropertyInt(SKILLP_ACSReturn);
+		If(sk == 0 || sk == 4) { Hp = 75; }
+		Else { Hp = 85; }
+		
+		If(Toucher.Health > Hp && Toucher.Health < 100)
+		{ 
+			Toucher.GiveBody(Amount, 999);
+			GoAwayAndDie();
+			Return True;
+		}
+		Return Super.TryPickup(toucher);
 	}
 	Override Bool Used(Actor User)
 	{
@@ -84,8 +98,7 @@ Class Medium_HealthPack : Health
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay;
-		HEAL AB -1;
+		HEAL # -1;
 		Stop;
 	}
 }
@@ -105,7 +118,22 @@ Class Large_HealthPack : Health
 		If(sk == 0 || sk == 4) { Amount = 50; }
 		Else { Amount = 25; }
 
-		SetState(ResolveState("Spawn")+Random[Large_HealthPack](1,4));
+		frame = random[Large_HealthPack](2,5); //C,D,E,F
+	}
+    Override Bool TryPickup(in out Actor Toucher)
+    {
+		Int Hp;
+		Int sk = G_SkillPropertyInt(SKILLP_ACSReturn);
+		If(sk == 0 || sk == 4) { Hp = 50; }
+		Else { Hp = 75; }
+		
+		If(Toucher.Health > Hp && Toucher.Health < 100)
+		{ 
+			Toucher.GiveBody(Amount, 999);
+			GoAwayAndDie();
+			Return True;
+		}
+		Return Super.TryPickup(toucher);
 	}
 	Override Bool Used(Actor User)
 	{
@@ -120,8 +148,7 @@ Class Large_HealthPack : Health
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay;
-		HEAL CDEF -1;
+		HEAL # -1;
 		Stop;
 	}
 }
