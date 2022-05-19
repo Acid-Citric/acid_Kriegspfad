@@ -115,7 +115,7 @@ Class FlammenwerferProjectile : FastMissile
 	Spawn:
 		TNT1 A 0;
 		TNT1 A 0 { bPAINLESS = random(0,1); }
-		DB55 A 1 Bright ThrustThingZ(0,16,0,1); //
+		DB55 A 1 Bright;
 	Move:		
 		DB55 DEFGHIJKLMN 1 Bright; //{ A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
 		DB55 OPQRSTUVWXYZ 1 Bright; //{ A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
