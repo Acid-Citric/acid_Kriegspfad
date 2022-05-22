@@ -60,7 +60,7 @@ Class UMG43 : AxisWeapon
 			A_FireBullets(5, 5, 1, random(75,130), "BulletPuff_2", FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			A_StartSound("chaingun/fire", CHAN_WEAPON);
 			A_WeaponOffset(0,34,WOF_INTERPOLATE);
-			A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("Casing_MauserRifle",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
 		#### BCD 1;
 		#### A 0 A_JumpIfInventory("Ammo762M",1,1);
