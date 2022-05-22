@@ -70,6 +70,16 @@ Class Medium_HealthPack : Health
 
 		frame = random[Medium_HealthPack](0,1); //A,B
 	}
+	Override Bool Used(Actor User)
+	{	
+		If(User && User.Player && User.Player.Health > 0 && CVar.FindCVar('Acid_Health').GetBool())
+		{
+			User.GiveBody(Amount, 999);
+			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
+			Destroy();
+		}
+		Return Super.Used(User);
+	}
     Override Bool TryPickup(in out Actor Toucher)
     {
 		Int Hp;
@@ -84,16 +94,6 @@ Class Medium_HealthPack : Health
 			Return True;
 		}
 		Return Super.TryPickup(toucher);
-	}
-	Override Bool Used(Actor User)
-	{
-		If(User && User.Player && User.Player.Health > 0 && GetCVar('Acid_Health') == True)
-		{
-			User.GiveBody(Amount, 999);
-			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
-			Destroy();
-		}
-		Return Super.Used(User);
 	}
 	States
 	{
@@ -120,6 +120,16 @@ Class Large_HealthPack : Health
 
 		frame = random[Large_HealthPack](2,5); //C,D,E,F
 	}
+	Override Bool Used(Actor User)
+	{
+		If(User && User.Player && User.Player.Health > 0 && CVar.FindCVar('Acid_Health').GetBool())
+		{
+			User.GiveBody(Amount, 999);
+			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
+			Destroy();
+		}
+		Return Super.Used(User);
+	}
     Override Bool TryPickup(in out Actor Toucher)
     {
 		Int Hp;
@@ -134,16 +144,6 @@ Class Large_HealthPack : Health
 			Return True;
 		}
 		Return Super.TryPickup(toucher);
-	}
-	Override Bool Used(Actor User)
-	{
-		If(User && User.Player && User.Player.Health > 0 && GetCVar('Acid_Health') == True)
-		{
-			User.GiveBody(Amount, 999);
-			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
-			Destroy();
-		}
-		Return Super.Used(User);
 	}
 	States
 	{
