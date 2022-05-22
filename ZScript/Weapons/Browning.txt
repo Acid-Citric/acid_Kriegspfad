@@ -58,7 +58,7 @@ Class BA5 : AxisWeapon
 			A_FireBullets(4, 4, 7, random(5,15), "BulletPuff_2", FBF_NORANDOMPUFFZ);
 			A_StartSound("browning/fire", CHAN_WEAPON);
 			A_TakeInventory("BA5Loaded",1);
-			A_SpawnItemEx("Casing_Shotgun",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("Casing_Shotgun",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
 		#### B 1 A_WeaponOffset(0,42,WOF_INTERPOLATE); 
 		#### A 1 A_WeaponOffset(0,47,WOF_INTERPOLATE);
