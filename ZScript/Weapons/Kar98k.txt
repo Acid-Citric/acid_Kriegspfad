@@ -86,7 +86,7 @@ Class Kar98k : AxisWeapon
 		#### H 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
 		#### I 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### I 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
-		#### J 7 A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);	
+		#### J 7 A_SpawnItemEx("Casing_MauserRifle",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);	
 		#### M 1 A_WeaponOffset(0,39,WOF_INTERPOLATE);
 		#### M 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### N 1 A_WeaponOffset(0,37,WOF_INTERPOLATE);
@@ -144,7 +144,11 @@ Class Kar98k : AxisWeapon
 		WPAG GHI 2;
 	ReloadWork_Continue:
 		TNT1 A 0 { Invoker.riflereload = True; }
-		WPAG J 2 { If(!CountInv("Kar98kLoaded")) { A_SpawnItemEx("Casing_MauserRifle",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION); } }
+		WPAG J 2
+		{ 
+			If(!CountInv("Kar98kLoaded"))
+				{ A_SpawnItemEx("Casing_MauserRifle",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION); }
+		}
 		#### KL 2;
 		#### # 6;
 		#### # 1 A_WeaponOffset(-4,44,WOF_INTERPOLATE);
