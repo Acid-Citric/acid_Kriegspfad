@@ -78,7 +78,11 @@ Class TrenchGun : AxisWeapon
 		#### D 1 A_WeaponOffset(3,35,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### E 1 A_WeaponOffset(-4,41,WOF_INTERPOLATE);
-		#### E 1 { A_WeaponOffset(-4,43,WOF_INTERPOLATE); A_SpawnItemEx("Casing_Shotgun",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION); }
+		#### E 1
+		{
+			A_WeaponOffset(-4,43,WOF_INTERPOLATE);
+			A_SpawnItemEx("Casing_Shotgun",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		}
 		#### F 1 A_WeaponOffset(-4,45,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-3,44,WOF_INTERPOLATE);
 		#### E 1 A_WeaponOffset(-2,40,WOF_INTERPOLATE);
