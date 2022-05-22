@@ -1,2 +1,3 @@
+User Bool Acid_Health = False;
 Server Int Acid_Silencer = 0;
 Server Int casinglifetime = 35;
