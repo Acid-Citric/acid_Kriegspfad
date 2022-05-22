@@ -62,7 +62,7 @@ Class MP40 : AxisWeapon
 			If(Invoker.switchmag == True) { A_TakeInventory("MP40Loaded_2",1); }
             Else If(Invoker.switchmag == False) { A_TakeInventory("MP40Loaded_1",1); }			
 			
-			A_SpawnItemEx("Casing_9MM",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("Casing_9MM",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		}
 		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
