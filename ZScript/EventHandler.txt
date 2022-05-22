@@ -11,6 +11,7 @@ Class WW2Handler : EventHandler
 	}
     Override Void WorldThingRevived(WorldEvent e) { e.Thing.TakeInventory("FireDeathEffect",1); }
 
+	Override void WorldThingSpawned(WorldEvent e) { If(e.Thing.bISMONSTER && (e.Thing is "LostSoul")) { e.Thing.bNOBLOOD = True; } }
 
 	Override Void CheckReplacement(ReplaceEvent e)
 	{
