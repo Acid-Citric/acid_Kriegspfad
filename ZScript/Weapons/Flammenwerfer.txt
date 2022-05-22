@@ -106,7 +106,7 @@ Class FlammenwerferProjectile : FastMissile
 		Obituary "%o was burned to death by %k.";
 		
 		+FORCEXYBILLBOARD
-		+NOBLOOD
+		+BLOODLESSIMPACT
 		+PAINLESS
 		+FASTMISSILE.HITONCE
 	}
@@ -155,7 +155,6 @@ class FlameEffect : DOTEffect
 		Scale 0.2;
 		
 		+DOTEFFECT.NOWARP
-		+NOBLOOD
 	}
 	
 	States
@@ -192,7 +191,6 @@ class FireAoE : AoE
 		AoE.EffectActor "GroundFireFlame";
 		
 		+PAINLESS
-		+NOBLOOD
 		+AOE.NOLIQUIDS
 	}
 	
