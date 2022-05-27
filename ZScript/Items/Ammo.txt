@@ -332,13 +332,12 @@ Class AmmoRifleGrenade : Ammo
 	{
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
-		SetState(ResolveState("Spawn")+Random[AmmoRifleGrenade](1,2));
 	}
 	States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay;
-		R_G_ AB -1;
+		R_G_ A -1;
 		Stop;
 	}
 }
@@ -424,7 +423,6 @@ Class AmmoGranate : Ammo
 		shgmod = False;
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
-		SetState(ResolveState("Spawn")+Random[AmmoGranate](1,2));
 	}
     Override void DoEffect()
     {
@@ -462,7 +460,7 @@ Class AmmoGranate : Ammo
 	{
 	Spawn:
 		TNT1 A 0 NoDelay;
-		SHG_ AB -1;
+		SHG_ A -1;
 		Stop;
 	}
 }
