@@ -58,12 +58,13 @@ Class Kar98k_Tracer : FastProjectile
 		Scale 0.4;
 		Radius 0;
 		Height 0;
+		+NODAMAGETHRUST
 		+BLOODSPLATTER
 		+RIPPER
 		+NOBOSSRIP
 	    +NOEXTREMEDEATH
 		ProjectileKickback 100;
-		DamageFunction (random(1,3) * random(40,65));
+		DamageFunction (random(1,3) * random(130,200));
 		Speed 180;
 	}
 	States
@@ -86,7 +87,6 @@ Class G43_Tracer : Kar98k_Tracer
 {
 	Default
     {
-		DamageFunction (random(1,3) * random(26,55));
 		Speed 150;
 	}
 }
