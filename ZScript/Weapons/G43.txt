@@ -54,7 +54,7 @@ Class G43 : AxisWeapon
 			If(Invoker.RGrenade == False)
 			{
 				A_GunFlash();
-				A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2", FBF_NORANDOMPUFFZ, 8192, "G43_Tracer", -2);
+				A_FireBullets(0, 0, 1, 0, "BulletPuff_2", 0, 8192, "G43_Tracer", -2);
 				A_StartSound("g43/fire", CHAN_WEAPON);
 			}
 			Else 
