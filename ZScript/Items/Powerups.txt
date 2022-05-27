@@ -13,6 +13,7 @@ Class SuperCharge : PowerupGiver
 		Powerup.Type "PowerRegeneration";
 		Inventory.PickupMessage "$GOTSUPER"; // "Supercharge!"
 		//Inventory.PickupSound "powerups/soul";
+		Translation "0:255=@50[0,128,0]";
 	}
 	Override Bool TryPickup(In Out Actor Toucher)
 	{
@@ -22,7 +23,8 @@ Class SuperCharge : PowerupGiver
 	States
 	{
 	Spawn:
-		POW4 ABCDCB 6 Bright;
+		POW0 A 1 NoDelay Bright A_SpawnItemEx("SuperChargeFX", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
+		POW0 A 3 Bright;
 		Loop;
 	}
 }
@@ -62,6 +64,7 @@ Class BerserkSphere : Berserk
 		+INVENTORY.NOSCREENFLASH
 		Inventory.PickupMessage "$GOTBERSERK";
 		//Inventory.PickupSound "powerups/berserk";
+		Translation "0:255=@50[128,0,0]";
 	}
 	Override Bool TryPickup(In Out Actor Toucher)
 	{
@@ -71,7 +74,8 @@ Class BerserkSphere : Berserk
 	States
 	{
 	Spawn:
-		POW3 ABCD 6 Bright;
+		POW0 A 1 NoDelay Bright A_SpawnItemEx("BerserkSphereFX", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
+		POW0 A 3 Bright;
 		Loop;
 	}
 }
@@ -87,6 +91,7 @@ Class InvulnSphere : InvulnerabilitySphere
 		Powerup.Color "GoldMap";
 		Inventory.PickupMessage "$GOTINVUL"; // "Invulnerability!"
 		Inventory.PickupSound "powerups/invuln";
+		Translation "0:255=@50[255,255,0]";
 	}
 	Override Bool TryPickup(In Out Actor Toucher)
 	{
@@ -96,7 +101,8 @@ Class InvulnSphere : InvulnerabilitySphere
 	States
 	{
 	Spawn:
-		POW1 ABCDCB 6 Bright;
+		POW0 A 1 NoDelay Bright A_SpawnItemEx("InvulnSphereFX", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
+		POW0 A 3 Bright;
 		Loop;
 	}
 }
@@ -105,12 +111,16 @@ Class InvisSphere : BlurSphere
 {
 	Default
 	{
+		-VISIBILITYPULSE
+		+ZDOOMTRANS
+
 		+FLOATBOB
 		FloatBobStrength 0.5;
 		+INVENTORY.FANCYPICKUPSOUND
 		+INVENTORY.NOSCREENFLASH
 		Inventory.PickupMessage "$GOTINVIS"; // "Partial Invisibility"
 		Inventory.PickupSound "powerups/invuln";
+		Translation "0:255=@50[0,0,128]";
 	}
 	Override Bool TryPickup(In Out Actor Toucher)
 	{
@@ -120,7 +130,8 @@ Class InvisSphere : BlurSphere
 	States
 	{
 	Spawn:
-		POW2 ABCD 6 Bright;
+		POW0 A 1 NoDelay Bright A_SpawnItemEx("InvisSphereFX", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
+		POW0 A 3 Bright;
 		Loop;
 	}
 }
@@ -137,7 +148,7 @@ Class NightVision : Infrared
 	}
 	Override Bool TryPickup(In Out Actor Toucher)
 	{
-		Toucher.A_SetBlend("FFFFFF",0.4,35);
+		Toucher.A_SetBlend("FF0000",0.4,35);
 		Return Super.TryPickup(Toucher);
 	}
 	States
@@ -153,8 +164,6 @@ Class HazmatSuit : Radsuit
 {
 	Default
 	{
-		XScale 1.1;
-		YScale 0.9;
 		+INVENTORY.NOSCREENFLASH
 		Powerup.Type "PowerMask";
 		Inventory.PickupMessage "$GOTSUIT";
@@ -166,3 +175,37 @@ Class HazmatSuit : Radsuit
 		Return Super.TryPickup(Toucher);
 	}
 }
+
+
+Class PowerupFx : Actor
+{
+	Default
+	{
+		Renderstyle "Add";
+		Alpha 0.8;
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			// Credits to Jekyll Grim Payne aka Agent_Ash (Beautiful Doom)
+			if (self is "SuperChargeFX") sprite = GetSpriteIndex("POW4");
+			else if (self is "BerserkSphereFX") sprite = GetSpriteIndex("POW3");
+			else if (self is "InvulnSphereFX") sprite = GetSpriteIndex("POW1");
+			else if (self is "InvisSphereFX") sprite = GetSpriteIndex("POW2");
+			return ResolveState(null);
+		}
+	Looping:
+		#### A 1 Bright A_FadeOut(0.05);
+		Loop;
+	LoadSprites: // Used for 'GetSpriteIndex'
+		POW1 A 0; POW2 A 0; POW3 A 0; POW4 A 0;
+		Stop;
+	}
+}
+Class SuperChargeFX : PowerupFx { Default {} }
+Class BerserkSphereFX : PowerupFx { Default {} }
+Class InvulnSphereFX : PowerupFx { Default {} }
+Class InvisSphereFX :  PowerupFx { Default {} }
