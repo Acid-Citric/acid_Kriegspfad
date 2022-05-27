@@ -69,7 +69,7 @@ Class Kar98k : AxisWeapon
 			If(Invoker.ADS == False) { A_GunFlash(); frame = 1; } //Translates to letter B. 0 is A, 1 is B, 2 is C, etc.
 			Else If(Invoker.ADS == True) { frame = 17; } //Translates to letter R.
 			A_AlertMonsters();
-			A_FireBullets(0, 0, 1, random(130,200), "BulletPuff_2", FBF_NORANDOMPUFFZ, 8192, "Kar98k_Tracer", -2);
+			A_FireBullets(0, 0, 1, 0, "BulletPuff_2", 0, 8192, "Kar98k_Tracer", -2);
 			A_StartSound("mauser/fire", CHAN_WEAPON);
 			A_TakeInventory("Kar98kLoaded",1);
 		}
