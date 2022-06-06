@@ -152,3 +152,84 @@ Class Large_HealthPack : Health
 		Stop;
 	}
 }
+
+Class Wolfenstein3D_DogFood : Health
+{
+	Default
+	{
+		Inventory.Amount 4;
+		Inventory.PickupMessage "$PICKUP_HEALTH_DOGFOOD";
+		Inventory.PickupSound "misc/health_pkup";
+	}
+	States
+	{
+	Spawn:
+		HEAL L -1;
+		Stop;
+	}
+}
+
+Class Wolfenstein3D_Meal : Health
+{
+	Bool hotmeal;
+	Default
+	{
+		Health 10;
+		Inventory.Amount 10;
+		Inventory.PickupMessage "$PICKUP_HEALTH_COLDMEAL";
+		Inventory.PickupSound "misc/health_pkup";
+		+VULNERABLE
+		+NOTAUTOAIMED
+		+NOBLOOD
+		+DONTTHRUST
+		DamageFactor "Fire", 2.0;
+		DamageFactor "Normal", 0.0;
+	}
+	Override String PickupMessage()
+	{
+		If(hotmeal)
+			return StringTable.Localize("$PICKUP_HEALTH_HOTMEAL");
+		
+		return Super.PickupMessage();
+	}
+	States
+	{
+	Spawn:
+		HEAL M -1;
+		Stop;
+	Death.Fire:
+		HEAL B 0
+		{
+			Amount = 25;
+			hotmeal = True;
+		}
+		HEAL N 8 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);		
+		Goto Death.Fire+1;
+	}
+}
+
+Class HotMeal_Smoke : GrenadeSmokeTrail
+{
+	Default
+	{
+		+NOGRAVITY
+		RenderStyle "Add";
+		VSpeed 1.0;
+	}
+}
+
+Class Wolfenstein3D_FirstAidKit : Health
+{
+	Default
+	{
+		Inventory.Amount 25;
+		Inventory.PickupMessage "$PICKUP_HEALTH_FIRSTAIDKIT";
+		Inventory.PickupSound "misc/health_pkup";
+	}
+	States
+	{
+	Spawn:
+		HEAL O -1;
+		Stop;
+	}
+}
