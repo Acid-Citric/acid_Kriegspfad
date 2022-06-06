@@ -11,7 +11,7 @@ Class WW2Handler : EventHandler
 	}
     Override Void WorldThingRevived(WorldEvent e) { e.Thing.TakeInventory("FireDeathEffect",1); }
 
-	Override void WorldThingSpawned(WorldEvent e) { If(e.Thing.bISMONSTER && (e.Thing is "LostSoul")) { e.Thing.bNOBLOOD = True; } }
+	Override void WorldThingSpawned(WorldEvent e) { If(e.Thing.bISMONSTER && (e.Thing is "LostSoul") || (e.Thing is "CommanderKeen")) { e.Thing.bNOBLOOD = True; } }
 
 	Override Void CheckReplacement(ReplaceEvent e)
 	{
@@ -106,6 +106,19 @@ Class WW2Handler : EventHandler
 			Else e.Replacement = 'ClipBox';
 		}
 		Else If(cls == 'Backpack')									e.Replacement = "AmmoPouches";
+
+
+        String checksum = level.GetChecksum();
+        If(level.GetChecksum() == "3ff94e27423f91c1585b3396f0c03459") // doom2.wad MAP31
+        {
+			If(cls == "HealthBonus") { e.Replacement = "Wolfenstein3D_DogFood"; }
+            Else If(cls == "Stimpack") { e.Replacement = "Wolfenstein3D_Meal"; }
+			Else If(cls == "Medikit") { e.Replacement = "Wolfenstein3D_FirstAidKit"; }
+        }
+		If(level.GetChecksum() == "aa4ca3fc891d13821accabd836e29eb5") // doom2.wad MAP32 
+        {
+            If(cls == "Medikit") { e.Replacement = "Wolfenstein3D_FirstAidKit"; }
+        }
 	}
 }
 
@@ -131,6 +144,30 @@ Class FireDeathEffect : Inventory // Credits to jarewill on the ZDoom Forums
 			Owner.bFLY = False; Owner.bNOGRAVITY = False; Owner.bNOBLOOD = True; // Set relevant flags so the monster cannot be damaged, can't fly and doesn't spawn blood.
 			Owner.height = self.height; //Reset the height
 			Owner.A_SetTranslation("Scorched"); //Set a color translation
+		}
+	}
+}
+
+Class KriegspfadLevelCompatibility : LevelPostProcessor
+{
+	protected void Apply(Name checksum, String mapname)
+	{
+		int nhbonus = 0;
+		switch (checksum)
+		{
+		case 'none':
+			return;
+
+		// Doom 2 MAP31
+		case '3ff94e27423f91c1585b3396f0c03459':
+			// remove excess healthbonuses (4 of them)
+			for(int i=0; i<GetThingCount(); i++)
+			{
+				if(GetThingEdNum(i) != 2014) continue;
+				if(nhbonus) SetThingEdNum(i,0);
+				nhbonus++;
+			}
+			break;
 		}
 	}
 }
