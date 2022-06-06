@@ -3,4 +3,6 @@ GameInfo
 	PlayerClasses = "WW2Player"
 	AddEventHandlers = "WW2Handler"
     StatusBarClass = "WW2StatusBar"
+
+	QuitMessages = "$QUIT_MSG","$QUIT_MSG0", "$QUIT_MSG1", "$QUIT_MSG2", "$QUIT_MSG3", "$QUIT_MSG4", "$QUIT_MSG5", "$QUIT_MSG6", "$QUIT_MSG7", "$QUIT_MSG8"
 }
