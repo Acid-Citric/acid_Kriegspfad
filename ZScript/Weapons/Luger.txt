@@ -23,8 +23,7 @@ Class Luger : AxisWeapon replaces Pistol
 		{
 			Let weap = toucher.FindInventory("Luger");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED) { Self.AmmoGive2 = random(1,8); }
-			Else { Self.AmmoGive2 = random(1,8); }
+			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,8); }
 		}
 			Return Super.TryPickup(toucher);
 	}
