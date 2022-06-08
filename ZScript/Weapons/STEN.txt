@@ -23,8 +23,7 @@ Class STEN : AxisWeapon
 		{
 			Let weap = toucher.FindInventory("STEN");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED) { Self.AmmoGive2 = random(1,32); }
-			Else { Self.AmmoGive2 = random(1,32); }
+			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,32); }
 		}
 			Return Super.TryPickup(toucher);
 	}
