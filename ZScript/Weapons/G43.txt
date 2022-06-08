@@ -23,8 +23,7 @@ Class G43 : AxisWeapon
 		{
 			Let weap = toucher.FindInventory("G43");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED) { Self.AmmoGive2 = random(1,10); }
-			Else { Self.AmmoGive2 = random(1,10); }
+			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,10); }
 		}
 			Return Super.TryPickup(toucher);
 	}
@@ -54,7 +53,7 @@ Class G43 : AxisWeapon
 			If(Invoker.RGrenade == False)
 			{
 				A_GunFlash();
-				A_FireBullets(0, 0, 1, 0, "BulletPuff_2", 0, 8192, "G43_Tracer", -2);
+				A_RailAttack(random(1,3) * random(130,200), 0, False, "", "", RGF_SILENT, 0, "BulletPuff_2", 0, 0, 8192, 1);
 				A_StartSound("g43/fire", CHAN_WEAPON);
 			}
 			Else 
