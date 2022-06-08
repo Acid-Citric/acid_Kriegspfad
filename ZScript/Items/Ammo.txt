@@ -13,6 +13,7 @@ mixin Class AmmoPickupMessage
 		else return String.Format("+%d %ss",result,GetTag());	
 	}
 }
+
 Class Ammo9mm : Ammo
 {
 	mixin AmmoPickupMessage;
@@ -24,12 +25,6 @@ Class Ammo9mm : Ammo
 		Ammo.BackpackAmount 8;
 		Ammo.BackpackMaxAmount 480;
 	}
-	Override Void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		If(bTOSSED && Random(0,1)) { A_DropItem("AmmoGranate",1,16); A_DropItem("AmmoTNT",1,4); }
-		Else If(!bTOSSED && Random(0,1)) { A_SpawnItemEx("AmmoGranate",Random(-8,8),Random(-8,8),failchance: 240); A_SpawnItemEx("AmmoTNT",Random(-8,8),Random(-8,8),failchance: 252); }
-	}
 }
 
 Class Ammo9mm_1 : Ammo9mm
@@ -39,10 +34,13 @@ Class Ammo9mm_1 : Ammo9mm
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo9mm](1,8);
-		
+
 		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
 		int result = int(Amount * factor);
 		If(result > 8 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
+
+		If(bTOSSED && Random(0,1)) { A_DropItem("AmmoGranate",1,16); A_DropItem("AmmoTNT",1,4); }
+		Else If(!bTOSSED && Random(0,1)) { A_SpawnItemEx("AmmoGranate",Random(-8,8),Random(-8,8),failchance: 240); A_SpawnItemEx("AmmoTNT",Random(-8,8),Random(-8,8),failchance: 252); }
 	}
 	States
 	{
@@ -58,11 +56,19 @@ Class Ammo9mm_2 : Ammo9mm
 	{
 		Super.PostBeginPlay();
 		Amount = Random[Ammo9mm](8,16);
+
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		int result = int(Amount * factor);
+		If(result > 16 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
+
+		If(bTOSSED && Random(0,1)) { A_DropItem("AmmoGranate",1,16); A_DropItem("AmmoTNT",1,4); }
+		Else If(!bTOSSED && Random(0,1)) { A_SpawnItemEx("AmmoGranate",Random(-8,8),Random(-8,8),failchance: 240); A_SpawnItemEx("AmmoTNT",Random(-8,8),Random(-8,8),failchance: 252); }
 	}
 	States
 	{
 	Spawn:
-		9MM_ B -1;
+		TNT1 A 0 NoDelay;
+		9MM_ BC -1;
 		Stop;
 	}
 }
@@ -78,10 +84,14 @@ Class Ammo9mm_3 : Ammo9mm
 		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
 		int result = int(Amount * factor);
 		If(result > 32 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
+
+		If(bTOSSED && Random(0,1)) { A_DropItem("AmmoGranate",1,16); A_DropItem("AmmoTNT",1,4); }
+		Else If(!bTOSSED && Random(0,1)) { A_SpawnItemEx("AmmoGranate",Random(-8,8),Random(-8,8),failchance: 240); A_SpawnItemEx("AmmoTNT",Random(-8,8),Random(-8,8),failchance: 252); }
 	}
 	States
 	{
 	Spawn:
+		TNT1 A 0 NoDelay;
 		9MM_ CD -1;
 		Stop;
 	}
@@ -152,7 +162,7 @@ Class Ammo12G_2 : Ammo12G
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Amount = Random[Ammo12G](4,12);
+		Amount = Random[Ammo12G](6,12);
 	}
 	States
 	{
@@ -430,7 +440,7 @@ Class AmmoGranate : Ammo
         If(Owner is "PlayerPawn" && Owner.GetPlayerInput(MODINPUT_BUTTONS) & BT_USER1 && !Owner.FindInventory("AmmoGranate_TimerCooldown"))
         {
 			If(shgmod == True) { shgmod = False; Owner.A_GiveInventory("AmmoGranate_TimerCooldown"); }
-			Else { shgmod = True; Owner.A_GiveInventory("AmmoGranate_TimerCooldown"); }
+			Else If(shgmod == False) { shgmod = True; Owner.A_GiveInventory("AmmoGranate_TimerCooldown"); }
 		}
     }
 	Override Bool Use(bool pickup)
