@@ -203,18 +203,32 @@ Class Wolfenstein3D_Meal : Health
 			Amount = 25;
 			hotmeal = True;
 		}
-		HEAL N 8 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);		
+		HEAL N 5 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 7.5+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
 		Goto Death.Fire+1;
 	}
 }
 
-Class HotMeal_Smoke : GrenadeSmokeTrail
+Class HotMeal_Smoke : Actor
 {
 	Default
 	{
-		+NOGRAVITY
+		+NOBLOCKMAP +NOINTERACTION +FORCEXYBILLBOARD
 		RenderStyle "Add";
-		VSpeed 1.0;
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		Gravity = frandom(0.05, 0.1);
+		Alpha = frandom(0.7, 1.0);
+		frame = random[HotMeal_Smoke](0, 3); //A,B,C,D
+	}
+	States
+	{
+	Spawn:
+		SMOK # 0 NoDelay A_SetScale(frandom(0.1, 0.25));
+		SMOK # 1 A_FadeOut(0.05);
+		Wait;
 	}
 }
 
