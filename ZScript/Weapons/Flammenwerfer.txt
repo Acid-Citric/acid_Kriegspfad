@@ -161,7 +161,7 @@ class FlameEffect : DOTEffect
 	States
 	{
 	Spawn:
-		FIRE ABCDEFGH 2 Bright;
+		FLMS ABCDEFGHIJ 1 Bright;
 		Stop;
 	}
 	
@@ -233,7 +233,7 @@ class GroundFireFlame : Actor
 	States
 	{
 	Spawn:
-		FIRE ABCDEFGH 2 Bright;
+		FLMS ABCDEFGHIJ 1 Bright;
 		Stop;
 	}
 	
