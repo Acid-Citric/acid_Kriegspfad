@@ -60,7 +60,7 @@ Class WW2Handler : EventHandler
 
 		Else If(cls == "RadSuit")									e.Replacement = "HazmatSuit";
 		Else If(cls == 'Infrared')									e.Replacement = "NightVision";
-		// Else If(cls == 'AllMap')									e.Replacement = " ";
+		Else If(cls == 'AllMap')									e.Replacement = "Blueprints";
 		Else If(cls == 'InvulnerabilitySphere')						e.Replacement = "InvulnSphere";
 		Else If(cls == 'BlurSphere')								e.Replacement = "InvisSphere";
 
