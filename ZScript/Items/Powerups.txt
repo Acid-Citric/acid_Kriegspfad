@@ -176,6 +176,20 @@ Class HazmatSuit : Radsuit
 	}
 }
 
+Class Blueprints : Allmap
+{
+	Default
+	{
+		+INVENTORY.NOSCREENFLASH
+		Inventory.PickupMessage "$GOTMAP";
+	}
+	States
+	{
+	Spawn:
+		BPNT A -1;
+		Loop;
+	}
+}
 
 Class PowerupFx : Actor
 {
