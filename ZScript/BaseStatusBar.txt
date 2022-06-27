@@ -191,8 +191,6 @@ class WW2StatusBar : BaseStatusBar
 		DrawImage("Graphics/Hud/HUD_DYNAMITE.png", (-130, -21), DI_ITEM_OFFSETS);
 		DrawString(mSmallFont, FormatNumber(Ammo_TNT.Amount, 3), (-122, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		DrawString(mSmallFont, FormatNumber(tnt.counter, 3), (-122, -22), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
-		/*Let bomb = Dynamite_Proj(CPlayer.mo.FindInventory('Dynamite_Proj'));
-		DrawBar("Graphics/Hud/HUD_ARMOR.png", "", bomb.timer, 45, (-9, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);*/
 
 		Let shg = AmmoGranate(CPlayer.mo.FindInventory('AmmoGranate'));
 		If(shg.shgmod == True && Ammo_HG.Amount >= 5) { DrawImage("Graphics/Hud/HUD_HGRENADE_2.png", (-150, -21), DI_ITEM_OFFSETS); }
