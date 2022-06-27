@@ -176,6 +176,17 @@ class WW2StatusBar : BaseStatusBar
 			}
 		}
 
+		int invY = -20;
+		if (!isInventoryBarVisible() && !level.NoInventoryBar && CPlayer.mo.InvSel != null)
+		{
+			DrawInventoryIcon(CPlayer.mo.InvSel, (-160, invY + 17)); // -14
+			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount, 3), (-176, invY), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE); // -30
+		}
+		if (deathmatch) { DrawString(mHUDFont, FormatNumber(CPlayer.FragCount, 3), (-3, 1), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD); }
+		else { DrawFullscreenKeys(); }
+		
+		if (isInventoryBarVisible()) { DrawInventoryBar(diparms, (0, 0), 7, DI_SCREEN_CENTER_BOTTOM, HX_SHADOW); }
+
 		Let tnt = AmmoTNT(CPlayer.mo.FindInventory('AmmoTNT'));
 		DrawImage("Graphics/Hud/HUD_DYNAMITE.png", (-130, -21), DI_ITEM_OFFSETS);
 		DrawString(mSmallFont, FormatNumber(Ammo_TNT.Amount, 3), (-122, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
@@ -187,17 +198,6 @@ class WW2StatusBar : BaseStatusBar
 		If(shg.shgmod == True && Ammo_HG.Amount >= 5) { DrawImage("Graphics/Hud/HUD_HGRENADE_2.png", (-150, -21), DI_ITEM_OFFSETS); }
 		Else { DrawImage("Graphics/Hud/HUD_HGRENADE.png", (-145, -21), DI_ITEM_OFFSETS); }
 		DrawString(mSmallFont, FormatNumber(Ammo_HG.Amount, 3), (-140, -12), DI_TEXT_ALIGN_RIGHT, shg.shgmod? Font.CR_RED : Font.CR_WHITE);
-
-		int invY = -20;
-		if (!isInventoryBarVisible() && !level.NoInventoryBar && CPlayer.mo.InvSel != null)
-		{
-			DrawInventoryIcon(CPlayer.mo.InvSel, (-160, invY + 17)); // -14
-			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount, 3), (-176, invY), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE); // -30
-		}
-		if (deathmatch) { DrawString(mHUDFont, FormatNumber(CPlayer.FragCount, 3), (-3, 1), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD); }
-		else { DrawFullscreenKeys(); }
-		
-		if (isInventoryBarVisible()) { DrawInventoryBar(diparms, (0, 0), 7, DI_SCREEN_CENTER_BOTTOM, HX_SHADOW); }
 	}
 	
 	protected virtual void DrawFullscreenKeys()
