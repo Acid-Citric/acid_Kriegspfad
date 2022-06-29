@@ -6,7 +6,6 @@ Class AxisWeapon : Weapon
 		Scale 0.3;
 	    Weapon.BobRangeX 0;
 	}
-
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -24,6 +23,15 @@ Class AxisWeapon : Weapon
 		}
 		Invoker.Ammo1 = null;
 	}
+    Override String PickupMessage()
+    {
+        If(Owner)
+            return PickupMsg;
+		If(!AmmoType2)
+			return String.Format("+%d %s",AmmoGive1,GetDefaultByType(AmmoType1).GetTag());
+		Else
+			return String.Format("+%d %s",AmmoGive2,GetDefaultByType(AmmoType2).GetTag());
+    }
 }
 
 Class BulletPuff_2 : BulletPuff
