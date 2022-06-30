@@ -28,9 +28,11 @@ Class AxisWeapon : Weapon
         If(Owner)
             return PickupMsg;
 		If(!AmmoType2)
-			return String.Format("+%d %s",AmmoGive1,GetDefaultByType(AmmoType1).GetTag());
-		Else
+			return String.Format("+%d %ss",AmmoGive1,GetDefaultByType(AmmoType1).GetTag());
+		Else If(AmmoGive2 == 1)
 			return String.Format("+%d %s",AmmoGive2,GetDefaultByType(AmmoType2).GetTag());
+		Else
+			return String.Format("+%d %ss",AmmoGive2,GetDefaultByType(AmmoType2).GetTag());
     }
 }
 
