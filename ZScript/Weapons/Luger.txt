@@ -54,7 +54,7 @@ Class Luger : AxisWeapon replaces Pistol
 		{
 			A_GunFlash();
 			A_AlertMonsters();
-			A_FireBullets(1, 1, -1, random(6,18), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_FireBullets(1, 1, -1, random(3,17), "BulletPuff_2", FBF_NORANDOMPUFFZ);
 			A_StartSound("luger/fire", CHAN_WEAPON, CHANF_DEFAULT, 1);
 			A_TakeInventory("LugerLoaded",1);
 			A_SpawnItemEx("Casing_9MM",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
