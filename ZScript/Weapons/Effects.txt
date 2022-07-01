@@ -28,6 +28,7 @@ Class gta2_expl_explosion : Actor
 }
 Class gta2_expl_explosion_2 : gta2_expl_explosion {	Default	{ Scale 0.8; } }
 Class gta2_expl_explosion_3 : gta2_expl_explosion {	Default	{ Scale 1.6; } }
+Class gta2_expl_explosion_0 : gta2_expl_explosion {	Default	{ Scale 0.2; } }
 
 Class gta2_expl_shockwave : Actor
 {
