@@ -11,7 +11,6 @@ Class Walther : AxisWeapon
 		Weapon.UpSound "walther/select";
 		Weapon.Kickback 60;
 		Inventory.Icon "WP8PB0";
-		+WEAPON.NOAUTOFIRE
 	}
 	Override Void AttachToOwner(Actor other)
 	{
