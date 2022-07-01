@@ -89,8 +89,15 @@ Class Dynamite_Proj : Actor
 	Explode:
 	Death:
 		TNT1 A 0 A_StartSound("granate/explode");
-		TNT1 A 0 A_SpawnItemEx("gta2_expl_shockwave_3");
-		TNT1 AA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion_3"); }
+		TNT1 A 0 A_Explode(192, 256, XF_HURTSOURCE, True, 128);
+		TNT1 A 0 A_JumpIf(GetZAt(24,0) == floorz && GetZAt(-24,0) == floorz && GetZAt(0,24) == floorz && GetZAt(0,-24) == floorz, 2);
+		TNT1 A 0 A_SpawnItemEx("gta2_expl_explosion_3",0,0,32);
+		Stop;
+		TNT1 A 0
+		{
+			For(Int i = 0; i < 5; i++) A_SpawnItemEx("gta2_expl_explosion_3",16,16,16,1,0,0,(72*i),SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("gta2_expl_explosion_3",0,0,32);
+		}
 		Stop;
 	}
 }
@@ -147,8 +154,16 @@ Class Granate_Thrown_A : Actor
 		SHG_ X 1 A_SetRoll(Roll = 90);
 		Loop;
 	Explode:
-		TNT1 A 0 A_StartSound("granate/explode"); 
-		TNT1 AA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion_2"); }
+		TNT1 A 0 A_StartSound("granate/explode");
+		TNT1 A 0 A_Explode(192, 256, XF_HURTSOURCE, True, 128);
+		TNT1 A 0 A_JumpIf(GetZAt(24,0) == floorz && GetZAt(-24,0) == floorz && GetZAt(0,24) == floorz && GetZAt(0,-24) == floorz, 2);
+		TNT1 A 0 A_SpawnItemEx("gta2_expl_explosion_2",0,0,32);
+		Stop;
+		TNT1 A 0
+		{
+			For(Int i = 0; i < 5; i++) A_SpawnItemEx("gta2_expl_explosion",0,0,16,1,0,0,(72*i),SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("gta2_expl_explosion_2",0,0,32);
+		}
 		Stop;
 	}
 }
@@ -167,7 +182,15 @@ Class Granate_Thrown_B : Granate_Thrown_A
 		Loop;
 	Explode:
 		TNT1 A 0 A_StartSound("granate/explode");
-		TNT1 AAAAAAAAAA 0 { A_Explode(192, 256, XF_HURTSOURCE, True, 128); A_SpawnItemEx("gta2_expl_explosion_2",Random(-32,32),Random(-32,32),Random(-32,32)); }
+		TNT1 A 0 A_Explode(192, 256, XF_HURTSOURCE, True, 128);
+		TNT1 A 0 A_JumpIf(GetZAt(24,0) == floorz && GetZAt(-24,0) == floorz && GetZAt(0,24) == floorz && GetZAt(0,-24) == floorz, 2);
+		TNT1 A 0 A_SpawnItemEx("gta2_expl_explosion_3",0,0,32);
+		Stop;
+		TNT1 A 0
+		{
+			For(Int i = 0; i < 5; i++) A_SpawnItemEx("gta2_expl_explosion_3",16,16,16,1,0,0,(72*i),SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("gta2_expl_explosion_3",0,0,32);
+		}
 		Stop;
 	}
 }
