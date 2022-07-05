@@ -114,10 +114,12 @@ Class WW2Handler : EventHandler
 			If(cls == "HealthBonus") { e.Replacement = "Wolfenstein3D_DogFood"; }
             Else If(cls == "Stimpack") { e.Replacement = "Wolfenstein3D_Meal"; }
 			Else If(cls == "Medikit") { e.Replacement = "Wolfenstein3D_FirstAidKit"; }
+			Else If(cls == "Berserk") { e.Replacement = "Wolfenstein3D_Serum"; }
         }
 		If(level.GetChecksum() == "aa4ca3fc891d13821accabd836e29eb5") // doom2.wad MAP32 
         {
             If(cls == "Medikit") { e.Replacement = "Wolfenstein3D_FirstAidKit"; }
+			Else If(cls == "Berserk") { e.Replacement = "Wolfenstein3D_Serum"; }
         }
 	}
 }
