@@ -6,6 +6,7 @@ Sprites :
 - DMA Design / Tarantula Studios (gta 2 explosion)
 - AFADoomer (Wolfenstein 3D berserk)
 - Monolith (Blood's TommyGun Flashes)
+- ZikShadow (edits of Ninlhil' sprites)
 
 Code :
 - WildWeasel (ww-nazis-v2)
