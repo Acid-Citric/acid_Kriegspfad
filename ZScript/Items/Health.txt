@@ -159,7 +159,7 @@ Class Wolfenstein3D_DogFood : Health
 	{
 		Inventory.Amount 4;
 		Inventory.PickupMessage "$PICKUP_HEALTH_DOGFOOD";
-		Inventory.PickupSound "misc/health_pkup";
+		Inventory.PickupSound "wolf_3d/food";
 	}
 	States
 	{
@@ -177,7 +177,7 @@ Class Wolfenstein3D_Meal : Health
 		Health 10;
 		Inventory.Amount 10;
 		Inventory.PickupMessage "$PICKUP_HEALTH_COLDMEAL";
-		Inventory.PickupSound "misc/health_pkup";
+		Inventory.PickupSound "wolf_3d/food";
 		+VULNERABLE
 		+NOTAUTOAIMED
 		+NOBLOOD
@@ -238,12 +238,27 @@ Class Wolfenstein3D_FirstAidKit : Health
 	{
 		Inventory.Amount 25;
 		Inventory.PickupMessage "$PICKUP_HEALTH_FIRSTAIDKIT";
-		Inventory.PickupSound "misc/health_pkup";
+		Inventory.PickupSound "wolf_3d/medkit";
 	}
 	States
 	{
 	Spawn:
 		HEAL O -1;
+		Stop;
+	}
+}
+
+Class Wolfenstein3D_Serum : Berserk
+{
+	Default
+	{
+		Inventory.PickupMessage "$PICKUP_HEALTH_SERUM";
+		Inventory.PickupSound "wolf_3d/s_100";
+	}
+	States
+	{
+	Spawn:
+		WSTR A -1;
 		Stop;
 	}
 }
