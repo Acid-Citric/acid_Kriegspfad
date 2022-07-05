@@ -15,7 +15,7 @@ TAG_WEAPON_KNIFE = "Combat Knife";
 TAG_WEAPON_LUGERP08 = "Luger P08";
 TAG_WEAPON_WALTHERP38 = "Walther P38";
 TAG_WEAPON_WINCHESTERM1897 = "M1897 Trench Gun";
-TAG_WEAPON_BROWINGAUTO5 = "Browning Auto-5";
+TAG_WEAPON_BROWINGAUTO5 = "FN/Browning Auto-5";
 TAG_WEAPON_MP401 = "Maschinenpistole 40/1";
 TAG_WEAPON_STENMK2 = "STEN Mk II";
 TAG_WEAPON_GEWEHR43 = "Gewehr 43";
@@ -31,6 +31,7 @@ PICKUP_HEALTH_DOGFOOD = "Ate some Dog Food, WOOF!";
 PICKUP_HEALTH_COLDMEAL = "Cold Plate of Food";
 PICKUP_HEALTH_HOTMEAL = "Hot Plate of Food";
 PICKUP_HEALTH_FIRSTAIDKIT = "First Aid Kit";
+PICKUP_HEALTH_SERUM = "Übermacht !";
 
 QUIT_MSG = "You're trying to say you like Kriegsland better than me, right?"; // -Ac!d
 QUIT_MSG0 = "I wouldn't leave if i were you. \nCall of Duty : Vanguard is much worse."; // -Ac!d
