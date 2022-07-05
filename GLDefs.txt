@@ -1,0 +1,98 @@
+PointLight FMW35_0
+{
+    Color 0.6 0.2 0.0
+    Size 32
+	Attenuate 1
+}
+PointLight FMW35_0b
+{
+    Color 0.6 0.2 0.0
+    Size 40
+	Attenuate 1
+}
+PointLight FMW35_1
+{
+    Color 1.0 0.5 0.0
+    Size 48
+	Attenuate 1
+}
+
+Object FlammenwerferProjectile
+{
+	Frame DB55A { Light FMW35_0 }
+	Frame DB55B { Light FMW35_0 }
+	Frame DB55C { Light FMW35_0 }
+	Frame DB55D { Light FMW35_0 }
+	
+	Frame DB55E { Light FMW35_0b }
+	Frame DB55F { Light FMW35_0b }
+	Frame DB55G { Light FMW35_0b }
+	Frame DB55H { Light FMW35_0b }
+
+	Frame DB55I { Light FMW35_1 }
+	Frame DB55J { Light FMW35_1 }
+	Frame DB55K { Light FMW35_1 }
+	Frame DB55L { Light FMW35_1 }
+	Frame DB55M { Light FMW35_1 }
+	Frame DB55N { Light FMW35_1 }
+	Frame DB55O { Light FMW35_1 }
+	Frame DB55P { Light FMW35_1 }
+	Frame DB55Q { Light FMW35_1 }
+	Frame DB55R { Light FMW35_1 }
+	Frame DB55S { Light FMW35_1 }
+	Frame DB55T { Light FMW35_1 }
+	Frame DB55U { Light FMW35_1 }
+	Frame DB55V { Light FMW35_1 }
+	Frame DB55W { Light FMW35_1 }
+	Frame DB55X { Light FMW35_1 }
+
+	Frame DB55Y { Light FMW35_0 }
+	Frame DB55Z { Light FMW35_0 }
+
+	Frame DB56A { Light FMW35_0 }
+	Frame DB56B { Light FMW35_0 }
+	Frame DB56C { Light FMW35_0 }
+	Frame DB56D { Light FMW35_0 }
+	Frame DB56E { Light FMW35_0 }
+	Frame DB56F { Light FMW35_0 }
+	Frame DB56G { Light FMW35_0 }
+	Frame DB56H { Light FMW35_0 }
+	Frame DB56I { Light FMW35_0 }
+	Frame DB56J { Light FMW35_0 }
+	Frame DB56K { Light FMW35_0 }
+}
+
+PointLight RE3_FLAME
+{
+    Color 1.0 0.8 0.3
+    Size 8
+	Attenuate 1
+}
+
+Object FlameEffect
+{
+	Frame FLMSA { Light RE3_FLAME }
+	Frame FLMSB { Light RE3_FLAME }
+	Frame FLMSC { Light RE3_FLAME }
+	Frame FLMSD { Light RE3_FLAME }
+	Frame FLMSE { Light RE3_FLAME }
+	Frame FLMSF { Light RE3_FLAME }
+	Frame FLMSG { Light RE3_FLAME }
+	Frame FLMSH { Light RE3_FLAME }
+	Frame FLMSI { Light RE3_FLAME }
+	Frame FLMSJ { Light RE3_FLAME }
+}
+
+Object GroundFireFlame
+{
+	Frame FLMSA { Light RE3_FLAME }
+	Frame FLMSB { Light RE3_FLAME }
+	Frame FLMSC { Light RE3_FLAME }
+	Frame FLMSD { Light RE3_FLAME }
+	Frame FLMSE { Light RE3_FLAME }
+	Frame FLMSF { Light RE3_FLAME }
+	Frame FLMSG { Light RE3_FLAME }
+	Frame FLMSH { Light RE3_FLAME }
+	Frame FLMSI { Light RE3_FLAME }
+	Frame FLMSJ { Light RE3_FLAME }
+}
