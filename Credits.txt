@@ -1,13 +1,18 @@
 Sprites :
-- Ninlhil (weapons & bullet casings)
+- Ninlhil (weapons)
 - BigDaveHasSomeToo (ammo & health pickups)
-- Captain J (MP40 ammo pouches, pistol magazine (edited by Ac!d))
+- Captain J (MP40 ammo pouches, pistol magazine (edited by Ac!d), bullet casings)
 - DBThanatos (flames effects)
 - DMA Design / Tarantula Studios (gta 2 explosion)
+- AFADoomer (Wolfenstein 3D berserk)
+- Monolith (Blood's TommyGun Flashes)
 
 Code :
 - WildWeasel (ww-nazis-v2)
 - freshlycutgrass (gta 2 explosion)
+- jarewill
+- Marisa the Magician
+- Agent_Ash aka Jekyll Grim Payne
 
 Sounds : 
 - Call Of Duty 2
