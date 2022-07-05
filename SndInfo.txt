@@ -1,6 +1,10 @@
 misc/secret			Sounds/SOS_Secret.ogg
 *regenerate			Sounds/mrk_heartbeat_01.wav
 
+wolf_3d/food		Sounds/Wolf_3D/P_FOOD.ogg
+wolf_3d/medkit		Sounds/Wolf_3D/P_MEDKIT.ogg
+wolf_3d/s_100		Sounds/Wolf_3D/S_100.ogg
+
 $random casing/bounce	{ casing/pistol casing/rifle }
 casing/pistol	Sounds/pistol_shell.wav
 casing/rifle	Sounds/rifle_shell.wav
