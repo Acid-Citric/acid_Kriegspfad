@@ -161,6 +161,9 @@ Class FlammenwerferProjectile : FastMissile
 			return A_JumpIf(WaterLevel > 1, "Nope");
 		}
 		Wait;
+	Nope:
+		TNT1 A 0;
+		Stop;
 	}
 }
 
