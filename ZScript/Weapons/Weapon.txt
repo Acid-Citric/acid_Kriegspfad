@@ -113,3 +113,4 @@ Class Casing_Base : Actor
 Class Casing_9MM : Casing_Base { Default { Scale 0.3; } }
 Class Casing_Shotgun : Casing_Base { Default { Scale 0.15; } }
 Class Casing_MauserRifle : Casing_Base { Default { Scale 0.25; } }
+Class Casing_VemonGun : Casing_MauserRifle { Default { Scale 0.2; } }
