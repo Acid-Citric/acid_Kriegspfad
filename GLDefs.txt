@@ -17,7 +17,7 @@ PointLight FMW35_1
 	Attenuate 1
 }
 
-Object FlammenwerferProjectile
+Object FlammenwerferProj
 {
 	Frame DB55A { Light FMW35_0 }
 	Frame DB55B { Light FMW35_0 }
