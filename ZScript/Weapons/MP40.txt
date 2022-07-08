@@ -106,6 +106,8 @@ Class MP40 : AxisWeapon
 		TNT1 A 0;
 		Goto Ready;
 	ReloadWork:
+		TNT1 A 0 A_JumpIf(CountInv("Ammo9mm") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+        Goto Ready;
 		WP3G C 1
 		{
 			A_WeaponOffset(0,35,WOF_INTERPOLATE);
@@ -119,38 +121,39 @@ Class MP40 : AxisWeapon
 		#### # 1 A_WeaponOffset(-3,58,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-4,58,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-4,57,WOF_INTERPOLATE);
-/**/	#### # 1 A_WeaponOffset(-3,54,WOF_INTERPOLATE);
+	ReloadMags:
+		#### # 1 A_WeaponOffset(-3,54,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-3,51,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-3,53,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-3,55,WOF_INTERPOLATE);
 		#### # 10 A_WeaponOffset(-3,56,WOF_INTERPOLATE);
-		#### # 0 A_JumpIf(CountInv("MP40Loaded_1") == 32, "ReloadLoop_2");		
 	ReloadLoop:
-		TNT1 A 0
+		#### A 0
 		{
-           	While(CountInv("Ammo9mm") > 0 && CountInv("MP40Loaded_1") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("MP40Loaded_1") < 32)
+			If(CountInv("MP40Loaded_1") == 32)
 			{
-				A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
-				A_GiveInventory("MP40Loaded_1", 1);
+				While(CountInv("Ammo9mm") > 0 && CountInv("MP40Loaded_2") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("MP40Loaded_2") < 32)
+				{
+					A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
+					A_GiveInventory("MP40Loaded_2", 1);
+				}
+			}
+			Else
+			{
+				While(CountInv("Ammo9mm") > 0 && CountInv("MP40Loaded_1") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("MP40Loaded_1") < 32)
+				{
+					A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
+					A_GiveInventory("MP40Loaded_1", 1);
+				}
 			}
 		}
-		WP3G C 0;
-/**/	#### # 1 A_WeaponOffset(-3,54,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(-3,51,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(-3,53,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(-3,55,WOF_INTERPOLATE);
-		#### # 10 A_WeaponOffset(-3,56,WOF_INTERPOLATE);
-		#### # 0 A_JumpIf(CountInv("MP40Loaded_2") == 32, "ReloadFinish");	
-	ReloadLoop_2:
-		TNT1 A 0
+		#### A 0
 		{
-           	While(CountInv("Ammo9mm") > 0 && CountInv("MP40Loaded_2") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("MP40Loaded_2") < 32)
-			{
-				A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
-				A_GiveInventory("MP40Loaded_2", 1);
-			}
+			If(CountInv("MP40Loaded_1") == 32 && CountInv("MP40Loaded_2") == 32)	{ return ResolveState("ReloadFinish"); }
+			Else If(CountInv("Ammo9mm") < 1 && !CountInv("PowerInfiniteAmmo"))	{ return ResolveState("ReloadFinish"); }
+			return ResolveState("ReloadMags");
 		}
-		TNT1 A 0;
+		Goto ReloadMags;
 	ReloadFinish:
 		WP3G C 1 { A_WeaponOffset(-3,57,WOF_INTERPOLATE); Invoker.switchmag = False; SetAmmoType1(True, "MP40Loaded_1"); }
 		#### C 1 A_WeaponOffset(-3,59,WOF_INTERPOLATE);
