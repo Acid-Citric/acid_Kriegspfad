@@ -1,11 +1,16 @@
-Class Nothing : Actor
+Class MyEmptyActor : Actor 
 {
-    States 
+    Default 
     {
-    Spawn:
-		TNT1 A 0;
-		Stop;
-	}
+        +NOINTERACTION
+        +NOBLOCKMAP
+        +SYNCHRONIZED
+        +DONTBLAST
+        Radius 1;
+        Height 1;
+        FloatBobPhase 0;
+    }
+    Override Void PostBeginPlay() { Destroy(); }
 }
 
 Class gta2_expl_explosion : Actor
@@ -61,3 +66,126 @@ Class gta2_expl_shockwave : Actor
 }
 Class gta2_expl_shockwave_2 : gta2_expl_shockwave {	Default	{ Scale 0.2; } }
 Class gta2_expl_shockwave_3 : gta2_expl_shockwave {	Default	{ Scale 0.4; } }
+
+Class WW_TracerBullet : FastProjectile // Credits to WildWeasel
+{
+	Default
+	{
+		Alpha 0.9;
+		RenderStyle "Add";
+		Radius 2;
+		Height 2;
+		Speed 20; // 65
+		PROJECTILE;
+		+BLOODSPLATTER
+		+DONTBLAST
+		Scale 0.4;
+		MissileType "WW_TracerTrail";
+		MissileHeight 8;
+		DamageFunction (5*random(1,3));
+	}
+	States
+	{
+	Spawn:
+		PUFF A 1 BRIGHT;
+		Loop;
+	Death:
+	Crash:
+		PUFF A 2 BRIGHT A_SpawnDebris("WW_TracerSpark");
+		PUFF B 2 BRIGHT A_SetTranslucent(0.9,0);
+		PUFF CD 2 BRIGHT;
+		Stop;
+	XDeath:
+		TNT1 A 3 A_StartSound("knife/slash");
+		Stop;
+	}
+}
+
+Class WW_TracerTrail : Actor
+{
+	Default
+	{
+		Alpha 0.75;
+		RenderStyle "Add";
+		+NOBLOCKMAP;
+		+NOGRAVITY;
+		+NOTELEPORT;
+		+CANNOTPUSH;
+		+NODAMAGETHRUST;
+		Scale 0.4;
+	}
+	States
+	{
+	Spawn:
+		PUFF A 1 BRIGHT A_FadeOut(0.3);
+		Loop;
+	}
+}
+
+Class WW_TracerSpark : Actor
+{
+	Default
+	{
+		Health 4;
+		Radius 3;
+		Height 6;
+		Speed 0.1;
+		RenderStyle "Add";
+		Alpha 1;
+		Scale 0.5;
+		+MISSILE
+		+FLOORCLIP
+		+DONTSPLASH
+		+NOTELEPORT
+	}
+	States
+	{
+	Spawn:
+		PUFF A 1 Bright A_FadeOut(0.05);
+		Loop;
+	}
+}
+
+Class BigBoom : Actor
+{
+	Default
+	{
+		-NOGRAVITY
+		+DONTSPLASH
+		-NOTELEPORT
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
+	}
+	States
+	{
+	Spawn:
+		DEXP ABC 2 BRIGHT;
+		DEXP DEFGHI 3 BRIGHT;
+		DEXP JKLMN 2 BRIGHT;
+		Stop;
+	}
+}
+
+Class BigBoom_1 : BigBoom
+{
+	Default	{ Scale 0.5; }
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay { For(int i; i<25; i++) { A_SpawnProjectile("WW_TracerBullet", 4, 0, random(90,270), CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_AIMDIRECTION, random(-40,40)); } }
+		Goto BigBoom::Spawn;
+	}
+}
+
+Class BigBoom_2 : BigBoom
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay { For(int i; i<125; i++) { A_SpawnProjectile("WW_TracerBullet", 4, 0, random(90,270), CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_AIMDIRECTION, random(-40,40)); } }
+		Goto BigBoom::Spawn;
+	}
+}
