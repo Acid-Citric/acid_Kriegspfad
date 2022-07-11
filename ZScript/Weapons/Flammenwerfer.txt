@@ -147,7 +147,7 @@ Class FlammenwerferProj : FastMissile
 		DB55 ABC 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
 	Move:		
 		DB55 DEFGHIJKLMN 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
-		DB55 OPQRSTUVWXYZ 1 BrightA_JumpIf(WaterLevel > 1, "Nope");
+		DB55 OPQRSTUVWXYZ 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
 		Stop;
 	Death:
 		TNT1 A 0 A_AreaOfEffect("FireAoE", 12);
