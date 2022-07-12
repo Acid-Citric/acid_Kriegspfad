@@ -40,7 +40,7 @@ Class Flammenwerfer : AxisWeapon
 		#### A 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,33,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		#### A 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+		#### A 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH|WRF_NOBOB);
 	Ready:
 		WP6H A 1
 		{
@@ -60,7 +60,7 @@ Class Flammenwerfer : AxisWeapon
 		WP6G ABCD 2 BRIGHT
 		{
 			If(WaterLevel > 1)	{ return ResolveState("Nope"); }
-			A_WeaponReady(WRF_NOFIRE);
+			A_WeaponReady();
 			return A_JumpIf(!CountInv("AmmoFuel"), "Ready");
 		}
 		Goto ReadyLoop+6;
@@ -81,6 +81,7 @@ Class Flammenwerfer : AxisWeapon
 		Loop;
 
 	Fire:
+		WP6F A 0 A_JumpIf(WaterLevel > 1, "Nope");
 		WP6F A 0 A_JumpIfInventory("AmmoFuel", 1, 1);
 		Goto Ready;
 		#### B 1 BRIGHT
@@ -102,9 +103,9 @@ Class Flammenwerfer : AxisWeapon
 		TNT1 A 1 BRIGHT A_Light2;
 		TNT1 A 1 BRIGHT A_Light1;
 		Goto LightDone;
-
+	
 	Nope:
-		WP6H A 1 A_WeaponReady(WRF_NOFIRE);
+		WP6H A 1 { A_WeaponReady(WRF_NOFIRE); A_StopSound(CHAN_WEAPON); }
 		Goto Ready;
 	}
 }
@@ -146,8 +147,8 @@ Class FlammenwerferProj : FastMissile
 		TNT1 A 0 { bPAINLESS = random(0,1); }
 		DB55 ABC 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
 	Move:		
-		DB55 DEFGHIJKLMN 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
-		DB55 OPQRSTUVWXYZ 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
+		DB55 DEFGHIJKLMN 1 Bright A_JumpIf(WaterLevel > 1, "Nope"); //{ A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		DB55 OPQRSTUVWXYZ 1 Bright A_JumpIf(WaterLevel > 1, "Nope"); //{ A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
 		Stop;
 	Death:
 		TNT1 A 0 A_AreaOfEffect("FireAoE", 12);
@@ -178,7 +179,6 @@ class BurnDOT : CustomDOT
 		DamageFunction 5;
 		
 		+PAINLESS
-		+NOBLOOD
 	}
 }
 
