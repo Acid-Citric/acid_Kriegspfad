@@ -44,7 +44,7 @@ Class Flammenwerfer : AxisWeapon
 	Ready:
 		WP6H A 1
 		{
-			If(WaterLevel == 0)	{ return ResolveState("ReadyLoop"); }
+			If(WaterLevel == 0 && CountInv("AmmoFuel"))	{ return ResolveState("ReadyLoop"); }
 			A_WeaponReady(WRF_NOFIRE);
 			return A_JumpIf(CountInv("AmmoFuel"), "ReadyLoop");
 		}
@@ -95,7 +95,7 @@ Class Flammenwerfer : AxisWeapon
 			Else { Invoker.counter++; }
 		}
 		#### A 0 A_JumpIfInventory("AmmoFuel", 1, 1);
-		Goto Ready;
+		Goto Nope;
 		#### A 0 A_ReFire();
 		#### B 3 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		Goto ReadyLoop;
