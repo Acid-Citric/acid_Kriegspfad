@@ -63,7 +63,9 @@ Class G43 : AxisWeapon
 				A_StartSound("g43/grenadeshot", CHAN_WEAPON);
 			}		
 			A_TakeInventory("G43Loaded",1);
-			A_SpawnItemEx("Casing_MauserRifle",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+			
+			Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
+			A_SpawnItemEx("Casing_MauserRifle",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
 		}
 		#### C 1 { A_WeaponOffset(0,40,WOF_INTERPOLATE); Invoker.RGrenade = False; }
 		#### A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
