@@ -81,6 +81,15 @@ Class Dynamite_Proj : Actor
 		If(timer == 0) { SetStateLabel("Explode"); }
 		timer--;
 	}
+	Override Bool Used(Actor User)
+	{
+		If(User && User.Player && timer > 0)
+		{
+			User.A_SpawnItemEx("AmmoTNT");
+			Destroy();
+		}
+		Return Super.Used(User);
+	}
 	States
 	{
 	Spawn:
