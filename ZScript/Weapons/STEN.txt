@@ -50,7 +50,9 @@ Class STEN : AxisWeapon
 			A_StartSound("sten/fire_silenced", CHAN_WEAPON, CHANF_DEFAULT, 1.0);
 			A_AlertMonsters(384);
 			A_TakeInventory("STENLoaded",1);
-			A_SpawnItemEx("Casing_9MM",12,-20,32*GetCrouchFactor(AAPTR_Default),8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+
+			Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
+			A_SpawnItemEx("Casing_9MM",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
 		}
 		#### A 0 A_JumpIf(Invoker.STENSequence == True, 2);
 		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
