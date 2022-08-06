@@ -1,0 +1,31 @@
+BrightMap Sprite WP1GB0 { Map "BrightMaps/Weapons/WP1GB0.png"	DisableFullBright }
+
+BrightMap Sprite WP2GB0 { Map "BrightMaps/Weapons/WP2GB0.png"	DisableFullBright }
+
+BrightMap Sprite WP3GB0 { Map "BrightMaps/Weapons/WP3GB0.png"	DisableFullBright }
+
+BrightMap Sprite WP4GB0 { Map "BrightMaps/Weapons/WP4GB0.png"	DisableFullBright }
+BrightMap Sprite WP4GC0 { Map "BrightMaps/Weapons/WP4GC0.png"	DisableFullBright }
+
+BrightMap Sprite WP5FA0 { Map "BrightMaps/Weapons/WP5FA0.png"	DisableFullBright }
+BrightMap Sprite WP5FB0 { Map "BrightMaps/Weapons/WP5FB0.png"	DisableFullBright }
+BrightMap Sprite WP5FC0 { Map "BrightMaps/Weapons/WP5FC0.png"	DisableFullBright }
+BrightMap Sprite WP5FD0 { Map "BrightMaps/Weapons/WP5FD0.png"	DisableFullBright }
+
+BrightMap Sprite WP6FB0 { Map "BrightMaps/Weapons/WP6FB0.png"	DisableFullBright }
+BrightMap Sprite WP6GA0 { Map "BrightMaps/Weapons/WP6GA0.png"	DisableFullBright }
+BrightMap Sprite WP6GB0 { Map "BrightMaps/Weapons/WP6GB0.png"	DisableFullBright }
+BrightMap Sprite WP6GC0 { Map "BrightMaps/Weapons/WP6GC0.png"	DisableFullBright }
+BrightMap Sprite WP6GD0 { Map "BrightMaps/Weapons/WP6GD0.png"	DisableFullBright }
+BrightMap Sprite WP6HB0 { Map "BrightMaps/Weapons/WP6HB0.png"	DisableFullBright }
+BrightMap Sprite WP6HC0 { Map "BrightMaps/Weapons/WP6HC0.png"	DisableFullBright }
+BrightMap Sprite WP6HD0 { Map "BrightMaps/Weapons/WP6HD0.png"	DisableFullBright }
+
+BrightMap Sprite WP7GB0 { Map "BrightMaps/Weapons/WP7GB0.png"	DisableFullBright }
+
+BrightMap Sprite WP8GB0 { Map "BrightMaps/Weapons/WP8GB0.png"	DisableFullBright }
+
+BrightMap Sprite WP9GB0 { Map "BrightMaps/Weapons/WP9GB0.png"	DisableFullBright }
+
+BrightMap Sprite WPAGB0 { Map "BrightMaps/Weapons/WPAGB0.png"	DisableFullBright }
+BrightMap Sprite WPAGC0 { Map "BrightMaps/Weapons/WPAGC0.png"	DisableFullBright }
