@@ -1,3 +1,5 @@
+#Include "Brightmaps/Weapons.txt"
+
 PointLight FMW35_0
 {
     Color 0.6 0.2 0.0
