@@ -61,8 +61,7 @@ Class MP40 : AxisWeapon
 			If(Invoker.switchmag == True) { A_TakeInventory("MP40Loaded_2",1); }
             Else If(Invoker.switchmag == False) { A_TakeInventory("MP40Loaded_1",1); }			
 			
-			Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
-			A_SpawnItemEx("Casing_9MM",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
+			A_FireProjectile("Casing_Spawner_9MM", 0, False, 0, 0, FPF_NOAUTOAIM);
 		}
 		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
