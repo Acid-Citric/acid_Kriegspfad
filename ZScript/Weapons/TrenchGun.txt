@@ -83,9 +83,7 @@ Class TrenchGun : AxisWeapon
 		#### E 1 
 		{
 			A_WeaponOffset(-4,43,WOF_INTERPOLATE);
-
-			Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
-			A_SpawnItemEx("Casing_Shotgun",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
+			A_FireProjectile("Casing_Spawner_Shotgun", 0, False, -4, -4, FPF_NOAUTOAIM);
 		}
 		#### F 1 A_WeaponOffset(-4,45,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-3,44,WOF_INTERPOLATE);
@@ -161,8 +159,7 @@ Class TrenchGun : AxisWeapon
 			A_WeaponOffset(-2,40,WOF_INTERPOLATE);
 			If(Invoker.shotgunnotpumped == True)
 			{
-				Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
-				A_SpawnItemEx("Casing_Shotgun",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
+				A_FireProjectile("Casing_Spawner_Shotgun", 0, False, -4, -4, FPF_NOAUTOAIM);
 				Invoker.shotgunnotpumped = False;
 			}
 		}
