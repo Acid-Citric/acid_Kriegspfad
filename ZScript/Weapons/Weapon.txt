@@ -57,6 +57,28 @@ Class KnifePuff : BulletPuff
 	}
 }
 
+Class Casing_Spawner_Base : Actor
+{
+    Property CasingType: Type; Class<Actor> type;
+	Default
+	{
+		Speed 20;
+		PROJECTILE;
+		+NOCLIP
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0;
+		TNT1 A 1 A_SpawnProjectile(Invoker.type, 0, 0, random(-95,-85), CMF_AIMDIRECTION, random(-10,10));
+		Stop;
+	}
+}
+Class Casing_Spawner_9MM : Casing_Spawner_Base { Default { Casing_Spawner_Base.CasingType "Casing_9MM";	} }
+Class Casing_Spawner_Shotgun : Casing_Spawner_Base { Default { Casing_Spawner_Base.CasingType "Casing_Shotgun";	} }
+Class Casing_Spawner_MauserRifle : Casing_Spawner_Base { Default { Casing_Spawner_Base.CasingType "Casing_MauserRifle";	} }
+Class Casing_Spawner_VemonGun : Casing_Spawner_Base { Default { Casing_Spawner_Base.CasingType "Casing_VemonGun"; } }
+
 Class Casing_Base : Actor
 {
 	Int CasingLife; // Casings can keep rooling on the ground...
