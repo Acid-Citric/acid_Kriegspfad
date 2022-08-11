@@ -54,8 +54,7 @@ Class Walther : AxisWeapon
 			A_AlertMonsters(256);
 			A_TakeInventory("WaltherLoaded",1);
 
-			Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
-			A_SpawnItemEx("Casing_9MM",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
+			A_FireProjectile("Casing_Spawner_9MM", 0, False, 1, 1, FPF_NOAUTOAIM);
 		}
 		#### C 2 A_WeaponOffset(0,36,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(0,41,WOF_INTERPOLATE);
