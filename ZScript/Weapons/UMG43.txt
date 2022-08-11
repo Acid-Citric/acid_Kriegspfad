@@ -85,8 +85,7 @@ Class UMG43 : AxisWeapon
 			A_StartSound("chaingun/fire", CHAN_WEAPON);
 			A_WeaponOffset(0,34,WOF_INTERPOLATE);
 
-			Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
-			A_SpawnItemEx("Casing_VemonGun",cos(pitch)*12,10,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
+			A_FireProjectile("Casing_Spawner_VemonGun", 0, False, 0, -8, FPF_NOAUTOAIM);
 		}
 		#### BCD 1;
 		TNT1 A 0 A_ReFire("Hold");
