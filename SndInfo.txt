@@ -42,6 +42,7 @@ shotgun/fire	Sounds/trenchgun/fire_shotgun1.wav
 shotgun/load	SHOTLOAD
 shotgun/pump	Sounds/trenchgun/mrk_12ga_shotgun_pump1.wav
 shotgun/select	shotsel
+shotgun/shells		Sounds/change.wav
 
 //Browning Auto-5
 browning/fire	ba5fire
