@@ -35,7 +35,7 @@ PICKUP_HEALTH_SERUM = "Übermacht !";
 
 KRIEGSPFAD_HEALTH = "Partial regeneration and OverCharge ability";
 KRIEGSPFAD_P38 = "Silencer sounds for the Walther P38";
-KRIEGSPFAD_M1897 = "Tactical empty reload for the Winchester M1897";
+KRIEGSPFAD_SHOTGUNS = "Tactical empty reload for the Winchester M1897";
 KRIEGSPFAD_CASING = "Shell Casing Lifetime";
 
 QUIT_MSG = "You're trying to say you like Kriegsland better than me, right?"; // -Ac!d
