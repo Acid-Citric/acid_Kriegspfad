@@ -25,7 +25,7 @@ Class WW2Player : DoomPlayer
 		Super.PostBeginPlay();
 
 		Int sk = G_SkillPropertyInt(SKILLP_ACSReturn);
-		If(sk == 4 && CVar.FindCVar('Acid_Health').GetBool()) { A_SetHealth(999); }
+		If(sk == 4 && CVar.FindCVar('Kriegspfad_Health').GetBool()) { A_SetHealth(999); }
 		Else { A_SetHealth(Health); }
 	}
 
@@ -37,7 +37,7 @@ Class WW2Player : DoomPlayer
         Super.Tick();
         If(Health <= 0) return;
 
-		If(CVar.FindCVar('Acid_Health').GetBool())
+		If(CVar.FindCVar('Kriegspfad_Health').GetBool())
 		{
 			hpDecayTimer++;
 			If(painTimer) painTimer--;
