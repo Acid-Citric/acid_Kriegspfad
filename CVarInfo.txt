@@ -1,4 +1,4 @@
 User Bool Kriegspfad_Health = False;
 Server Int Kriegspfad_P38 = 0;
-User Bool Kriegspfad_M1897 = False;
+User Bool Kriegspfad_Shotguns = False;
 Server Int Kriegspfad_Casing = 35;
