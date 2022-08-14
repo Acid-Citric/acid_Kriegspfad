@@ -1,3 +1,4 @@
-User Bool Acid_Health = False;
-Server Int Acid_Silencer = 0;
-Server Int casinglifetime = 35;
+User Bool Kriegspfad_Health = False;
+Server Int Kriegspfad_P38 = 0;
+User Bool Kriegspfad_M1897 = False;
+Server Int Kriegspfad_Casing = 35;
