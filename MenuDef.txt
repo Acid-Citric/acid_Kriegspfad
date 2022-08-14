@@ -1,10 +1,10 @@
 AddOptionMenu "OptionsMenu"
 {
 	StaticText "Ac!d's Kriegspfad", Gold
-	StaticText ""
-	Option "Partial regeneration and OverCharge ability",		"Acid_Health",		"YesNo"
-	Option "Silencer sounds for the Walther P38",		"Acid_Silencer",		"Silencer"
-	Slider "Shell Casing Lifetime", "casinglifetime", 35, 350, 35
+	Option "$KRIEGSPFAD_HEALTH", "Kriegspfad_Health", "YesNo"
+	Option "$KRIEGSPFAD_P38", "Kriegspfad_P38",	"Silencer"
+	Option "$KRIEGSPFAD_M1897", "Kriegspfad_M1897",	"YesNo"
+	Slider "$KRIEGSPFAD_CASING", "Kriegspfad_Casing", 35, 350, 35
 }
 
 OptionValue "Silencer"
