@@ -3,7 +3,7 @@ AddOptionMenu "OptionsMenu"
 	StaticText "Ac!d's Kriegspfad", Gold
 	Option "$KRIEGSPFAD_HEALTH", "Kriegspfad_Health", "YesNo"
 	Option "$KRIEGSPFAD_P38", "Kriegspfad_P38", "Silencer"
-	Option "$KRIEGSPFAD_M1897", "Kriegspfad_Shotguns", "YesNo"
+	Option "$KRIEGSPFAD_SHOTGUNS", "Kriegspfad_Shotguns", "YesNo"
 	Slider "$KRIEGSPFAD_CASING", "Kriegspfad_Casing", 35, 350, 35
 }
 
