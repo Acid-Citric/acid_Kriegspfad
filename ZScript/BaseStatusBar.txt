@@ -6,6 +6,7 @@ class WW2StatusBar : BaseStatusBar
 	InventoryBarState diparms;
 
 	HUDFont mSmallFont;
+	HUDFont mNSmallFont;
 
 	override void Init()
 	{
@@ -19,29 +20,25 @@ class WW2StatusBar : BaseStatusBar
 		mIndexFont = HUDFont.Create(fnt, fnt.GetCharWidth("0"), Mono_CellLeft);
 		mAmountFont = HUDFont.Create("INDEXFONT");
 		diparms = InventoryBarState.Create();
-	
+
 		mSmallFont = HUDFont.Create("SMALLFONT");
+		mNSmallFont = HUDFont.Create("NEWSMALLFONT");
 	}
+
+	/*override void Tick()
+    {
+        Super.Tick();
+	}*/
 
 	override void Draw(int state, double TicFrac)
 	{
 		Super.Draw(state, TicFrac);
-		
+
 		BeginHUD();
-        if (!automapactive)
-        {
-			if(state == HUD_StatusBar)
-			{
-				DrawFullScreenStuff();
-			}
-			else if(state == HUD_Fullscreen)
-			{
-				DrawFullScreenStuff();
-			}
-		}
+		if(!automapactive) { if (state == HUD_StatusBar || state == HUD_Fullscreen) { DrawFullScreenStuff(); } }
 	}
 
-	protected void DrawFullScreenStuff ()
+	protected void DrawFullScreenStuff()
 	{
 		let berserk = CPlayer.mo.FindInventory("PowerStrength");
 		DrawBar("Graphics/Hud/HUD_HEALTH.png", "", CPlayer.Health, 100, (10, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
@@ -50,7 +47,7 @@ class WW2StatusBar : BaseStatusBar
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawBar("Graphics/Hud/HUD_ARMOR.png", "", GetArmorAmount(), 100, (20, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
+			DrawBar("Graphics/Hud/HUD_ARMOR.png", "", GetArmorAmount(), 100, (20, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS|DI_TRANSLATABLE);
 			DrawString(mSmallFont, FormatNumber(armor.Amount), (30, -22), translation:Font.CR_WHITE);
 		}
 
@@ -84,9 +81,7 @@ class WW2StatusBar : BaseStatusBar
 						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
 						Ammo_Y = Ammo_Y - 6;
 					}
-					Let ptr = Walther(CPlayer.mo.FindInventory('Walther'));
-					DrawImage("WEAPON_8", (-59, -95), DI_ITEM_OFFSETS);
-					
+					DrawImage("WEAPON_8", (-59, -95), DI_ITEM_OFFSETS);					
 				}
 				If(CheckWeaponSelected('TrenchGun'))
 				{
@@ -152,7 +147,6 @@ class WW2StatusBar : BaseStatusBar
 				}
 				If(CheckWeaponSelected('Kar98k'))
 				{
-					Let ptr = Kar98k(CPlayer.mo.FindInventory('Kar98k'));
 					for(int i = CPlayer.Mo.CountInv("Kar98kLoaded"); i > 0; i--)
 					{
 						DrawImage("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
@@ -170,8 +164,18 @@ class WW2StatusBar : BaseStatusBar
 			}
 			Else If(CPlayer.ReadyWeapon.Ammo1)
 			{
-				If(CheckWeaponSelected('Flammenwerfer')) { DrawImage("WEAPON_6", (-61, -162), DI_ITEM_OFFSETS); }
-				If(CheckWeaponSelected('UMG43')) { DrawImage("WEAPON_5", (-66, -141), DI_ITEM_OFFSETS); }
+				If(CheckWeaponSelected('Flammenwerfer'))
+				{
+					Let ptr = Flammenwerfer(CPlayer.mo.FindInventory('Flammenwerfer'));
+					DrawImage("WEAPON_6", (-61, -162), DI_ITEM_OFFSETS);
+					If(ptr.Empty) { DrawString(mSmallFont, "RELOAD", (-60, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE); }
+				}
+				If(CheckWeaponSelected('UMG43'))
+				{ 
+					Let ptr = UMG43(CPlayer.mo.FindInventory('UMG43'));
+					DrawImage("WEAPON_5", (-66, -141), DI_ITEM_OFFSETS);
+					If(ptr.Empty) { DrawString(mSmallFont, "RELOAD", (-60, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE); }
+				}				
 				DrawString(mSmallFont, FormatNumber(ammotype1.Amount, 3), (-30, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			}
 		}
