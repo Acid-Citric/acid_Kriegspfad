@@ -18,6 +18,14 @@ Class Health_1938_Latour : HealthPickup
 		HealthPickup.AutoUse 1;
 		Scale 0.6;
 	}
+	Override Bool TryPickup(in out Actor toucher) // Prevent to be picked up again when not depleted.
+	{
+		If(toucher && toucher.CountInv(self.GetClass()) <= 0)
+		{
+			Return Super.TryPickup(toucher);
+		}
+		Return False;
+	}
 	States
 	{
 	Spawn:
@@ -68,11 +76,11 @@ Class Medium_HealthPack : Health
 		If(sk == 0 || sk == 4) { Amount = 25; }
 		Else { Amount = 15; }
 
-		frame = random[Medium_HealthPack](0,1); //A,B
+		frame = random[Medium_HealthPack](0,1); //A,B	
 	}
 	Override Bool Used(Actor User)
 	{	
-		If(User && User.Player && User.Player.Health > 0 && CVar.FindCVar('Acid_Health').GetBool())
+		If(User && User.Player && User.Player.Health > 0 && CVar.FindCVar('Kriegspfad_Health').GetBool())
 		{
 			User.GiveBody(Amount, 999);
 			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
@@ -87,7 +95,8 @@ Class Medium_HealthPack : Health
 		If(sk == 0 || sk == 4) { Hp = 75; }
 		Else { Hp = 85; }
 		
-		If(Toucher.Health > Hp && Toucher.Health < 100)
+		Let P = PlayerPawn(Toucher);
+		If(Toucher.Health > Hp && Toucher.Health < P.GetMaxHealth(True))
 		{ 
 			Toucher.GiveBody(Amount, 999);
 			GoAwayAndDie();
@@ -122,7 +131,7 @@ Class Large_HealthPack : Health
 	}
 	Override Bool Used(Actor User)
 	{
-		If(User && User.Player && User.Player.Health > 0 && CVar.FindCVar('Acid_Health').GetBool())
+		If(User && User.Player && User.Player.Health > 0 && CVar.FindCVar('Kriegspfad_Health').GetBool())
 		{
 			User.GiveBody(Amount, 999);
 			User.A_StartSound("misc/health_pkup", CHAN_ITEM);
@@ -137,7 +146,8 @@ Class Large_HealthPack : Health
 		If(sk == 0 || sk == 4) { Hp = 50; }
 		Else { Hp = 75; }
 		
-		If(Toucher.Health > Hp && Toucher.Health < 100)
+		Let P = PlayerPawn(Toucher);
+		If(Toucher.Health > Hp && Toucher.Health < P.GetMaxHealth(True))
 		{ 
 			Toucher.GiveBody(Amount, 999);
 			GoAwayAndDie();
@@ -202,8 +212,9 @@ Class Wolfenstein3D_Meal : Health
 		{
 			Amount = 25;
 			hotmeal = True;
+			A_StartSound("weapon/noammo");
 		}
-		HEAL N 5 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 7.5+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
+		HEAL N 5 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 7.5+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);		
 		Goto Death.Fire+1;
 	}
 }
@@ -252,13 +263,54 @@ Class Wolfenstein3D_Serum : Berserk
 {
 	Default
 	{
-		Inventory.PickupMessage "$PICKUP_HEALTH_SERUM";
+		Inventory.PickupMessage "$PICKUP_HEALTH_BERSERK";
 		Inventory.PickupSound "wolf_3d/s_100";
 	}
 	States
 	{
 	Spawn:
 		WSTR A -1;
+		Stop;
+	}
+}
+
+Class Health_Upgrade : Inventory
+{
+	Int MaxHPBonus;
+	Property MaxHPBonus : MaxHPBonus;
+	Int MaxHPBonusLimit;
+	Property MaxHPBonusLimit : MaxHPBonusLimit;
+	Default
+	{
+		Inventory.PickupMessage "$PICKUP_HEALTH_UPGRADE";
+		Inventory.PickupSound "misc/health_pkup";
+
+		Health_Upgrade.MaxHPBonus 10; 
+		Health_Upgrade.MaxHPBonusLimit 100;
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		frame = random[Health_Upgrade](0,1); //A,B
+	}
+    Override Bool TryPickup(in out Actor Toucher)
+    {
+		Let P = PlayerPawn(Toucher);
+
+		If(P.GetMaxHealth() < 200)
+		{
+			P.BonusHealth = Clamp(P.BonusHealth + MaxHPBonus, 0, MaxHPBonusLimit);
+			P.GiveBody(10);
+			GoAwayAndDie();
+			Return True;
+		}
+		Else { P.GiveBody(10); }
+		Return Super.TryPickup(Toucher);
+	}
+	States
+	{
+	Spawn:
+		H_UP # -1;
 		Stop;
 	}
 }
