@@ -29,7 +29,7 @@ Class WW2Handler : EventHandler
 		}
 		Else If(cls == 'RocketLauncher')
 		{
-			If (Random[RocketLauncher](0,1)) e.Replacement = 'Kar98k';
+			If(Random[RocketLauncher](0,1)) e.Replacement = 'Kar98k';
 			Else e.Replacement = 'G43';
 		}
 		Else If(cls == 'PlasmaRifle')								e.Replacement = "Flammenwerfer";
@@ -51,11 +51,15 @@ Class WW2Handler : EventHandler
 
 		Else If(cls == 'SoulSphere')
 		{
-			If (Random[SoulSphere](0,1)) e.Replacement = 'SuperCharge';
+			If(Random[SoulSphere](0,1)) e.Replacement = 'SuperCharge';
 			Else e.Replacement = 'Health_1938_Latour';
 		}
-		Else If(cls == 'MegaSphere')								e.Replacement = "MegaCharge";
-		Else If(cls == 'Berserk')									e.Replacement = "BerserkSphere";
+		Else If(cls == 'MegaSphere')
+		{
+			If(Random[MegaSphere](0,1)) e.Replacement = 'MegaCharge';
+			Else e.Replacement = 'Health_Upgrade';
+		}
+		Else If(cls == 'Berserk')									e.Replacement = "Berserk_HealthPack";
 
 
 		Else If(cls == "RadSuit")									e.Replacement = "HazmatSuit";
@@ -67,12 +71,12 @@ Class WW2Handler : EventHandler
 
 		Else If(cls == 'Clip')
 		{
-			If (Random[Clip](0,19) == 19) e.Replacement = 'Walther';
+			If(Random[Clip](0,19) == 19) e.Replacement = 'Walther';
 			Else e.Replacement = 'Ammo9mm_1';
 		}
 		Else If(cls == 'ClipBox')
 		{
-			If (Random[ClipBox](0,1)) e.Replacement = 'Ammo9mm_2';
+			If(Random[ClipBox](0,1)) e.Replacement = 'Ammo9mm_2';
 			Else e.Replacement = 'Ammo9mm_3';
 		}
 		Else If(cls == 'Shell')
@@ -87,25 +91,25 @@ Class WW2Handler : EventHandler
 		}
 		Else If(cls == 'RocketAmmo')
 		{
-			If (Random[RocketAmmo](0,1)) e.Replacement = 'Ammo792M_1';
+			If(Random[RocketAmmo](0,1)) e.Replacement = 'Ammo792M_1';
 			Else e.Replacement = 'Ammo9mm_1';
 		}
 		Else If(cls == 'RocketBox')
 		{
-			If (Random[RocketBox](0,1)) e.Replacement = 'Ammo792M_2';
+			If(Random[RocketBox](0,1)) e.Replacement = 'Ammo792M_2';
 			Else e.Replacement = 'ClipBox';
 		}
 		Else If(cls == 'Cell')
 		{
-			If (Random[Cell](0,1)) e.Replacement = 'Ammo762M_1';
+			If(Random[Cell](0,1)) e.Replacement = 'Ammo9362_1';
 			Else e.Replacement = 'Ammo9mm_1';
 		}
 		Else If(cls == 'CellPack')
 		{
-			If (Random[CellPack](0,1)) e.Replacement = 'AmmoFuel_1';
+			If(Random[CellPack](0,1)) e.Replacement = 'AmmoFuel_1';
 			Else e.Replacement = 'ClipBox';
 		}
-		Else If(cls == 'Backpack')									e.Replacement = "AmmoPouches";
+		//Else If(cls == 'Backpack')									e.Replacement = "AmmoPouches";
 
 
         String checksum = level.GetChecksum();
@@ -141,7 +145,8 @@ Class FireDeathEffect : Inventory // Credits to jarewill on the ZDoom Forums
 	Override Void DoEffect()
 	{
 		Super.DoEffect();
-		If(Owner && !(Owner is "ExplosiveBarrel") && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind") && !Owner.FindState("Death.Fire", True) && !Owner.FindState("Burn", True))
+		If(Owner && !(Owner is "ExplosiveBarrel") && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind")
+		&& !Owner.FindState("Death.Fire", True) && !Owner.FindState("Burn", True))
 		{
 			Owner.bFLY = False; Owner.bNOGRAVITY = False; Owner.bNOBLOOD = True; // Set relevant flags so the monster cannot be damaged, can't fly and doesn't spawn blood.
 			Owner.height = self.height; //Reset the height
@@ -155,7 +160,7 @@ Class KriegspfadLevelCompatibility : LevelPostProcessor
 	protected void Apply(Name checksum, String mapname)
 	{
 		int nhbonus = 0;
-		switch (checksum)
+		switch(checksum)
 		{
 		case 'none':
 			return;
