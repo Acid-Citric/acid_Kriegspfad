@@ -1,13 +1,9 @@
 mixin Class AmmoPickupMessage
 {
-	Default
-	{
-		Scale 0.75;
-		Inventory.PickupSound "misc/ammo_pkup";
-	}
+	Default	{ Scale 0.75; }
 	Override String PickupMessage()
 	{
-		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? - G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
 		int result = int(Amount * factor);
 		if(result == 1) return String.Format("+%d %s",result,GetTag());
 		else return String.Format("+%d %ss",result,GetTag());	
@@ -29,13 +25,14 @@ Class Ammo9mm : Ammo
 
 Class Ammo9mm_1 : Ammo9mm
 {
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_mag"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo9mm](1,8);
 
-		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
+		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? - G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
 		int result = int(Amount * factor);
 		If(result > 8 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
 
@@ -52,9 +49,11 @@ Class Ammo9mm_1 : Ammo9mm
 }
 Class Ammo9mm_2 : Ammo9mm
 {
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo9mm](8,16);
 
 		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
@@ -74,7 +73,7 @@ Class Ammo9mm_2 : Ammo9mm
 }
 Class Ammo9mm_3 : Ammo9mm
 {
-	Default	{ XScale 0.65; }
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_mag"; XScale 0.65; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -117,6 +116,7 @@ Class Ammo12G : Ammo
 }
 Class Ammo12G_1 : Ammo12G
 {
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_shell"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -159,6 +159,7 @@ Class Ammo12G_1 : Ammo12G
 }
 Class Ammo12G_2 : Ammo12G
 {
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -182,6 +183,7 @@ Class Ammo792M : Ammo
 		Inventory.MaxAmount 40;
 		Ammo.BackpackAmount 5;
 		Ammo.BackpackMaxAmount 100;
+		Scale 1.2;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -197,9 +199,10 @@ Class Ammo792M : Ammo
 }
 Class Ammo792M_1 : Ammo792M
 {
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_clip"; }
 	Override Void PostBeginPlay()
 	{
-		super.PostBeginPlay();
+		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
 		// variants
 		int dec = Random[Ammo12G](0,4);
@@ -243,10 +246,11 @@ Class Ammo792M_1 : Ammo792M
 }
 Class Ammo792M_2 : Ammo792M
 {
-	Default	{ Scale 1.0; }
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo792M](5,15);
 	}
 	States
@@ -257,16 +261,15 @@ Class Ammo792M_2 : Ammo792M
 	}
 }
 
-Class Ammo762M : Ammo
+Class Ammo9362 : Ammo
 {
 	mixin AmmoPickupMessage;
 	Default
 	{
-		Tag "$TAG_AMMO_762M";
-		Inventory.Icon "762MA0";
-		Inventory.MaxAmount 500;
-		Ammo.BackpackMaxAmount 500;
-		Scale 0.875;
+		Tag "$TAG_AMMO_9362";
+		Inventory.Icon "9362A0";
+		Inventory.MaxAmount 250;
+		Ammo.BackpackMaxAmount 250;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -275,17 +278,19 @@ Class Ammo762M : Ammo
 		Else If(!bTOSSED && Random(0,1)) { A_SpawnItemEx("AmmoGranate",Random(-8,8),Random(-8,8),failchance: 240); A_SpawnItemEx("AmmoTNT",Random(-8,8),Random(-8,8),failchance: 252); }
 	}
 }
-Class Ammo762M_1 : Ammo762M replaces Cell
+Class Ammo9362_1 : Ammo9362 replaces Cell
 {
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Amount = Random[Ammo762M](10,50);
+		bSPRITEFLIP = Random(0,1);
+		Amount = Random[Ammo9362](50,200);
 	}
 	States
 	{
 	Spawn:
-		762M A -1;
+		9362 A -1;
 		Stop;
 	}
 }
@@ -299,7 +304,6 @@ Class AmmoFuel : Ammo
 		Inventory.Icon "FUELA0";
 		Inventory.MaxAmount 150;
 		Ammo.BackpackMaxAmount 150;
-		Scale 1.0;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -313,12 +317,15 @@ Class AmmoFuel_1 : AmmoFuel
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Amount = Random[AmmoFuel](10,50);
+		bSPRITEFLIP = Random(0,1);
+		Amount = Random[AmmoFuel](25,100);
+		frame = random[Medium_HealthPack](0,1); //A,B
 	}
 	States
 	{
 	Spawn:
-		FUEL A -1;
+		TNT1 A 0 NoDelay;
+		FUEL # -1;
 		Stop;
 	}
 }
@@ -372,6 +379,7 @@ Class AmmoTNT : Ammo
 	{
 		counter = 5;
 		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(0,1);
 	}
     Override void DoEffect()
     {
@@ -387,18 +395,11 @@ Class AmmoTNT : Ammo
 	{
 		If(Owner && Self.Amount > 0 && delay_ac == 0)
 		{
-			If(counter == 45) { Owner.A_SpawnProjectile("Dynamite_Thrown_45",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 40) { Owner.A_SpawnProjectile("Dynamite_Thrown_40",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 35) { Owner.A_SpawnProjectile("Dynamite_Thrown_35",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 30) { Owner.A_SpawnProjectile("Dynamite_Thrown_30",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 25) { Owner.A_SpawnProjectile("Dynamite_Thrown_25",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 20) { Owner.A_SpawnProjectile("Dynamite_Thrown_20",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 15) { Owner.A_SpawnProjectile("Dynamite_Thrown_15",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 10) { Owner.A_SpawnProjectile("Dynamite_Thrown_10",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			Else If(counter == 5) { Owner.A_SpawnProjectile("Dynamite_Thrown_5",32,0,0,CMF_AIMDIRECTION,Owner.Pitch-16.0); }
-			
+			String act = "Dynamite_Thrown_" .. counter;
+
+			Owner.A_SpawnProjectile(act, 32, 0, 0, CMF_AIMDIRECTION, Owner.Pitch-16.0);
+
 			delay_ac = 20;
-			
 			Self.Amount --;
 		}
 		Return 0;
@@ -480,7 +481,6 @@ Class AmmoGranate : Ammo
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay;
 		SHG_ A -1;
 		Stop;
 	}
