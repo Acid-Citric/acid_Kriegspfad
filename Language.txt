@@ -1,9 +1,12 @@
 [enu default]
 
-TAG_AMMO_9MM = "9 x 19 mm Parabellum round";
-TAG_AMMO_12GA = "12 GA Brass Shell";
-TAG_AMMO_792M = "7,92 x 57 mm Mauser round";
-TAG_AMMO_762M = "7,62 mm round";
+STARTUP1 = "\c[Orange]Der Kriegspfad : Blut und Eisen\c-";
+STARTUP2 = "\c[Orange]- 13-10-2022 -\c-";
+
+TAG_AMMO_9MM = "9 x 19 Parabellum round";
+TAG_AMMO_12GA = "12 Gauge brass shell";
+TAG_AMMO_792M = "7,92 x 57 Mauser round";
+TAG_AMMO_9362 = "9,3 x 62 Mauser round";
 TAG_AMMO_FUEL = "Fuel unit";
 TAG_AMMO_RIFLEGRENADE = "Rifle Grenade";
 TAG_AMMO_TNT = "Bundle of TNT";
@@ -16,8 +19,8 @@ TAG_WEAPON_LUGERP08 = "Luger P08";
 TAG_WEAPON_WALTHERP38 = "Walther P38";
 TAG_WEAPON_WINCHESTERM1897 = "M1897 Trench Gun";
 TAG_WEAPON_BROWINGAUTO5 = "FN/Browning Auto-5";
-TAG_WEAPON_MP401 = "Maschinenpistole 40/1";
-TAG_WEAPON_STENMK2 = "STEN Mk II";
+TAG_WEAPON_MP401 = "MaschinenPistole 40/1";
+TAG_WEAPON_STENMK2 = "STEN Mk II s";
 TAG_WEAPON_GEWEHR43 = "Gewehr 43";
 TAG_WEAPON_KAR98K = "Karabiner 98 kurz";
 TAG_WEAPON_FLAMMENWERFER = "Flammenwerfer";
@@ -27,15 +30,16 @@ PICKUP_HEALTH_S = "Picked up a small health pack";
 PICKUP_HEALTH_M = "Picked up a health pack";
 PICKUP_HEALTH_L = "Picked up a large health pack";
 TAG_1938_LATOUR = "1938 Latour";
-PICKUP_HEALTH_DOGFOOD = "Ate some Dog Food, WOOF!";
-PICKUP_HEALTH_COLDMEAL = "Cold Plate of Food";
-PICKUP_HEALTH_HOTMEAL = "Hot Plate of Food";
-PICKUP_HEALTH_FIRSTAIDKIT = "First Aid Kit";
-PICKUP_HEALTH_SERUM = "Übermacht !";
+PICKUP_HEALTH_DOGFOOD = "Ate some dog food, WOOF!";
+PICKUP_HEALTH_COLDMEAL = "Cold plate of food";
+PICKUP_HEALTH_HOTMEAL = "Hot plate of food";
+PICKUP_HEALTH_FIRSTAIDKIT = "First aid kit";
+PICKUP_HEALTH_BERSERK = "Übermacht !";
+PICKUP_HEALTH_UPGRADE = "Picked up a health upgrade pack";
 
 KRIEGSPFAD_HEALTH = "Partial regeneration and OverCharge ability";
 KRIEGSPFAD_P38 = "Silencer sounds for the Walther P38";
-KRIEGSPFAD_SHOTGUNS = "Tactical empty reload for the Winchester M1897";
+KRIEGSPFAD_SHOTGUNS = "Tactical empty reload for the shotguns";
 KRIEGSPFAD_CASING = "Shell Casing Lifetime";
 
 QUIT_MSG = "You're trying to say you like Kriegsland better than me, right?"; // -Ac!d
@@ -46,5 +50,5 @@ QUIT_MSG3 = "This isn't the end, mein freünd."; // -LossForWords
 QUIT_MSG4 = "If you leave, \ni'll grind up all your Medal of Honor copies!"; // -LossForWords
 QUIT_MSG5 = "You're trying to say you like Wolfenstein II better than me, right?"; // -LossForWords
 QUIT_MSG6 = "Don't go now, there's a Schutzstaffel waiting at your desktop!"; // -LossForWords
-QUIT_MSG7 = "When you leave the the battlefield, \nyou leave with Hitler!"; // -LossForWords
+QUIT_MSG7 = "When you leave the battlefield, \nyou leave with Hitler!"; // -LossForWords
 QUIT_MSG8 = "Go ahead, leave.\n When you come back, I'll be waiting with a flamethrower at your head."; // -Renegade4339
