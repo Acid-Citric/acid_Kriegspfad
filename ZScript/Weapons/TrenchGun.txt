@@ -117,7 +117,7 @@ Class TrenchGun : AxisWeapon
 		WP2G C 1 A_WeaponOffset(5,34,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(2,36,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
-	    #### A 0 A_JumpIf(GetCVar('Kriegspfad_Shotguns') == True && Invoker.empty, "LoadChamber");
+	    //#### A 0 A_JumpIf(GetCVar('Kriegspfad_Shotguns') == True && Invoker.shotgunempty, "LoadChamber");
 		#### D 1 A_WeaponOffset(3,35,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-4,41,WOF_INTERPOLATE);
@@ -188,7 +188,7 @@ Class TrenchGun : AxisWeapon
 		#### # 4 { A_WeaponOffset(-9,62,WOF_INTERPOLATE); Invoker.sequence = 0; }
 		Goto ReloadLoop;*/
 
-	LoadChamber:
+	/*LoadChamber:
 		TNT1 A 0 A_JumpIf(CountInv("Ammo12G") > 0 || CountInv("PowerInfiniteAmmo"), 1);
         Goto ReloadFinish_2;
 		WP2G D 1 { A_WeaponOffset(3,35,WOF_INTERPOLATE); A_StartSound("shotgun/pump", CHAN_5); }
@@ -223,7 +223,7 @@ Class TrenchGun : AxisWeapon
 		#### D 1 A_WeaponOffset(-6,46,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-7,55,WOF_INTERPOLATE);
 		#### A 0 A_JumpIf(Invoker.empty, "LoadChamber");
-		Goto ReloadLoop;
+		Goto ReloadLoop;*/
 	}
 }
 
