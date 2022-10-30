@@ -209,7 +209,7 @@ Class Wolfenstein3D_Meal : Health
 		#### MP -1;
 		Stop;
 	Death.Fire:
-		HEAL B 0
+		HEAL # 0
 		{
 			Amount = 25;
 			hotmeal = True;
