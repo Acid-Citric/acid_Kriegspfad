@@ -13,7 +13,7 @@ Class Flammenwerfer : AxisWeapon
 		Weapon.UpSound "flamer/select";
 	}
    	Override Bool TryPickup(in out Actor toucher)
-    {
+	{
 		If(toucher)
 		{
 			Let weap = toucher.FindInventory("Flammenwerfer");
@@ -123,13 +123,9 @@ Class Flammenwerfer : AxisWeapon
 		#### # 2 A_WeaponOffset(11,43,WOF_INTERPOLATE);
 		#### # 3 A_WeaponOffset(21,42,WOF_INTERPOLATE);
 		#### # 3 A_WeaponOffset(23,42,WOF_INTERPOLATE);
-		#### # 3 A_WeaponOffset(7,43,WOF_INTERPOLATE);
-		#### # 6 A_WeaponOffset(11,43,WOF_INTERPOLATE);
 		#### # 2 { A_WeaponOffset(30,48,WOF_INTERPOLATE); A_StartSound("Weapons/Flamer/End", CHAN_WEAPON); }
 		#### # 30 { A_WeaponOffset(30,53,WOF_INTERPOLATE); A_StartSound("Weapons/Flamer/End", CHAN_WEAPON); Invoker.Empty = False; }
 		#### # 2 { A_WeaponOffset(30,48,WOF_INTERPOLATE); A_StartSound("Weapons/Flamer/In", CHAN_WEAPON); }
-		#### # 5 A_WeaponOffset(11,43,WOF_INTERPOLATE);
-		#### # 3 A_WeaponOffset(7,43,WOF_INTERPOLATE);
 		#### # 3 A_WeaponOffset(23,42,WOF_INTERPOLATE);
 		#### # 3 A_WeaponOffset(21,42,WOF_INTERPOLATE);
 		#### # 5 A_WeaponOffset(11,43,WOF_INTERPOLATE);
@@ -148,14 +144,9 @@ Class FlammenwerferProj : FastMissile
 		Height 60;
 		FastMissile.RadiusScale 0.1;
 		FastMissile.HeightScale 0.1;
-		FastMissile.RadiusScaleFactor 0.03;
-		FastMissile.HeightScaleFactor 0.03;
 
 		FastMissile.DOTType "BurnDOT";
-
-		FastMissile.XScaleFactor 0.03;
-		FastMissile.YScaleFactor 0.03;
-		
+	
 		DamageFunction 10;
 		DamageType "Fire";
 		Speed 24;
@@ -172,12 +163,19 @@ Class FlammenwerferProj : FastMissile
 	States
 	{
 	Spawn:
-		TNT1 A 0 A_JumpIf(WaterLevel > 1, "Nope");
-		TNT1 A 0 { bPAINLESS = random(0,1); }
-		DB55 ABC 1 Bright A_JumpIf(WaterLevel > 1, "Nope");
-	Move:		
-		DB55 DEFGHIJKLMN 1 Bright A_JumpIf(WaterLevel > 1, "Nope"); //{ A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
-		DB55 OPQRSTUVWXYZ 1 Bright A_JumpIf(WaterLevel > 1, "Nope"); //{ A_FadeOut(0.075); A_SetScale(Scale.X*1.075,Scale.Y*1.075); A_ChangeVelocity(0,0,0.25,CVF_RELATIVE); }
+		DB55 ABCDEF 1 Bright
+		{
+			bPAINLESS = random(0,1);
+			A_SpawnItemEx("FlammenwerferProj_FX", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERTRANSLATION|SXF_TRANSFERSCALE|SXF_TRANSFERSPRITEFRAME);
+			return A_JumpIf(WaterLevel > 1, "Nope");
+		}
+	Move:
+		DB55 GHIJKLMNOPQRSTUVWXYZ 1 Bright
+		{
+			A_SetScale(Scale.X*1.075,Scale.Y*1.075);
+			A_SpawnItemEx("FlammenwerferProj_FX", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERTRANSLATION|SXF_TRANSFERSCALE|SXF_TRANSFERSPRITEFRAME);
+			return A_JumpIf(WaterLevel > 1, "Nope");
+		}
 		Stop;
 	Death:
 		TNT1 A 0 A_AreaOfEffect("FireAoE", 12);
@@ -193,6 +191,24 @@ Class FlammenwerferProj : FastMissile
 		Wait;
 	Nope:
 		TNT1 A 0;
+		Stop;
+	}
+}
+
+class FlammenwerferProj_FX : Actor
+{
+	Default
+	{
+		+FORCEXYBILLBOARD
+		+NOGRAVITY
+		RenderStyle "Add";
+		Alpha 0.75;
+		Speed 12;
+	}
+	States
+	{
+	Spawn:
+		DB55 #### 1 Bright;
 		Stop;
 	}
 }
