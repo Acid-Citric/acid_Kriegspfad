@@ -205,7 +205,8 @@ Class Wolfenstein3D_Meal : Health
 	States
 	{
 	Spawn:
-		HEAL M -1;
+		HEAL # 0 NoDelay A_Jump(256,1,2);
+		#### MP -1;
 		Stop;
 	Death.Fire:
 		HEAL B 0
@@ -213,8 +214,10 @@ Class Wolfenstein3D_Meal : Health
 			Amount = 25;
 			hotmeal = True;
 			A_StartSound("weapon/noammo");
+
+			frame = frame + 1;
 		}
-		HEAL N 5 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 7.5+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);		
+		HEAL # 5 Bright A_SpawnItemEx("HotMeal_Smoke", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 7.5+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);		
 		Goto Death.Fire+1;
 	}
 }
