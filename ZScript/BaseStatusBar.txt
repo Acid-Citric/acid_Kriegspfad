@@ -8,6 +8,9 @@ class WW2StatusBar : BaseStatusBar
 	HUDFont mSmallFont;
 	HUDFont mNSmallFont;
 
+	DynamicValueInterpolator mHealthInterpolator;
+	DynamicValueInterpolator mArmorInterpolator;
+
 	override void Init()
 	{
 		Super.Init();
@@ -21,14 +24,27 @@ class WW2StatusBar : BaseStatusBar
 		mAmountFont = HUDFont.Create("INDEXFONT");
 		diparms = InventoryBarState.Create();
 
+		mHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+		mArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+
 		mSmallFont = HUDFont.Create("SMALLFONT");
 		mNSmallFont = HUDFont.Create("NEWSMALLFONT");
 	}
 
-	/*override void Tick()
-    {
-        Super.Tick();
-	}*/
+	override void NewGame ()
+	{
+		Super.NewGame();
+
+		mHealthInterpolator.Reset(0);
+		mArmorInterpolator.Reset(0);
+	}
+	override void Tick()
+	{
+		Super.Tick();
+
+		mHealthInterpolator.Update(CPlayer.Health); // Set the interpolator's value to this player's health
+		mArmorInterpolator.Update(GetArmorAmount());
+	}
 
 	override void Draw(int state, double TicFrac)
 	{
@@ -125,12 +141,14 @@ class WW2StatusBar : BaseStatusBar
 				}
 				If(CheckWeaponSelected('STEN'))
 				{
+					Let ptr = STEN(CPlayer.mo.FindInventory('STEN'));
 					for(int i = CPlayer.Mo.CountInv("STENLoaded"); i > 0; i--)
 					{
 						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
 						Ammo_Y = Ammo_Y - 6;
 					}
 					DrawImage("WEAPON_9", (-51, -133), DI_ITEM_OFFSETS);
+					DrawBar("WEAPON_9B", "", ptr.STEN_Heat, 16, (-36, -133), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
 				}
 				If(CheckWeaponSelected('G43'))
 				{
