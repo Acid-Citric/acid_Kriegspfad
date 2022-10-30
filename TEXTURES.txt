@@ -59,6 +59,16 @@ Graphic "WEAPON_9", 27, 117
 	}
 }
 
+Graphic "WEAPON_9B", 7, 37
+{
+	Patch "WP9PB0", -15, 0
+	{
+		FlipX
+		Rotate 90
+		Blend "#FF0000", 1.0
+	}
+}
+
 Graphic "WEAPON_4", 26, 152
 {
 	Patch "WP4PA0", 0, 0
@@ -90,6 +100,168 @@ Graphic "WEAPON_5", 42, 128
 	Patch "WP5PA0", 0, 0
 	{
 		Rotate 90
+	}
+}
+
+Sprite "CAS0C0", 8, 5
+{
+	Offset 4, 5
+	Patch "CAS0A0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "CAS0D0", 8, 8
+{
+	Offset 4, 8
+	Patch "CAS0B0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "CAS0E0", 5, 8
+{
+	Offset 2, 8
+	Patch "CAS0A0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "CAS0F0", 8, 8
+{
+	Offset 4, 8
+	Patch "CAS0B0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "CAS0G0", 8, 5
+{
+	Offset 4, 5
+	Patch "CAS0A0", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "CAS0H0", 8, 8
+{
+	Offset 4, 8
+	Patch "CAS0B0", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "CAS1C0", 31, 15
+{
+	Offset 16, 15
+	Patch "CAS1A0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "CAS1D0", 28, 28
+{
+	Offset 14, 28
+	Patch "CAS1B0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "CAS1E0", 15, 31
+{
+	Offset 7, 31
+	Patch "CAS1A0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "CAS1F0", 28, 28
+{
+	Offset 14, 28
+	Patch "CAS1B0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "CAS1G0", 31, 15
+{
+	Offset 16, 15
+	Patch "CAS1A0", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "CAS1H0", 28, 28
+{
+	Offset 14, 28
+	Patch "CAS1B0", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "CAS2C0", 24, 8
+{
+	Offset 12, 8
+	Patch "CAS2A0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "CAS2D0", 21, 21
+{
+	Offset 10, 21
+	Patch "CAS2B0", 0, 0
+	{
+		Rotate 90
+	}
+}
+
+Sprite "CAS2E0", 8, 24
+{
+	Offset 4, 24
+	Patch "CAS2A0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "CAS2F0", 21, 21
+{
+	Offset 10, 21
+	Patch "CAS2B0", 0, 0
+	{
+		Rotate 180
+	}
+}
+
+Sprite "CAS2G0", 24, 8
+{
+	Offset 12, 8
+	Patch "CAS2A0", 0, 0
+	{
+		Rotate -90
+	}
+}
+
+Sprite "CAS2H0", 21, 21
+{
+	Offset 10, 21
+	Patch "CAS2B0", 0, 0
+	{
+		Rotate -90
 	}
 }
 
