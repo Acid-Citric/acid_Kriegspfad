@@ -71,7 +71,8 @@ Class WW2Handler : EventHandler
 
 		Else If(cls == 'Clip')
 		{
-			If(Random[Clip](0,19) == 19) e.Replacement = 'Walther';
+			If(Random[Clip](0,9) == 9) e.Replacement = 'Walther';
+			Else If(Random[Clip](0,9) == 0) e.Replacement = 'Ammo9mm_2';
 			Else e.Replacement = 'Ammo9mm_1';
 		}
 		Else If(cls == 'ClipBox')
@@ -92,7 +93,7 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'RocketAmmo')
 		{
 			If(Random[RocketAmmo](0,1)) e.Replacement = 'Ammo792M_1';
-			Else e.Replacement = 'Ammo9mm_1';
+			Else e.Replacement = 'Clip';
 		}
 		Else If(cls == 'RocketBox')
 		{
@@ -102,7 +103,7 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Cell')
 		{
 			If(Random[Cell](0,1)) e.Replacement = 'Ammo9362_1';
-			Else e.Replacement = 'Ammo9mm_1';
+			Else e.Replacement = 'Clip';
 		}
 		Else If(cls == 'CellPack')
 		{
