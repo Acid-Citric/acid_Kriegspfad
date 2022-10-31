@@ -146,7 +146,9 @@ Class FlammenwerferProj : FastMissile
 		FastMissile.HeightScale 0.1;
 
 		FastMissile.DOTType "BurnDOT";
-	
+
+		Scale 0.2;
+
 		DamageFunction 10;
 		DamageType "Fire";
 		Speed 24;
