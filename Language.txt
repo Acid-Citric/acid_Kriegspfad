@@ -1,7 +1,7 @@
 [enu default]
 
 STARTUP1 = "\c[Orange]Der Kriegspfad : Blut und Eisen\c-";
-STARTUP2 = "\c[Orange]- 13-10-2022 -\c-";
+STARTUP2 = "\c[Orange]- 01-11-2022 -\c-";
 
 TAG_AMMO_9MM = "9 x 19 Parabellum round";
 TAG_AMMO_12GA = "12 Gauge brass shell";
@@ -52,3 +52,4 @@ QUIT_MSG5 = "You're trying to say you like Wolfenstein II better than me, right?
 QUIT_MSG6 = "Don't go now, there's a Schutzstaffel waiting at your desktop!"; // -LossForWords
 QUIT_MSG7 = "When you leave the battlefield, \nyou leave with Hitler!"; // -LossForWords
 QUIT_MSG8 = "Go ahead, leave.\n When you come back, I'll be waiting with a flamethrower at your head."; // -Renegade4339
+QUIT_MSG9 = "Yeah, right, like YOU have \nanything better to do !"; // Wolfenstein Enemy Territory
