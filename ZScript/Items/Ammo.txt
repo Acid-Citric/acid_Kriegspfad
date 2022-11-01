@@ -199,7 +199,7 @@ Class Ammo792M : Ammo
 }
 Class Ammo792M_1 : Ammo792M
 {
-	Default	{ Inventory.PickupSound "misc/ammo_pkup_clip"; }
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_clip"; Scale 1.0; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
