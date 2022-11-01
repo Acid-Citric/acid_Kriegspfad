@@ -1,8 +1,28 @@
 GameInfo
 {
-	PlayerClasses = "WW2Player"
-	AddEventHandlers = "WW2Handler"
-    StatusBarClass = "WW2StatusBar"
+	BackpackType = "Backpack"
 
-	QuitMessages = "$QUIT_MSG","$QUIT_MSG0", "$QUIT_MSG1", "$QUIT_MSG2", "$QUIT_MSG3", "$QUIT_MSG4", "$QUIT_MSG5", "$QUIT_MSG6", "$QUIT_MSG7", "$QUIT_MSG8"
+	DrawReadThis = True
+
+	ForceTextInMenus = False
+	
+	WeaponSlot = 1, "Knife"
+	WeaponSlot = 2, "Luger", "Walther"
+	WeaponSlot = 3, "TrenchGun", "BA5"
+	WeaponSlot = 4, "MP40", "STEN"
+	WeaponSlot = 5, "G43", "Kar98k"
+	WeaponSlot = 6, "Flammenwerfer"
+	WeaponSlot = 7, "UMG43"
+
+	ArmorIcons = "HELMA0", 66.665, "VESTA0"
+
+	PlayerClasses = "WW2Player"
+
+	PauseSign = "M_PAUSE"
+
+	QuitMessages = "$QUIT_MSG", "$QUIT_MSG0", "$QUIT_MSG1", "$QUIT_MSG2", "$QUIT_MSG3", "$QUIT_MSG4", "$QUIT_MSG5", "$QUIT_MSG6", "$QUIT_MSG7", "$QUIT_MSG8", "QUIT_MSG9"
+
+	AddEventHandlers = "WW2Handler"
+
+	StatusBarClass = "WW2StatusBar"
 }
