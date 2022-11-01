@@ -163,7 +163,7 @@ Class Ammo12G_2 : Ammo12G
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Amount = Random[Ammo12G](6,12);
+		Amount = Random[Ammo12G](8,16);
 	}
 	States
 	{
