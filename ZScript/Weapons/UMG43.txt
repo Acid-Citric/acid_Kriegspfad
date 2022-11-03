@@ -50,9 +50,9 @@ Class UMG43 : AxisWeapon
 		WP5G A 1
 		{
 			If(CountInv("Ammo9362") && Invoker.Empty == False)	{ return ResolveState("Ready"); }
-			Else If(!CountInv("AmmoFuel")) { Invoker.Empty = True; } // edit
+			Else If(!CountInv("Ammo9362")) { Invoker.Empty = True; } // edit
 			A_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD);
-			return A_JumpIf((CountInv("AmmoFuel") && Invoker.Empty == False), "Ready");
+			return A_JumpIf((CountInv("Ammo9362") && Invoker.Empty == False), "Ready");
 		}
 		Loop;
 	Deselect:
