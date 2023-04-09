@@ -57,10 +57,7 @@ Class MP40 : AxisWeapon
 			A_AlertMonsters();
 			A_FireBullets(1.4, 1.4, 1, random(9,14), "BulletPuff_2", FBF_NORANDOMPUFFZ);
 			A_StartSound("mp40/fire", CHAN_WEAPON);
-			
-			If(Invoker.switchmag == True) { A_TakeInventory("MP40Loaded_2",1); }
-            Else If(Invoker.switchmag == False) { A_TakeInventory("MP40Loaded_1",1); }			
-			
+			A_TakeInventory(Invoker.AmmoType1, 1);	
 			A_FireProjectile("Casing_Spawner_9MM", 0, False, 0, 0, FPF_NOAUTOAIM);
 		}
 		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
@@ -102,11 +99,11 @@ Class MP40 : AxisWeapon
 
 	Reload:
 		TNT1 A 0 A_JumpIf(CountInv("MP40Loaded_1") == 32 && CountInv("MP40Loaded_2") == 32, 2);
-		TNT1 A 0 A_JumpIf(CountInv("Ammo9mm") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, "ReloadWork");
 		TNT1 A 0;
 		Goto Ready;
 	ReloadWork:
-		TNT1 A 0 A_JumpIf(CountInv("Ammo9mm") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, 1);
         Goto Ready;
 		WP3G C 1
 		{
@@ -132,27 +129,16 @@ Class MP40 : AxisWeapon
 		{
 			If(CountInv("MP40Loaded_1") == 32)
 			{
-				While(CountInv("Ammo9mm") > 0 && CountInv("MP40Loaded_2") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("MP40Loaded_2") < 32)
-				{
-					A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
-					A_GiveInventory("MP40Loaded_2", 1);
-				}
+				SetAmmoType1(True, "MP40Loaded_2");
+				A_MagazineReload("MP40Loaded_2");
 			}
 			Else
 			{
-				While(CountInv("Ammo9mm") > 0 && CountInv("MP40Loaded_1") < 32 || CountInv("PowerInfiniteAmmo") && CountInv("MP40Loaded_1") < 32)
-				{
-					A_TakeInventory("Ammo9mm", 1, TIF_NOTAKEINFINITE);
-					A_GiveInventory("MP40Loaded_1", 1);
-				}
+				SetAmmoType1(True, "MP40Loaded_1");
+				A_MagazineReload("MP40Loaded_1");
 			}
 		}
-		#### A 0
-		{
-			If(CountInv("MP40Loaded_1") == 32 && CountInv("MP40Loaded_2") == 32)	{ return ResolveState("ReloadFinish"); }
-			Else If(CountInv("Ammo9mm") < 1 && !CountInv("PowerInfiniteAmmo"))	{ return ResolveState("ReloadFinish"); }
-			return ResolveState("ReloadMags");
-		}
+		#### A 0 A_JumpIf(CountInv("MP40Loaded_1") == 32 && CountInv("MP40Loaded_2") == 32 || Invoker.Ammo2.Amount < 1, 1);
 		Goto ReloadMags;
 	ReloadFinish:
 		WP3G C 1 { A_WeaponOffset(-3,57,WOF_INTERPOLATE); Invoker.switchmag = False; SetAmmoType1(True, "MP40Loaded_1"); }
