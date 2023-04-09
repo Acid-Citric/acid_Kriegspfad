@@ -1,11 +1,11 @@
 Class TrenchGun : AxisWeapon
 {
-	Bool shotgunreload, shotgunempty, shotgunlower, shotgunnotpumped;
-	//Int sequence;
+	Bool reload, empty, lower, notpumped;
+	Int sequence;
 	Default
 	{
 		Weapon.SelectionOrder 400;
-
+		Weapon.SlotNumber 3;
 		Weapon.AmmoType "TrenchGunLoaded";
 		Weapon.AmmoType2 "Ammo12G";
 		Inventory.PickupMessage "You got the Winchester Model 1897!";
@@ -20,7 +20,7 @@ Class TrenchGun : AxisWeapon
 		If(bTOSSED) { other.A_GiveInventory("TrenchGunLoaded", random(1,3)); }
 		Else { other.A_GiveInventory("TrenchGunLoaded", random(1,6)); }
 	}
-   	Override Bool TryPickup(in out Actor toucher)
+   	Override Bool TryPickup(in out Actor toucher)  
     {
 		If(toucher)
 		{
@@ -46,45 +46,46 @@ Class TrenchGun : AxisWeapon
 		#### A 1 A_WeaponReady(WRF_ALLOWRELOAD);
 		Loop;
 	Deselect:
-		TNT1 A 0 { Invoker.shotgunlower = True; }
-		TNT1 A 0 A_JumpIf(Invoker.shotgunreload, "ReloadFinish");
+		TNT1 A 0 { Invoker.lower = True; }
+		TNT1 A 0 A_JumpIf(Invoker.reload, "ReloadFinish");
 		WP2E A 0 A_JumpIf(!CountInv("TrenchGunLoaded"), 2);
 		WP2G A 0;
-		#### # 0 { Invoker.shotgunlower = False; }
+		#### # 0 { Invoker.lower = False; }
 		#### # 1 A_Lower(12);
 		Loop;
 
 	Fire:
-		#### A 0 A_JumpIf(!CountInv("TrenchGunLoaded"), "Reload");
-		#### A 0 A_JumpIf(Invoker.shotgunreload, "ReloadFinish");
-		#### A 0 A_JumpIf(Invoker.shotgunnotpumped, "Pump");
+		#### A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), "Reload");
+		#### A 0 A_JumpIf(Invoker.reload, "ReloadFinish");
+		#### A 0 A_JumpIf(Invoker.notpumped, "Pump");
 		WP2G B 2
 		{
 			A_GunFlash();
 			A_AlertMonsters();
 			A_FireBullets(2, 2, 10, random(5,15), "BulletPuff_2", FBF_NORANDOMPUFFZ);
 			A_StartSound("shotgun/fire", CHAN_WEAPON);
-			A_TakeInventory("TrenchGunLoaded",1);
-			Invoker.shotgunnotpumped = True;
+			A_TakeInventory(Invoker.AmmoType1, 1);
+			Invoker.notpumped = True;
 		}
-		#### # 1 A_WeaponOffset(0,32,WOF_INTERPOLATE); 
+		#### # 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		WP2E A 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,34,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,33,WOF_INTERPOLATE);
-		WP2E A 7 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOFIRE); }
+		WP2E A 7 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOFIRE); }
 	Pump:
-		#### A 1 A_WeaponOffset(-1,33,WOF_INTERPOLATE); 
-		WP2G C 1 { A_WeaponOffset(5,34,WOF_INTERPOLATE); A_StartSound("shotgun/pump",CHAN_WEAPON); Invoker.shotgunnotpumped = False; }
+		#### A 1 A_WeaponOffset(-1,33,WOF_INTERPOLATE);
+		WP2G C 1 { A_WeaponOffset(5,34,WOF_INTERPOLATE); A_StartSound("shotgun/pump",CHAN_WEAPON); }
 		#### C 1 A_WeaponOffset(2,36,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(3,35,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### E 1 A_WeaponOffset(-4,41,WOF_INTERPOLATE);
-		#### E 1 
+		#### E 1
 		{
 			A_WeaponOffset(-4,43,WOF_INTERPOLATE);
 			A_FireProjectile("Casing_Spawner_Shotgun", 0, False, -4, -4, FPF_NOAUTOAIM);
+			Invoker.notpumped = False;
 		}
 		#### F 1 A_WeaponOffset(-4,45,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-3,44,WOF_INTERPOLATE);
@@ -94,10 +95,10 @@ Class TrenchGun : AxisWeapon
 		#### D 1 A_WeaponOffset(-1,37,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(1,36,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(2,36,WOF_INTERPOLATE);
-		WP2E A 0 A_JumpIf(!CountInv("TrenchGunLoaded"), 2);
+		WP2E A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
 		WP2G A 0;
 		#### A 1 A_WeaponOffset(5,34,WOF_INTERPOLATE);
-		#### A 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### A 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOBOB); }
 		#### # 0 A_ReFire();
 		Goto Ready;
 	Flash:
@@ -106,32 +107,31 @@ Class TrenchGun : AxisWeapon
 		Goto LightDone;
 
 	Reload:
-		TNT1 A 0 A_JumpIfInventory("TrenchGunLoaded", 6, "Ready");
-		TNT1 A 0 A_JumpIf(CountInv("TrenchGunLoaded") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
-		TNT1 A 0 { Invoker.shotgunempty = True; }
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount, "Ready");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount > 0, "ReloadWork");
+		TNT1 A 0 { Invoker.empty = True; }
 	ReloadWork:
-		TNT1 A 0 A_JumpIf(CountInv("Ammo12G") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, 1);
         Goto Ready;
-		TNT1 A 0 { Invoker.shotgunreload = True; }
-		TNT1 A 0 A_JumpIf(CountInv("TrenchGunLoaded") == 5 && Invoker.shotgunnotpumped, "ReloadPump");
+		TNT1 A 0 { Invoker.reload = True; }		
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == 5 && Invoker.notpumped, "ReloadPump");
 		WP2G C 1 A_WeaponOffset(5,34,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(2,36,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
-	    //#### A 0 A_JumpIf(GetCVar('Kriegspfad_Shotguns') == True && Invoker.shotgunempty, "LoadChamber");
+	    //#### A 0 A_JumpIf(GetCVar('Kriegspfad_Shotguns') == True && Invoker.empty, "LoadChamber");
 		#### D 1 A_WeaponOffset(3,35,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-4,41,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-6,46,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-7,55,WOF_INTERPOLATE);
 	ReloadLoop:
-		TNT1 A 0 A_JumpIf(CountInv("TrenchGunLoaded") == 6 || CountInv("Ammo12G") < 1 && !CountInv("PowerInfiniteAmmo"), "ReloadFinish");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount || Invoker.Ammo2.Amount < 1, "ReloadFinish");
 		//TNT1 A 0 A_JumpIf(Invoker.sequence == 3, "GetMoreShells");
 		WP2G D 1
 		{
 			A_WeaponOffset(-8,58,WOF_INTERPOLATE);
 			A_StartSound("shotgun/load", CHAN_WEAPON);
-			A_TakeInventory("Ammo12G",1,TIF_NOTAKEINFINITE);
-			A_GiveInventory("TrenchGunLoaded",1);
+			A_HandReload(Invoker.AmmoType1);
 			//Invoker.sequence++;
 		}
 		#### D 1 A_WeaponOffset(-9,64,WOF_INTERPOLATE);
@@ -140,17 +140,17 @@ Class TrenchGun : AxisWeapon
 		#### D 1 A_WeaponOffset(-9,66,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-9,64,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-9,62,WOF_INTERPOLATE);
-		#### D 1 { A_WeaponOffset(-8,61,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY); }
-		#### D 1 { A_WeaponOffset(-8,60,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY); }
-		#### D 2 { A_WeaponOffset(-8,59,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY); }
-		#### D 3 { A_WeaponOffset(-8,58,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY); }
-		TNT1 A 0 A_JumpIf(CountInv("TrenchGunLoaded") == 5 && Invoker.shotgunnotpumped, "ReloadFinish");
-		TNT1 A 0 A_JumpIf(CountInv("TrenchGunLoaded") == 5 && Invoker.shotgunempty || CountInv("Ammo12G") < 1 && !CountInv("PowerInfiniteAmmo") && Invoker.shotgunempty, "ReloadFinish");
-		TNT1 A 0 A_JumpIf(CountInv("TrenchGunLoaded") == 6 || CountInv("Ammo12G") < 1 && !CountInv("PowerInfiniteAmmo"), "ReloadFinish_2");
+		#### D 1 { A_WeaponOffset(-8,61,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### D 1 { A_WeaponOffset(-8,60,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### D 2 { A_WeaponOffset(-8,59,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		#### D 3 { A_WeaponOffset(-8,58,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB); }
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == 5 && Invoker.notpumped, "ReloadFinish");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == 5 && Invoker.empty || Invoker.Ammo2.Amount < 1 && Invoker.empty, "ReloadFinish");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount, "ReloadFinish");
 		Goto ReloadLoop;
 	ReloadFinish:
-		TNT1 A 0 A_JumpIf(Invoker.shotgunempty == False && Invoker.shotgunnotpumped == True, "ReloadPump");
-		TNT1 A 0 A_JumpIf(Invoker.shotgunempty == False, "ReloadFinish_2");
+		TNT1 A 0 A_JumpIf(Invoker.empty == False && Invoker.notpumped == True, "ReloadPump");
+		TNT1 A 0 A_JumpIf(Invoker.empty == False, "ReloadFinish_2");
 	ReloadPump:
 		WP2G D 1 { A_WeaponOffset(3,35,WOF_INTERPOLATE); A_StartSound("shotgun/pump", CHAN_5); }
 		#### D 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
@@ -158,13 +158,13 @@ Class TrenchGun : AxisWeapon
 		#### E 1 A_WeaponOffset(-1,33,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-2,37,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(-3,43,WOF_INTERPOLATE);
-		#### E 1 
+		#### E 1
 		{
 			A_WeaponOffset(-2,40,WOF_INTERPOLATE);
-			If(Invoker.shotgunnotpumped == True)
+			If(Invoker.notpumped == True)
 			{
 				A_FireProjectile("Casing_Spawner_Shotgun", 0, False, -4, -4, FPF_NOAUTOAIM);
-				Invoker.shotgunnotpumped = False;
+				Invoker.notpumped = False;
 			}
 		}
 		#### E 1 A_WeaponOffset(-4,41,WOF_INTERPOLATE);
@@ -174,11 +174,11 @@ Class TrenchGun : AxisWeapon
 		#### C 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(2,36,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(5,34,WOF_INTERPOLATE);
-		#### C 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); Invoker.shotgunempty = False; Invoker.shotgunreload = False; } //Invoker.sequence = 0;
-		TNT1 A 0 A_JumpIf(Invoker.shotgunlower, "Deselect");
+		#### C 1 { A_WeaponOffset(0,32,WOF_INTERPOLATE); Invoker.empty = False; Invoker.reload = False; Invoker.sequence = 0; }
+		TNT1 A 0 A_JumpIf(Invoker.lower, "Deselect");
 		Goto Ready;
 
-	/*GetMoreShells:
+	GetMoreShells:
 		WP2G D 2 A_WeaponOffset(-8,58,WOF_INTERPOLATE);
 		#### # 2 A_WeaponOffset(-9,64,WOF_INTERPOLATE);
 		#### # 2 { A_WeaponOffset(-10,70,WOF_INTERPOLATE); A_StartSound("shotgun/shells", CHAN_5); }
@@ -186,10 +186,10 @@ Class TrenchGun : AxisWeapon
 		#### # 2 A_WeaponOffset(-9,66,WOF_INTERPOLATE);
 		#### # 3 A_WeaponOffset(-9,64,WOF_INTERPOLATE);
 		#### # 4 { A_WeaponOffset(-9,62,WOF_INTERPOLATE); Invoker.sequence = 0; }
-		Goto ReloadLoop;*/
+		Goto ReloadLoop;
 
-	/*LoadChamber:
-		TNT1 A 0 A_JumpIf(CountInv("Ammo12G") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+	LoadChamber:
+		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, 1);
         Goto ReloadFinish_2;
 		WP2G D 1 { A_WeaponOffset(3,35,WOF_INTERPOLATE); A_StartSound("shotgun/pump", CHAN_5); }
 		#### D 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
@@ -201,8 +201,7 @@ Class TrenchGun : AxisWeapon
 			If(Invoker.notpumped == False)
 			{			
 				A_StartSound("shotgun/load", CHAN_WEAPON);
-				A_TakeInventory("Ammo12G",1,TIF_NOTAKEINFINITE);
-				A_GiveInventory("TrenchGunLoaded",1);
+				A_HandReload(Invoker.AmmoType1);
 				//Invoker.sequence++;
 				Invoker.empty = False;
 			}
@@ -223,7 +222,7 @@ Class TrenchGun : AxisWeapon
 		#### D 1 A_WeaponOffset(-6,46,WOF_INTERPOLATE);
 		#### D 1 A_WeaponOffset(-7,55,WOF_INTERPOLATE);
 		#### A 0 A_JumpIf(Invoker.empty, "LoadChamber");
-		Goto ReloadLoop;*/
+		Goto ReloadLoop;
 	}
 }
 
