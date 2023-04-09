@@ -4,7 +4,10 @@ Class AxisWeapon : Weapon
     {
 		+WEAPON.NOALERT
 		Scale 0.3;
-	    Weapon.BobRangeX 0;
+		Weapon.BobStyle "Smooth";
+		Weapon.BobSpeed 1.0;
+		Weapon.BobRangeX 0.0;
+		Weapon.BobRangeY 1.0;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -33,6 +36,22 @@ Class AxisWeapon : Weapon
 			return String.Format("+%d %s",AmmoGive2,GetDefaultByType(AmmoType2).GetTag());
 		Else
 			return String.Format("+%d %ss",AmmoGive2,GetDefaultByType(AmmoType2).GetTag());
+    }
+	//Credit Agent_Ash aka Jekyll Grim Payne
+    Action Void A_MagazineReload(Class<Ammo> AmmoType1) //Edited for the MP40/1	- Ac!d
+    {
+        While(Invoker.Ammo2.Amount > 0 && Invoker.Ammo1.Amount < Invoker.Ammo1.MaxAmount) 
+        {
+            TakeInventory(Invoker.AmmoType2, 1);
+            GiveInventory(Invoker.AmmoType1, 1);
+        }
+    }
+
+	//Based on A_MagazineReload. For shotguns, Kar98k and G43	- Ac!d
+    Action Void A_HandReload(Class<Ammo> AmmoType1, int amount = 1)
+    {
+		TakeInventory(Invoker.AmmoType2, amount);
+		GiveInventory(Invoker.AmmoType1, amount);
     }
 }
 
