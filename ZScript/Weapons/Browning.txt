@@ -1,7 +1,7 @@
 Class BA5 : AxisWeapon
 {
 	Bool reload, empty, lower;
-	//Int sequence;
+	Int sequence;
 	Default
 	{
 		Weapon.SelectionOrder 400;
