@@ -33,13 +33,13 @@ Class Kar98k : AxisWeapon
 		WPAP A -1;
 		Stop;
 	Select:
-		WPAG D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
+		WPAG D 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
 		WPAG A 0;
 		#### # 1 A_Raise(12);
 		Loop;
 	Ready:
 		WPAG A 0 A_JumpIf(Invoker.ADS == True, 4);
-		#### D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
+		#### D 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
 		#### A 0;
 		WPAG # 1 A_WeaponReady(WRF_ALLOWRELOAD);
 		Loop;
@@ -54,7 +54,7 @@ Class Kar98k : AxisWeapon
 		TNT1 A 0 { Invoker.riflelower = True; }
 		TNT1 A 0 A_JumpIf(Invoker.riflereload, "ReloadFinish");
 		WPAG R 0 A_JumpIf(Invoker.ADS, "LowerZoom");
-		WPAG D 0 A_JumpIf(!CountInv("Kar98kLoaded"), 2);
+		WPAG D 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
 		WPAG A 0;
 		#### # 0 { Invoker.riflelower = False; }
 		#### # 1 A_Lower(12);
@@ -70,7 +70,7 @@ Class Kar98k : AxisWeapon
 			A_AlertMonsters();
 			A_RailAttack(random(1,3) * random(130,200), 0, False, "", "", RGF_SILENT, 0, "BulletPuff_2", 0, 0, 8192, 1);
 			A_StartSound("mauser/fire", CHAN_WEAPON);
-			A_TakeInventory("Kar98kLoaded",1);
+			A_TakeInventory(Invoker.AmmoType1, 1);
 		}
 	Reloading:
 		#### C 1 { A_WeaponOffset(0,44,WOF_INTERPOLATE); A_ZoomFactor(1.0, ZOOM_INSTANT); }
@@ -120,13 +120,13 @@ Class Kar98k : AxisWeapon
 		Goto Deselect;
 
 	Reload:
-		TNT1 A 0 A_JumpIfInventory("Kar98kLoaded", 5, "Ready");
-		TNT1 A 0 A_JumpIf(CountInv("Kar98kLoaded") > 0 || CountInv("PowerInfiniteAmmo"), "ReloadWork");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount, "Ready");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount > 0, "ReloadWork");
 		TNT1 A 0;
 		Goto ReloadWork_Empty; // No more ammo
 
 	ReloadWork:
-		TNT1 A 0 A_JumpIf(CountInv("Ammo792M") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, 1);
         Goto Ready;
 		TNT1 A 0 A_JumpIf(Invoker.ADS, "ReloadADS");
 		WPAG Q 1;
@@ -135,7 +135,7 @@ Class Kar98k : AxisWeapon
 		Goto ReloadWork_Continue;
 
 	ReloadWork_Empty: // No more ammo
-		TNT1 A 0 A_JumpIf(CountInv("Ammo792M") > 0 || CountInv("PowerInfiniteAmmo"), 1);
+		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, 1);
         Goto Ready;
 		TNT1 A 0 A_JumpIf(Invoker.ADS, "ReloadADS_Empty");
 		WPAG DE 1;
@@ -143,7 +143,7 @@ Class Kar98k : AxisWeapon
 		WPAG GHI 2;
 	ReloadWork_Continue:
 		TNT1 A 0 { Invoker.riflereload = True; }
-		WPAG J 2 { If(!CountInv("Kar98kLoaded")) { A_FireProjectile("Casing_Spawner_MauserRifle", 0, False, 1, 1, FPF_NOAUTOAIM); } }
+		WPAG J 2 { If(!Invoker.Ammo1.GetClass()) { A_FireProjectile("Casing_Spawner_MauserRifle", 0, False, 1, 1, FPF_NOAUTOAIM); } }
 		#### KL 2;
 		#### # 6;
 		#### # 1 A_WeaponOffset(-4,44,WOF_INTERPOLATE);
@@ -155,15 +155,13 @@ Class Kar98k : AxisWeapon
 		#### # 2 A_WeaponOffset(5,84,WOF_INTERPOLATE);
 		#### # 3 A_WeaponOffset(6,86,WOF_INTERPOLATE);
 		#### # 5;
-		//#### # 0 A_JumpIf(!CountInv("Kar98kLoaded") && CountInv("Ammo792M") >= 5, "ReloadLoop2");	
 	ReloadLoop:
-		TNT1 A 0 A_JumpIf(CountInv("Kar98kLoaded") == 5 || CountInv("Ammo792M") < 1 && !CountInv("PowerInfiniteAmmo"), "ReloadFinish");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == 5 || Invoker.Ammo2.Amount < 1, "ReloadFinish");
 		WPAG L 1
 		{
 			A_WeaponOffset(6,80,WOF_INTERPOLATE);
 			A_StartSound("mauser/insert", CHAN_WEAPON);
-			A_TakeInventory("Ammo792M", 1, TIF_NOTAKEINFINITE);
-			A_GiveInventory("Kar98kLoaded", 1);
+			A_HandReload(Invoker.AmmoType1);
 		}
 		#### # 1 A_WeaponOffset(6,94,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(6,97,WOF_INTERPOLATE);
@@ -172,25 +170,8 @@ Class Kar98k : AxisWeapon
 		#### # 1 A_WeaponOffset(9,98,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(8,92,WOF_INTERPOLATE);
 		#### # 2 { A_WeaponOffset(7,77,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY); }
-		TNT1 A 0 A_JumpIf(CountInv("Kar98kLoaded") == 5 || CountInv("Ammo792M") < 1 && !CountInv("PowerInfiniteAmmo"), "ReloadFinish");
+		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == 5 || Invoker.Ammo2.Amount < 1, "ReloadFinish");
 		Goto ReloadLoop;
-	ReloadLoop2:
-		WPAG L 1 { A_WeaponOffset(6,80,WOF_INTERPOLATE); A_StartSound("mauser/insert", CHAN_WEAPON); }
-		#### # 0
-		{
-           	While(CountInv("Ammo792M") > 0 && CountInv("Kar98kLoaded") < 5 || CountInv("PowerInfiniteAmmo") && CountInv("Kar98kLoaded") < 5)
-			{
-				A_TakeInventory("Ammo792M", 1, TIF_NOTAKEINFINITE);
-				A_GiveInventory("Kar98kLoaded", 1);
-			}
-		}
-		#### # 2 A_WeaponOffset(6,94,WOF_INTERPOLATE);
-		#### # 2 A_WeaponOffset(6,97,WOF_INTERPOLATE);
-		#### # 2 A_WeaponOffset(7,100,WOF_INTERPOLATE);
-		#### # 8 A_WeaponOffset(8,102,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(9,98,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(8,92,WOF_INTERPOLATE);
-		#### # 1 { A_WeaponOffset(7,77,WOF_INTERPOLATE); A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY); }
 	ReloadFinish:
 		WPAG K 1;
 		WPAG J 1 A_StartSound("mauser/shut", CHAN_WEAPON);
