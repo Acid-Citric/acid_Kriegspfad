@@ -119,24 +119,11 @@ class WW2StatusBar : BaseStatusBar
 				}
 				If(CheckWeaponSelected('MP40'))
 				{
-					//DrawAmmoBar(32, -23, -10, 2);
-					Let ptr = MP40(CPlayer.mo.FindInventory('MP40'));
-					If(ptr.switchmag)
+					for(int i = CPlayer.Mo.CountInv(CPlayer.ReadyWeapon.AmmoType1); i > 0; i--)
 					{
-						for(int i = CPlayer.Mo.CountInv("MP40Loaded_2"); i > 0; i--)
-						{
-							DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-							Ammo_Y = Ammo_Y - 6;
-						}
+						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
+						Ammo_Y = Ammo_Y - 6;
 					}
-					Else
-					{
-						for(int i = CPlayer.Mo.CountInv("MP40Loaded_1"); i > 0; i--)
-						{
-							DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-							Ammo_Y = Ammo_Y - 6;
-						}
-					}				
 					DrawImage("WEAPON_3", (-60, -94), DI_ITEM_OFFSETS);
 				}
 				If(CheckWeaponSelected('STEN'))
@@ -153,13 +140,19 @@ class WW2StatusBar : BaseStatusBar
 				If(CheckWeaponSelected('G43'))
 				{
 					Let ptr = G43(CPlayer.mo.FindInventory('G43'));
-					for(int i = CPlayer.Mo.CountInv("G43Loaded"); i > 0; i--)
+					If(!ptr.RGrenade)
 					{
-						DrawImage("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
+						for(int i = CPlayer.Mo.CountInv(CPlayer.ReadyWeapon.AmmoType1); i > 0; i--)
+						{
+							DrawImage("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
+							Ammo_Y = Ammo_Y - 6;
+						}
+					}
+					Else
+					{
+						DrawImage("Graphics/Hud/HUD_AMMO_G.png", (-23, -12), DI_ITEM_OFFSETS);
 					}
 					DrawImage("WEAPON_4", (-50, -165), DI_ITEM_OFFSETS);
-					If(ptr.RGrenade) { DrawImage("Graphics/Hud/HUD_RGRENADE.png", (-37, -188), DI_ITEM_OFFSETS); }
 				[amt1, maxamt] = GetAmount("AmmoRifleGrenade");
 					DrawString(mSmallFont, FormatNumber(amt1, 3), (-30, -22), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 				}
