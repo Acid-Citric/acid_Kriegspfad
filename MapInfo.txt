@@ -20,7 +20,7 @@ GameInfo
 
 	PauseSign = "M_PAUSE"
 
-	QuitMessages = "$QUIT_MSG", "$QUIT_MSG0", "$QUIT_MSG1", "$QUIT_MSG2", "$QUIT_MSG3", "$QUIT_MSG4", "$QUIT_MSG5", "$QUIT_MSG6", "$QUIT_MSG7", "$QUIT_MSG8", "QUIT_MSG9"
+	QuitMessages = "$QUIT_MSG", "$QUIT_MSG0", "$QUIT_MSG1", "$QUIT_MSG2", "$QUIT_MSG3", "$QUIT_MSG4", "$QUIT_MSG5", "$QUIT_MSG6", "$QUIT_MSG7", "$QUIT_MSG8", "$QUIT_MSG9"
 
 	AddEventHandlers = "WW2Handler"
 
