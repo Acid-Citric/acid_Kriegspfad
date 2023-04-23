@@ -92,7 +92,7 @@ Class Flammenwerfer : AxisWeapon
 			A_FireProjectile("FlammenwerferProj", 0, False, 0, 5, 0, FRandom(3, 4));
 			A_WeaponOffset(random(-2,2),random(30,34),WOF_INTERPOLATE);
 			
-			If(Invoker.counter == 5) { Invoker.counter = 0; A_TakeInventory(Invoker.AmmoType1, 1); }
+			If(Invoker.counter == 4) { Invoker.counter = 0; A_TakeInventory(Invoker.AmmoType1, 1); }
 			Else { Invoker.counter++; }
 		}
 		#### A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), "Empty");
