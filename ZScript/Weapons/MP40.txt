@@ -1,6 +1,6 @@
 Class MP40 : AxisWeapon
 {
-	Bool MP40Sequence, switchmag;
+	Bool MP40Sequence;
 	Default
 	{
 		Weapon.SelectionOrder 700;
@@ -44,13 +44,7 @@ Class MP40 : AxisWeapon
 		Loop;
 
 	Fire:
-		TNT1 A 0
-		{
-			If(Invoker.switchmag == True && !CountInv("MP40Loaded_2") && !CountInv("MP40Loaded_1")) { Return ResolveState("Reload"); }
-            Else If(Invoker.switchmag == False && !CountInv("MP40Loaded_1") || Invoker.switchmag == True && !CountInv("MP40Loaded_2") && CountInv("MP40Loaded_1")) { Return ResolveState("SwitchMags"); }
-
-			Return Invoker.ResolveState(null);
-		}
+		TNT1 A 0 A_JumpIf(!CountInv(Invoker.AmmoType1), "AltFire");
 		WP3G B 1
 		{
 			A_GunFlash();
@@ -66,7 +60,6 @@ Class MP40 : AxisWeapon
 		#### # 0 A_JumpIf(Invoker.MP40Sequence == False, 2);
 		#### # 1 { A_WeaponOffset(0,36,WOF_INTERPOLATE); Invoker.MP40Sequence = False; }
 		#### # 0 { Invoker.MP40Sequence = True; }
-		#### # 0 { If(Invoker.switchmag == False && !CountInv("MP40Loaded_2") && !CountInv("MP40Loaded_1")) { Invoker.switchmag = True; } }
 		#### # 0 A_ReFire();
 		Goto Ready;
 	Flash:
@@ -74,22 +67,15 @@ Class MP40 : AxisWeapon
 		Goto LightDone;
 
 	AltFire:
-		TNT1 A 0;
-	SwitchMags:
-		TNT1 A 0
-		{
-			If(Invoker.switchmag == True && CountInv("MP40Loaded_1")) { Return ResolveState("SwitchMags")+1; }
-
-			Return Invoker.ResolveState(null);
-		}
+		TNT1 A 0 A_JumpIf(!CountInv("MP40Loaded_1") && !CountInv("MP40Loaded_2"), "Reload");
 		WP3G A 1 { A_WeaponOffset(0,35,WOF_INTERPOLATE); A_StartSound("mp40/magswitch", CHAN_WEAPON); }
 		#### # 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-2,44,WOF_INTERPOLATE);
 		#### # 11
 		{
 			A_WeaponOffset(-3,52,WOF_INTERPOLATE);
-			If(Invoker.switchmag == False) { SetAmmoType1(True, "MP40Loaded_2"); Invoker.switchmag = True; }
-			Else { SetAmmoType1(True, "MP40Loaded_1"); Invoker.switchmag = False;  }
+			If(Invoker.AmmoType1 == "MP40Loaded_1") { SetAmmoType1(True, "MP40Loaded_2"); }
+			Else If(Invoker.AmmoType1 == "MP40Loaded_2") { SetAmmoType1(True, "MP40Loaded_1"); }
 		}
 		#### # 1 A_WeaponOffset(-2,44,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
@@ -98,7 +84,7 @@ Class MP40 : AxisWeapon
 		Goto Ready;
 
 	Reload:
-		TNT1 A 0 A_JumpIf(CountInv("MP40Loaded_1") == 32 && CountInv("MP40Loaded_2") == 32, 2);
+		TNT1 A 0 A_JumpIf(CountInv("MP40Loaded_1") == Invoker.Ammo1.MaxAmount && CountInv("MP40Loaded_2") == Invoker.Ammo1.MaxAmount, 2);
 		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, "ReloadWork");
 		TNT1 A 0;
 		Goto Ready;
@@ -127,21 +113,21 @@ Class MP40 : AxisWeapon
 	ReloadLoop:
 		#### A 0
 		{
-			If(CountInv("MP40Loaded_1") == 32)
+			If(CountInv("MP40Loaded_1") != Invoker.Ammo1.MaxAmount)
 			{
 				SetAmmoType1(True, "MP40Loaded_2");
 				A_MagazineReload("MP40Loaded_2");
 			}
-			Else
+			Else If(CountInv("MP40Loaded_2") != Invoker.Ammo1.MaxAmount)
 			{
 				SetAmmoType1(True, "MP40Loaded_1");
 				A_MagazineReload("MP40Loaded_1");
 			}
 		}
-		#### A 0 A_JumpIf(CountInv("MP40Loaded_1") == 32 && CountInv("MP40Loaded_2") == 32 || Invoker.Ammo2.Amount < 1, 1);
+		#### A 0 A_JumpIf(CountInv("MP40Loaded_1") == Invoker.Ammo1.MaxAmount && CountInv("MP40Loaded_2") == Invoker.Ammo1.MaxAmount || Invoker.Ammo2.Amount < 1, 1);
 		Goto ReloadMags;
 	ReloadFinish:
-		WP3G C 1 { A_WeaponOffset(-3,57,WOF_INTERPOLATE); Invoker.switchmag = False; SetAmmoType1(True, "MP40Loaded_1"); }
+		WP3G C 1 { A_WeaponOffset(-3,57,WOF_INTERPOLATE); SetAmmoType1(True, "MP40Loaded_1"); }
 		#### C 1 A_WeaponOffset(-3,59,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(-3,63,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(-3,67,WOF_INTERPOLATE);
