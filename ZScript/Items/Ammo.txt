@@ -3,10 +3,11 @@ mixin Class AmmoPickupMessage
 	Default	{ Scale 0.75; }
 	Override String PickupMessage()
 	{
+		//double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? G_SkillPropertyFloat(SKILLP_DropAmmoFactor) / 2 : 1);
 		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? - G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
 		int result = int(Amount * factor);
 		if(result == 1) return String.Format("+%d %s",result,GetTag());
-		else return String.Format("+%d %ss",result,GetTag());	
+		else return String.Format("+%d %ss",result,GetTag());
 	}
 }
 
@@ -31,10 +32,12 @@ Class Ammo9mm_1 : Ammo9mm
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
 		Amount = Random[Ammo9mm](1,8);
+		//Frame = Amount - 1;
 
 		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? - G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
 		int result = int(Amount * factor);
-		If(result > 8 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+2); }
+		If(result > 8 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+3); }
+		Else { SetState(ResolveState("Spawn")+random(1,2)); }
 
 		If(bTOSSED && Random(0,1)) { A_DropItem("AmmoGranate",1,16); A_DropItem("AmmoTNT",1,4); }
 		Else If(!bTOSSED && Random(0,1)) { A_SpawnItemEx("AmmoGranate",Random(-8,8),Random(-8,8),failchance: 240); A_SpawnItemEx("AmmoTNT",Random(-8,8),Random(-8,8),failchance: 252); }
@@ -43,7 +46,7 @@ Class Ammo9mm_1 : Ammo9mm
 	{
 	Spawn:
 		TNT1 A 0 NoDelay;
-		9MM_ AB -1;
+		9MM_ AEB -1;
 		Stop;
 	}
 }
@@ -144,10 +147,10 @@ Class Ammo12G_1 : Ammo12G
 			break;
 		}
 		double factor = G_SkillPropertyFloat(SKILLP_AmmoFactor) * (bDROPPED ? -G_SkillPropertyFloat(SKILLP_DropAmmoFactor) : 1);
-		int result = int(Amount * factor);
+		int result = self.amount * factor;
 		If(result == 2 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")+3); }
 		Else If(result == 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")); }
-		Else If(result > 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+5); }
+		Else If(result > 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; A_SetScale(1.0); SetState(ResolveState("Spawn")+5); }
 	}
 	States
 	{
@@ -159,7 +162,7 @@ Class Ammo12G_1 : Ammo12G
 }
 Class Ammo12G_2 : Ammo12G
 {
-	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; }
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; Scale 1.0; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -182,8 +185,7 @@ Class Ammo792M : Ammo
 		Inventory.Icon "792MA0";
 		Inventory.MaxAmount 40;
 		Ammo.BackpackAmount 5;
-		Ammo.BackpackMaxAmount 100;
-		Scale 1.2;
+		Ammo.BackpackMaxAmount 85;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -199,13 +201,13 @@ Class Ammo792M : Ammo
 }
 Class Ammo792M_1 : Ammo792M
 {
-	Default	{ Inventory.PickupSound "misc/ammo_pkup_clip"; Scale 1.0; }
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_clip"; Scale 0.5; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
 		// variants
-		int dec = Random[Ammo12G](0,4);
+		int dec = Random[Ammo792M](0,4);
 		switch(dec)
 		{
 		case 0:
@@ -234,7 +236,7 @@ Class Ammo792M_1 : Ammo792M
 		int result = int(Amount * factor);
 		If(result == 2 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")+4); }
 		Else If(result == 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { SetState(ResolveState("Spawn")+2); }
-		Else If(result > 4 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+6); }
+		Else If(result >= 5 && G_SkillPropertyFloat(SKILLP_AmmoFactor) > 1) { bSPRITEFLIP = False; SetState(ResolveState("Spawn")+6); A_SetScale(1.0); }
 	}
 	States
 	{
@@ -246,7 +248,7 @@ Class Ammo792M_1 : Ammo792M
 }
 Class Ammo792M_2 : Ammo792M
 {
-	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; }
+	Default	{ Inventory.PickupSound "misc/ammo_pkup_box"; Scale 1.0; }
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -270,6 +272,7 @@ Class Ammo9362 : Ammo
 		Inventory.Icon "9362A0";
 		Inventory.MaxAmount 250;
 		Ammo.BackpackMaxAmount 250;
+		Scale 1.0;
 	}
 	Override Void PostBeginPlay()
 	{
@@ -285,12 +288,13 @@ Class Ammo9362_1 : Ammo9362 replaces Cell
 	{
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
-		Amount = Random[Ammo9362](50,200);
+		Amount = Random[Ammo9362](50,150);
+		frame = random[Ammo9362](0,1); //A,B
 	}
 	States
 	{
 	Spawn:
-		9362 A -1;
+		9362 # -1;
 		Stop;
 	}
 }
@@ -318,8 +322,8 @@ Class AmmoFuel_1 : AmmoFuel
 	{
 		Super.PostBeginPlay();
 		bSPRITEFLIP = Random(0,1);
-		Amount = Random[AmmoFuel](25,100);
-		frame = random[Medium_HealthPack](0,1); //A,B
+		Amount = Random[AmmoFuel](50,100);
+		frame = random[AmmoFuel](0,1); //A,B
 	}
 	States
 	{
@@ -395,10 +399,29 @@ Class AmmoTNT : Ammo
 	{
 		If(Owner && Self.Amount > 0 && delay_ac == 0)
 		{
-			String act = "Dynamite_Thrown_" .. counter;
-
-			Owner.A_SpawnProjectile(act, 32, 0, 0, CMF_AIMDIRECTION, Owner.Pitch-16.0);
-
+			//Credits goes to Jaih1r0#0197
+			Actor pj = Owner.A_SpawnProjectile("Dynamite_Proj", 0, 0, 0, CMF_AIMDIRECTION, Owner.Pitch-16);
+			If(pj)
+			{
+				//cast the pointer as dynamiteproj
+				Dynamite_Proj dyn = Dynamite_Proj(pj);
+				If(dyn)
+				{
+					//change its timer variable based on the counter with a switch block
+					Switch(counter)
+					{
+						Case 5: dyn.timer = 175; break;
+						Case 10: dyn.timer = 350; break;
+						Case 15: dyn.timer = 525; break;
+						Case 20: dyn.timer = 700; break;
+						Case 25: dyn.timer = 875; break;
+						Case 30: dyn.timer = 1050; break;
+						Case 35: dyn.timer = 1225; break;
+						Case 40: dyn.timer = 1400; break;
+						Case 45: dyn.timer = 1575; break;
+					}					
+				}
+			}
 			delay_ac = 20;
 			Self.Amount --;
 		}
