@@ -5,20 +5,19 @@ Class Flammenwerfer : AxisWeapon
 	Default
 	{
 		Weapon.SelectionOrder 100;
-
+		Weapon.SlotNumber 6;
+		Weapon.AmmoUse 1;
 		Weapon.AmmoType "AmmoFuel";
 		Inventory.PickupMessage "You got the Flammenwerfer!";
-		+WEAPON.AMMO_OPTIONAL
 		Tag "$TAG_WEAPON_FLAMMENWERFER";
 		Weapon.UpSound "flamer/select";
 	}
    	Override Bool TryPickup(in out Actor toucher)
-	{
+    {
 		If(toucher)
 		{
 			Let weap = toucher.FindInventory("Flammenwerfer");
-			If(!weap) { Self.AmmoGive1 = random(25,50); }
-			Else { Self.AmmoGive1 = random(25,50); }
+			If(!weap || weap) { Self.AmmoGive1 = random(25,50); }
 		}
 			Return Super.TryPickup(toucher);
 	}
@@ -28,7 +27,8 @@ Class Flammenwerfer : AxisWeapon
 		WP6P A -1;
 		Stop;
 	Select:
-		TNT1 A 0 A_Raise();
+		WP6H A 1 A_Raise();
+		Loop;
 	FinishSelect:
 		WP6H A 1 A_WeaponOffset(0,90,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,80,WOF_INTERPOLATE);
@@ -79,7 +79,7 @@ Class Flammenwerfer : AxisWeapon
 		#### A 1 A_WeaponOffset(0,80,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,90,WOF_INTERPOLATE);
 	FinishDeselect:
-		TNT1 A 0 A_Lower();
+		WP6H A 1 A_Lower();
 		Loop;
 
 	Fire:
@@ -91,8 +91,9 @@ Class Flammenwerfer : AxisWeapon
 			A_AlertMonsters();
 			A_FireProjectile("FlammenwerferProj", 0, False, 0, 5, 0, FRandom(3, 4));
 			A_WeaponOffset(random(-2,2),random(30,34),WOF_INTERPOLATE);
-			
-			If(Invoker.counter == 4) { Invoker.counter = 0; A_TakeInventory(Invoker.AmmoType1, 1); }
+
+			// invoker.counter = invoker.counter >= 4 ? 0 : invoker.counter + 1;
+			If(Invoker.counter == 4) { Invoker.counter = 0; Invoker.DepleteAmmo(False, True, -1); }
 			Else { Invoker.counter++; }
 		}
 		#### A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), "Empty");
@@ -143,18 +144,23 @@ Class FlammenwerferProj : FastMissile
 		Height 60;
 		FastMissile.RadiusScale 0.1;
 		FastMissile.HeightScale 0.1;
+		//FastMissile.RadiusScaleFactor 0.03;
+		//FastMissile.HeightScaleFactor 0.03;
 
 		FastMissile.DOTType "BurnDOT";
 
+		//FastMissile.XScaleFactor 0.03;
+		//FastMissile.YScaleFactor 0.03;
+		
 		Scale 0.2;
-
+		
 		DamageFunction 10;
 		DamageType "Fire";
 		Speed 24;
 		RenderStyle "Add";
 		Alpha 0.75;
 		Obituary "%o was burned to death by %k.";
-		
+
 		+FORCEXYBILLBOARD
 		+BLOODLESSIMPACT
 		+PAINLESS
@@ -186,7 +192,7 @@ Class FlammenwerferProj : FastMissile
 			A_SetScale(Scale.X*1.075,Scale.Y*1.075);
 			A_ChangeVelocity(0,0,0.25,CVF_RELATIVE);
 			A_Splash(32, radius*2, XF_NOSPLASH);
-			
+
 			return A_JumpIf(WaterLevel > 1, "Nope");
 		}
 		Wait;
