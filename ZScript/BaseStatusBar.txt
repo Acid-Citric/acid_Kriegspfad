@@ -1,4 +1,4 @@
-class WW2StatusBar : BaseStatusBar
+Class WW2StatusBar : BaseStatusBar
 {
 	HUDFont mHUDFont;
 	HUDFont mIndexFont;
@@ -8,6 +8,7 @@ class WW2StatusBar : BaseStatusBar
 	HUDFont mSmallFont;
 	HUDFont mNSmallFont;
 
+	//DynamicValueInterpolator mHeatInterpolator;
 	DynamicValueInterpolator mHealthInterpolator;
 	DynamicValueInterpolator mArmorInterpolator;
 
@@ -22,19 +23,21 @@ class WW2StatusBar : BaseStatusBar
 		fnt = "INDEXFONT_DOOM";
 		mIndexFont = HUDFont.Create(fnt, fnt.GetCharWidth("0"), Mono_CellLeft);
 		mAmountFont = HUDFont.Create("INDEXFONT");
-		diparms = InventoryBarState.Create();
 
+		diparms = InventoryBarState.Create();
+		//mHeatInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mHealthInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mArmorInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 
-		mSmallFont = HUDFont.Create("SMALLFONT");
-		mNSmallFont = HUDFont.Create("NEWSMALLFONT");
+		mSmallFont = HUDFont.Create("SmallFont");
+		mNSmallFont = HUDFont.Create("NewSmallFont");
 	}
 
 	override void NewGame ()
 	{
 		Super.NewGame();
 
+		//mHeatInterpolator.Reset(0);
 		mHealthInterpolator.Reset(0);
 		mArmorInterpolator.Reset(0);
 	}
@@ -42,6 +45,7 @@ class WW2StatusBar : BaseStatusBar
 	{
 		Super.Tick();
 
+		//If(CheckWeaponSelected('STEN') || CheckWeaponSelected('UMG43')) { mHeatInterpolator.Update(CPlayer.mo.CountInv("Heat")); }
 		mHealthInterpolator.Update(CPlayer.Health); // Set the interpolator's value to this player's health
 		mArmorInterpolator.Update(GetArmorAmount());
 	}
@@ -56,15 +60,19 @@ class WW2StatusBar : BaseStatusBar
 
 	protected void DrawFullScreenStuff()
 	{
+		//if (CPlayer.mo is "WW2Player")
+
 		let berserk = CPlayer.mo.FindInventory("PowerStrength");
-		DrawBar("Graphics/Hud/HUD_HEALTH.png", "", CPlayer.Health, 100, (10, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
+		DrawBar("Graphics/Hud/HUD_HEALTH.png", "",  mHealthInterpolator.GetValue(), 100, (10, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
+		DrawBar("Graphics/Hud/HUD_ARMOR.png", "",  CPlayer.Health - 100, CPlayer.mo.GetMaxHealth(False), (10, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
 		DrawString(mSmallFont, FormatNumber(CPlayer.Health), (30, -12), translation: berserk? Font.CR_RED : Font.CR_WHITE);
-		
+
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
-		if (armor != null && armor.Amount > 0)
+		let radsuit = CPlayer.mo.FindInventory("PowerMask");
+		if(armor != null && armor.Amount > 0)
 		{
-			DrawBar("Graphics/Hud/HUD_ARMOR.png", "", GetArmorAmount(), 100, (20, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS|DI_TRANSLATABLE);
-			DrawString(mSmallFont, FormatNumber(armor.Amount), (30, -22), translation:Font.CR_WHITE);
+			DrawBar("Graphics/Hud/HUD_ARMOR.png", "", mArmorInterpolator.GetValue(), 100, (20, -90), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS|DI_TRANSLATABLE);
+			DrawString(mSmallFont, FormatNumber(armor.Amount), (30, -22), translation: radsuit? Font.CR_GREEN : Font.CR_WHITE);
 		}
 
 		Inventory ammotype1, ammotype2;
@@ -101,6 +109,10 @@ class WW2StatusBar : BaseStatusBar
 				}
 				If(CheckWeaponSelected('TrenchGun'))
 				{
+
+
+				vector2 CylinderPos = (0, 0);
+				
 					for(int i = CPlayer.Mo.CountInv("TrenchGunLoaded"); i > 0; i--)
 					{
 						DrawImage("Graphics/Hud/HUD_AMMO_S.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
@@ -134,8 +146,11 @@ class WW2StatusBar : BaseStatusBar
 						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
 						Ammo_Y = Ammo_Y - 6;
 					}
-					DrawImage("WEAPON_9", (-51, -133), DI_ITEM_OFFSETS);
-					DrawBar("WEAPON_9B", "", ptr.STEN_Heat, 16, (-36, -133), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
+					//if(mHeatInterpolator.GetValue() >= 0)
+					//{
+						DrawImage("WEAPON_9", (-51, -133), DI_ITEM_OFFSETS);
+						DrawBar("WEAPON_9B", "", ptr.STEN_Heat, 16, (-36, -133), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
+					//}
 				}
 				If(CheckWeaponSelected('G43'))
 				{
@@ -199,7 +214,7 @@ class WW2StatusBar : BaseStatusBar
 		}
 		if (deathmatch) { DrawString(mHUDFont, FormatNumber(CPlayer.FragCount, 3), (-3, 1), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD); }
 		else { DrawFullscreenKeys(); }
-		
+
 		if (isInventoryBarVisible()) { DrawInventoryBar(diparms, (0, 0), 7, DI_SCREEN_CENTER_BOTTOM, HX_SHADOW); }
 
 		Let tnt = AmmoTNT(CPlayer.mo.FindInventory('AmmoTNT'));
@@ -212,7 +227,7 @@ class WW2StatusBar : BaseStatusBar
 		Else { DrawImage("Graphics/Hud/HUD_HGRENADE.png", (-145, -21), DI_ITEM_OFFSETS); }
 		DrawString(mSmallFont, FormatNumber(Ammo_HG.Amount, 3), (-140, -12), DI_TEXT_ALIGN_RIGHT, shg.shgmod? Font.CR_RED : Font.CR_WHITE);
 	}
-	
+
 	protected virtual void DrawFullscreenKeys()
 	{
 		// Draw the keys. This does not use a special draw function like SBARINFO because the specifics will be different for each mod
