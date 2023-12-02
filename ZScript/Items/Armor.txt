@@ -1,28 +1,42 @@
-Class ArmoredHelmet : CustomInventory
+Class ArmoredHelmet : BasicArmorPickup
 {
-	Default
-	{
-		Radius 20;
-		Height 16;
-		Inventory.PickupMessage "Armored Helmet";
-	}
-	States
-	{
-	Spawn:
-		HELM A -1;
-		Stop;
-	Pickup:
-		TNT1 A 0 A_JumpIfInventory("BasicArmor",200,"ArmorFull");
-		TNT1 A 0 A_JumpIfInventory("BasicArmor",1,"Pickup_2");
-		TNT1 A 0 A_GiveInventory("ArmoredHelmet_BasicArmor",1);
-		Stop;
-	ArmorFull:
-		TNT1 A 0;
-		Fail;
-	Pickup_2:
-		TNT1 A 0 A_GiveInventory("ArmoredHelmet_ArmorBonus",1);
-		Stop;
-	}
+    Default
+    {
+        Radius 20;
+        Height 16;
+        Inventory.PickupMessage "Armored Helmet";
+        +INVENTORY.AUTOACTIVATE
+
+		Inventory.Icon "HELMA0";
+		Armor.SavePercent 66.665;
+		Armor.SaveAmount 25;
+		Armor.MaxFullAbsorb 5;
+
+    }    
+    override bool Use(bool pickup)
+    {
+        if(owner)
+        {
+            let arm = owner.FindInventory("BasicArmor");
+            if (!arm || arm.amount >= 200)
+                return false;
+
+            if (arm.amount > 0)
+                owner.GiveInventory("ArmoredHelmet_ArmorBonus",1);
+            else
+                owner.GiveInventory("ArmoredHelmet_BasicArmor",1);
+            
+            return true;
+        }
+        return false;
+    }
+    
+    States
+    {
+    Spawn:
+        HELM A -1;
+        Stop;
+    }
 }
 
 Class ArmoredHelmet_BasicArmor : BasicArmorPickup
@@ -56,21 +70,28 @@ Class FlakJacket : CustomInventory
 		Height 16;
 		Inventory.PickupMessage "Flak Jacket";
 	}
+    override bool TryPickup(in out Actor toucher)
+    {
+        if(toucher)
+        {
+            let arm = toucher.FindInventory("BasicArmor");
+            if (!arm || arm.amount >= 200)
+                return false;
+
+            if (arm.amount > 0)
+                toucher.GiveInventory("FlakJacket_ArmorBonus",1);
+            else
+                toucher.GiveInventory("FlakJacket_BasicArmor",1);
+
+            GoAwayAndDie();
+            return true;
+        }
+        return false;
+    }
 	States
 	{
 	Spawn:
 		VEST A -1;
-		Stop;
-	Pickup:
-		TNT1 A 0 A_JumpIfInventory("BasicArmor",200,"ArmorFull");
-		TNT1 A 0 A_JumpIfInventory("BasicArmor",1,"Pickup_2");
-		TNT1 A 0 A_GiveInventory("FlakJacket_BasicArmor",1);
-		Stop;
-	ArmorFull:
-		TNT1 A 0;
-		Fail;
-	Pickup_2:
-		TNT1 A 0 A_GiveInventory("FlakJacket_ArmorBonus",1);
 		Stop;
 	}
 }
