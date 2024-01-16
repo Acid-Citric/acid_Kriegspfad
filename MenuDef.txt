@@ -3,6 +3,7 @@ AddOptionMenu "OptionsMenu"
 	StaticText "Ac!d's Kriegspfad", Gold
 	Option "$KRIEGSPFAD_HEALTH", "Kriegspfad_Health", "YesNo"
 	Option "$KRIEGSPFAD_P38", "Kriegspfad_P38", "Silencer"
+	Option "$KRIEGSPFAD_BBQ", "Kriegspfad_BBQ", "BBQ"
 	Option "$KRIEGSPFAD_SHOTGUNS", "Kriegspfad_Shotguns", "YesNo"
 	Slider "$KRIEGSPFAD_CASING", "Kriegspfad_Casing", 35, 350, 35
 }
@@ -12,4 +13,10 @@ OptionValue "Silencer"
 	0, "RtCW"
 	1, "Grisbi or not Grisbi ?"
 	2, "Dr_Cosmobyte edit"
+}
+
+OptionValue "BBQ" //"YesNo"
+{
+	0, "Extra Crispy"//"$TXT_NO"
+	1, "Burn Baby, Burn !"//"$TXT_YES"
 }
