@@ -1,17 +1,22 @@
 Class WW2Handler : EventHandler
 {
-	Override Void PlayerRespawned(PlayerEvent e)
-	{
-		PlayerInfo player = players[e.PlayerNumber];
-		player.mo.TakeInventory("FireDeathEffect", 1);
-	}
     Override Void WorldThingDied(WorldEvent e) // Credits to jarewill on the ZDoom Forums
 	{
-   	     If(e.Inflictor && e.Inflictor.DamageType == "Fire") { e.Thing.GiveInventory("FireDeathEffect",1); }
+		If(e.Thing.bISMONSTER && e.Inflictor && e.Inflictor.DamageType == "Fire")
+		{
+			If(CVar.FindCVar('Kriegspfad_BBQ').GetBool()) { e.Thing.GiveInventory("FireEffect",1); }
+			Else { e.Thing.GiveInventory("FireDeathEffect",1); }
+		}
 	}
-    Override Void WorldThingRevived(WorldEvent e) { e.Thing.TakeInventory("FireDeathEffect",1); }
+    Override Void WorldThingRevived(WorldEvent e)
+	{
+		If(e.Thing.bISMONSTER && e.Thing.FindInventory("FireDeathEffect"))	{ e.Thing.TakeInventory("FireDeathEffect",1); }
+	}
 
-	Override void WorldThingSpawned(WorldEvent e) { If(e.Thing.bISMONSTER && (e.Thing is "LostSoul") || (e.Thing is "CommanderKeen")) { e.Thing.bNOBLOOD = True; } }
+	Override void WorldThingSpawned(WorldEvent e)
+	{
+		If(e.Thing.bISMONSTER && (e.Thing is "LostSoul") || (e.Thing is "CommanderKeen")) { e.Thing.bNOBLOOD = True; }
+	}
 
 	Override Void CheckReplacement(ReplaceEvent e)
 	{
@@ -21,7 +26,11 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Chainsaw')									e.Replacement = "Walther";
 		Else If(cls == 'Pistol')									e.Replacement = "Luger";
 		Else If(cls == 'Shotgun')									e.Replacement = "TrenchGun";
-		Else If(cls == 'SuperShotgun')								e.Replacement = "BA5";
+		Else If(cls == 'SuperShotgun')
+		{
+			If(Random[SuperShotgun](0,4) == 4) e.Replacement = 'Kar98k';
+			Else e.Replacement = 'BA5';
+		}
 		Else If(cls == 'Chaingun')
 		{
 			If(Random[Chaingun](0,1)) e.Replacement = 'MP40';
@@ -51,18 +60,18 @@ Class WW2Handler : EventHandler
 
 		Else If(cls == 'SoulSphere')
 		{
-			If(Random[SoulSphere](0,1)) e.Replacement = 'SuperCharge';
+			If(Random[SoulSphere](0,1)) e.Replacement = 'ExtraLarge_HealthPack';
 			Else e.Replacement = 'Health_1938_Latour';
 		}
 		Else If(cls == 'MegaSphere')
 		{
-			If(Random[MegaSphere](0,1)) e.Replacement = 'MegaCharge';
+			If(Random[MegaSphere](0,1)) e.Replacement = 'ExtraLarge_HealthPack';
 			Else e.Replacement = 'Health_Upgrade';
 		}
 		Else If(cls == 'Berserk')									e.Replacement = "Berserk_HealthPack";
 
 
-		Else If(cls == "RadSuit")									e.Replacement = "HazmatSuit";
+		Else If(cls == 'RadSuit')									e.Replacement = "HazmatSuit";
 		Else If(cls == 'Infrared')									e.Replacement = "NightVision";
 		Else If(cls == 'AllMap')									e.Replacement = "Blueprints";
 		Else If(cls == 'InvulnerabilitySphere')						e.Replacement = "InvulnSphere";
@@ -83,7 +92,7 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Shell')
 		{
 			If(Random[Shell](0,1))	e.Replacement = "Ammo12G_1";
-			Else e.Replacement = 'Ammo9mm_1';
+			Else e.Replacement = 'Ammo9mm_2';
 		}
 		Else If(cls == 'ShellBox')
 		{
@@ -110,7 +119,7 @@ Class WW2Handler : EventHandler
 			If(Random[CellPack](0,1)) e.Replacement = 'AmmoFuel_1';
 			Else e.Replacement = 'ClipBox';
 		}
-		//Else If(cls == 'Backpack')									e.Replacement = "AmmoPouches";
+		Else If(cls == 'Backpack')									e.Replacement = "MilitaryBackpack";
 
 
         String checksum = level.GetChecksum();
@@ -146,14 +155,66 @@ Class FireDeathEffect : Inventory // Credits to jarewill on the ZDoom Forums
 	Override Void DoEffect()
 	{
 		Super.DoEffect();
-		If(Owner && !(Owner is "ExplosiveBarrel") && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind")
-		&& !Owner.FindState("Death.Fire", True) && !Owner.FindState("Burn", True))
+		If(Owner && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind") && !Owner.FindState("Death.Fire", True) && !Owner.FindState("Burn", True))
 		{
 			Owner.bFLY = False; Owner.bNOGRAVITY = False; Owner.bNOBLOOD = True; // Set relevant flags so the monster cannot be damaged, can't fly and doesn't spawn blood.
-			Owner.height = self.height; //Reset the height
+			Owner.Height = Owner.Default.Height; //Reset the height
 			Owner.A_SetTranslation("Scorched"); //Set a color translation
 		}
 	}
+}
+
+Class FireEffect : Powerup
+{
+	Default { Powerup.Duration -10; }
+
+	Override void InitEffect()
+	{
+		Translation = Owner.Translation;
+		Super.InitEffect();
+		If(Owner && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind") && !Owner.FindState("Death.Fire", True)	&& !Owner.FindState("Burn", True))
+		{
+			Owner.Speed = Owner.Default.Speed*2;
+			Owner.bBRIGHT = True; Owner.bFRIGHTENED = True; Owner.bNOBLOOD = True;
+			Owner.A_SetTranslation("Burning");	
+		}
+	}
+
+	Override void DoEffect()
+	{
+		Super.DoEffect();
+		Owner.Height = Owner.Default.Height;
+		Owner.DamageType = "Fire";
+		If(Owner.FindState("See") && !Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("See"); }
+		Else If(!Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("Spawn"); }
+		Owner.A_Explode(20,Int(Owner.Radius*2), XF_NOTMISSILE|XF_THRUSTLESS);
+		Owner.A_SpawnItemEx("GroundFireFlame", frandom(-Owner.Radius, Owner.Radius), frandom(-Owner.Radius, Owner.Radius), frandom(0,Owner.Height));
+		If(Level.MapTime&7 == 0 && random(1,3) == 1) { Owner.A_StartSound(Owner.PainSound, CHAN_VOICE); }
+	}
+
+	Override void EndEffect()
+	{
+		Super.EndEffect();
+		If(!Owner) { Return; }
+		Owner.Height = Owner.Default.Height/4;
+		Owner.bBRIGHT = False; Owner.bFRIGHTENED = False; Owner.bNOBLOOD = False;
+		Owner.SetStateLabel("Death");
+		If(Owner && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind") && !Owner.FindState("Death.Fire", True)	&& !Owner.FindState("Burn", True))
+		{ Owner.A_SetTranslation("Scorched"); }
+
+		Owner.GiveInventory("ReviveCheck",1);
+		Owner.FindInventory("ReviveCheck").Translation = Translation;
+	}
+}
+
+Class ReviveCheck : Inventory
+{
+    Override void DoEffect()
+	{
+        Super.DoEffect();
+        If(!Owner) { Destroy(); }
+        If(Owner.Health>0) { Owner.Translation = Translation; Destroy(); }
+    }
 }
 
 Class KriegspfadLevelCompatibility : LevelPostProcessor
