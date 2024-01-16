@@ -149,7 +149,7 @@ Class WW2StatusBar : BaseStatusBar
 					//if(mHeatInterpolator.GetValue() >= 0)
 					//{
 						DrawImage("WEAPON_9", (-51, -133), DI_ITEM_OFFSETS);
-						DrawBar("WEAPON_9B", "", ptr.STEN_Heat, 16, (-36, -133), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
+						DrawBar("WEAPON_9B", "", ptr.STEN_Heat, 12, (-36, -133), 0, SHADER_VERT|SHADER_REVERSE, DI_ITEM_OFFSETS);
 					//}
 				}
 				If(CheckWeaponSelected('G43'))
