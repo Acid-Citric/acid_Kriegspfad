@@ -188,7 +188,7 @@ Class FireEffect : Powerup
 		If(Owner.FindState("See") && !Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("See"); }
 		Else If(!Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("Spawn"); }
 		Owner.A_Explode(20,Int(Owner.Radius*2), XF_NOTMISSILE|XF_THRUSTLESS);
-		Owner.A_SpawnItemEx("GroundFireFlame", frandom(-Owner.Radius, Owner.Radius), frandom(-Owner.Radius, Owner.Radius), frandom(0,Owner.Height));
+		Owner.A_SpawnItemEx("GroundFireFlame", frandom(-Owner.Radius, Owner.Radius), frandom(-Owner.Radius, Owner.Radius), frandom(1,Owner.Height));
 		If(Level.MapTime&7 == 0 && random(1,3) == 1) { Owner.A_StartSound(Owner.PainSound, CHAN_VOICE); }
 	}
 
