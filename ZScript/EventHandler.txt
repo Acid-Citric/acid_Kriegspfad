@@ -13,11 +13,6 @@ Class WW2Handler : EventHandler
 		If(e.Thing.bISMONSTER && e.Thing.FindInventory("FireDeathEffect"))	{ e.Thing.TakeInventory("FireDeathEffect",1); }
 	}
 
-	Override void WorldThingSpawned(WorldEvent e)
-	{
-		If(e.Thing.bISMONSTER && (e.Thing is "LostSoul") || (e.Thing is "CommanderKeen")) { e.Thing.bNOBLOOD = True; }
-	}
-
 	Override Void CheckReplacement(ReplaceEvent e)
 	{
 		class<Actor> cls = e.Replacee;
@@ -28,29 +23,23 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Shotgun')									e.Replacement = "TrenchGun";
 		Else If(cls == 'SuperShotgun')
 		{
-			If(Random[SuperShotgun](0,4) == 4) e.Replacement = 'Kar98k';
-			Else e.Replacement = 'BA5';
+			/*If(Random[SuperShotgun](0,4) == 4) e.Replacement = 'Kar98k';
+			Else*/ e.Replacement = 'BA5';
 		}
 		Else If(cls == 'Chaingun')
 		{
-			If(Random[Chaingun](0,1)) e.Replacement = 'MP40';
+			If(Random[SMG](0,1)) e.Replacement = 'MP40';
 			Else e.Replacement = 'STEN';
 		}
 		Else If(cls == 'RocketLauncher')
 		{
-			If(Random[RocketLauncher](0,1)) e.Replacement = 'Kar98k';
+			If(Random[Rifle](0,1)) e.Replacement = 'Kar98k';
 			Else e.Replacement = 'G43';
 		}
 		Else If(cls == 'PlasmaRifle')								e.Replacement = "Flammenwerfer";
 		Else If(cls == 'BFG9000')									e.Replacement = "UMG43";
 
-		Else If((cls == 'HealthBonus') || (cls == 'ArmorBonus'))
-		{
-			If(Random(0,19) == 0)									e.Replacement = "Small_HealthPack";
-			Else If(Random(0,19) == 19)								e.Replacement = "AmmoGranate";
-			Else If(Random(0,19) == 9)								e.Replacement = "AmmoTNT";			
-			Else e.Replacement = 'MyEmptyActor';
-		}
+		Else If((cls == 'HealthBonus') || (cls == 'ArmorBonus'))	e.Replacement = "BonusSpawner";
 
 		Else If(cls == 'Stimpack')									e.Replacement = "Medium_HealthPack";
 		Else If(cls == 'Medikit')									e.Replacement = "Large_HealthPack";
@@ -60,12 +49,12 @@ Class WW2Handler : EventHandler
 
 		Else If(cls == 'SoulSphere')
 		{
-			If(Random[SoulSphere](0,1)) e.Replacement = 'ExtraLarge_HealthPack';
+			If(Random[SoulSphere](0,1)) e.Replacement = 'SuppliesCrate'; //ExtraLarge_HealthPack
 			Else e.Replacement = 'Health_1938_Latour';
 		}
 		Else If(cls == 'MegaSphere')
 		{
-			If(Random[MegaSphere](0,1)) e.Replacement = 'ExtraLarge_HealthPack';
+			If(Random[MegaSphere](0,1)) e.Replacement = 'SuppliesCrate'; //ExtraLarge_HealthPack
 			Else e.Replacement = 'Health_Upgrade';
 		}
 		Else If(cls == 'Berserk')									e.Replacement = "Berserk_HealthPack";
@@ -74,16 +63,11 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'RadSuit')									e.Replacement = "HazmatSuit";
 		Else If(cls == 'Infrared')									e.Replacement = "NightVision";
 		Else If(cls == 'AllMap')									e.Replacement = "Blueprints";
-		Else If(cls == 'InvulnerabilitySphere')						e.Replacement = "InvulnSphere";
+		Else If(cls == 'InvulnerabilitySphere')						e.Replacement = "Pervitin"; //InvulnSphere
 		Else If(cls == 'BlurSphere')								e.Replacement = "InvisSphere";
 
 
-		Else If(cls == 'Clip')
-		{
-			If(Random[Clip](0,9) == 9) e.Replacement = 'Walther';
-			Else If(Random[Clip](0,9) == 0) e.Replacement = 'Ammo9mm_2';
-			Else e.Replacement = 'Ammo9mm_1';
-		}
+		Else If(cls == 'Clip')										e.Replacement = 'ClipSpawner';
 		Else If(cls == 'ClipBox')
 		{
 			If(Random[ClipBox](0,1)) e.Replacement = 'Ammo9mm_2';
@@ -92,7 +76,7 @@ Class WW2Handler : EventHandler
 		Else If(cls == 'Shell')
 		{
 			If(Random[Shell](0,1))	e.Replacement = "Ammo12G_1";
-			Else e.Replacement = 'Ammo9mm_2';
+			Else e.Replacement = 'Clip';
 		}
 		Else If(cls == 'ShellBox')
 		{
@@ -129,6 +113,7 @@ Class WW2Handler : EventHandler
             Else If(cls == "Stimpack") { e.Replacement = "Wolfenstein3D_Meal"; }
 			Else If(cls == "Medikit") { e.Replacement = "Wolfenstein3D_FirstAidKit"; }
 			Else If(cls == "Berserk") { e.Replacement = "Wolfenstein3D_Serum"; }
+			Else If(cls == "BlurSphere") { e.Replacement = "Wolfenstein3D_Aardwolf"; }
         }
 		If(level.GetChecksum() == "aa4ca3fc891d13821accabd836e29eb5") // doom2.wad MAP32 
         {
@@ -176,34 +161,38 @@ Class FireEffect : Powerup
 		{
 			Owner.Speed = Owner.Default.Speed*2;
 			Owner.bBRIGHT = True; Owner.bFRIGHTENED = True; Owner.bNOBLOOD = True;
-			Owner.A_SetTranslation("Burning");	
+			Owner.A_SetTranslation("Burning");
 		}
 	}
 
 	Override void DoEffect()
 	{
 		Super.DoEffect();
-		Owner.Height = Owner.Default.Height;
-		Owner.DamageType = "Fire";
-		If(Owner.FindState("See") && !Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("See"); }
-		Else If(!Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("Spawn"); }
-		Owner.A_Explode(20,Int(Owner.Radius*2), XF_NOTMISSILE|XF_THRUSTLESS);
-		Owner.A_SpawnItemEx("GroundFireFlame", frandom(-Owner.Radius, Owner.Radius), frandom(-Owner.Radius, Owner.Radius), frandom(1,Owner.Height));
-		If(Level.MapTime&7 == 0 && random(1,3) == 1) { Owner.A_StartSound(Owner.PainSound, CHAN_VOICE); }
+		If(Owner && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind") && !Owner.FindState("Death.Fire", True) && !Owner.FindState("Burn", True))
+		{
+			Owner.Height = Owner.Default.Height;
+			Owner.DamageType = "Fire";
+			If(Owner.FindState("See") && !Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("See"); }
+			Else If(!Owner.InStateSequence(Owner.CurState, Owner.FindState("See"))) { Owner.SetStateLabel("Spawn"); }
+			Owner.A_Explode(20,Int(Owner.Radius*2), XF_NOTMISSILE); //|XF_THRUSTLESS
+			Owner.A_SpawnItemEx("GroundFireFlame", frandom(-Owner.Radius, Owner.Radius), frandom(-Owner.Radius, Owner.Radius), frandom(1,Owner.Height));
+			If(Level.MapTime&7 == 0 && random(1,3) == 1) { Owner.A_StartSound(Owner.PainSound, CHAN_VOICE); }
+		}
 	}
 
 	Override void EndEffect()
 	{
 		Super.EndEffect();
 		If(!Owner) { Return; }
-		Owner.Height = Owner.Default.Height/4;
-		Owner.bBRIGHT = False; Owner.bFRIGHTENED = False; Owner.bNOBLOOD = False;
-		Owner.SetStateLabel("Death");
 		If(Owner && !(Owner is "LostSoul") && !(Owner is "PainElemental") && !(Owner is "CyberDemon") && !(Owner is "SpiderMastermind") && !Owner.FindState("Death.Fire", True)	&& !Owner.FindState("Burn", True))
-		{ Owner.A_SetTranslation("Scorched"); }
-
-		Owner.GiveInventory("ReviveCheck",1);
-		Owner.FindInventory("ReviveCheck").Translation = Translation;
+		{
+			Owner.Height = Owner.Default.Height/4;
+			Owner.bBRIGHT = False; Owner.bFRIGHTENED = False; Owner.bNOBLOOD = False;
+			Owner.SetStateLabel("Death");
+			Owner.A_SetTranslation("Scorched");
+			Owner.GiveInventory("ReviveCheck",1);
+			Owner.FindInventory("ReviveCheck").Translation = Translation;
+		}
 	}
 }
 
