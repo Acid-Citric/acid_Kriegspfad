@@ -8,10 +8,9 @@ Class ArmoredHelmet : BasicArmorPickup
         +INVENTORY.AUTOACTIVATE
 
 		Inventory.Icon "HELMA0";
-		Armor.SavePercent 66.665;
+		Armor.SavePercent 55;
 		Armor.SaveAmount 25;
-		Armor.MaxFullAbsorb 5;
-
+		Armor.MaxFullAbsorb 10;
     }    
     override bool Use(bool pickup)
     {
@@ -44,9 +43,9 @@ Class ArmoredHelmet_BasicArmor : BasicArmorPickup
 	Default
 	{
 		Inventory.Icon "HELMA0";
-		Armor.SavePercent 66.665;
+		Armor.SavePercent 55;
 		Armor.SaveAmount 25;
-		Armor.MaxFullAbsorb 5;
+		Armor.MaxFullAbsorb 10;
 	}
 }
 
@@ -55,10 +54,10 @@ Class ArmoredHelmet_ArmorBonus : BasicArmorBonus
 	Default
 	{
 		Inventory.Icon "HELMA0";
-		Armor.SavePercent 66.665;
+		Armor.SavePercent 55;
 		Armor.SaveAmount 25;
-		Armor.MaxSaveAmount 200;
-		Armor.MaxFullAbsorb 5;
+		Armor.MaxSaveAmount 100;
+		Armor.MaxFullAbsorb 10;
 	}
 }
 
@@ -91,7 +90,7 @@ Class FlakJacket : CustomInventory
 	States
 	{
 	Spawn:
-		VEST A -1;
+		FLAK A -1;
 		Stop;
 	}
 }
@@ -100,10 +99,10 @@ Class FlakJacket_BasicArmor : BasicArmorPickup
 {
 	Default
 	{
-		Inventory.Icon "VESTA0";
-		Armor.SavePercent 66.665;
+		Inventory.Icon "FLAKA0";
+		Armor.SavePercent 85;
 		Armor.SaveAmount 75;
-		Armor.MaxFullAbsorb 25;
+		Armor.MaxFullAbsorb 60;
 	}
 }
 
@@ -111,10 +110,29 @@ Class FlakJacket_ArmorBonus : BasicArmorBonus
 {
 	Default
 	{
-		Inventory.Icon "VESTA0";
-		Armor.SavePercent 66.665;
+		Inventory.Icon "FLAKA0";
+		Armor.SavePercent 85;
 		Armor.SaveAmount 75;
-		Armor.MaxSaveAmount 200;
-		Armor.MaxFullAbsorb 25;
+		Armor.MaxSaveAmount 100;
+		Armor.MaxFullAbsorb 60;
+	}
+}
+
+Class DogTag_ArmorBonus : BasicArmorBonus
+{
+	Default
+	{
+		Inventory.PickupMessage "Dog Tag";
+		Inventory.Icon "DTAGA0";
+		Armor.SavePercent 55;
+		Armor.SaveAmount 1;
+		Armor.MaxSaveAmount 100;
+		Armor.MaxFullAbsorb 10;
+	}
+	States
+	{
+	Spawn:
+		DTAG A -1;
+		Stop;
 	}
 }
