@@ -1,0 +1,129 @@
+Class SuppliesCrate : Actor
+{
+	Default
+	{
+		Health 50;
+		+SHOOTABLE +VULNERABLE
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+DONTTHRUST +SOLID
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		Frame = Random[SuppliesCrate](0,1); //A,B
+	}
+	States
+	{
+	Spawn:
+		SUPP # -1;
+		Stop;
+	Death:
+		SUPP C 0
+		{
+			For(int i; i<5; i++)
+			{
+				A_SpawnProjectile("Shards_Wood", 4, 0, Random(0,360), CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_AIMDIRECTION, Random(0,160));
+				A_SpawnProjectile("Shards_Metal", 4, 0, Random(0,360), CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_AIMDIRECTION, Random(0,160));
+				A_SpawnProjectile("Shards_Strap", 4, 0, Random(0,360), CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_AIMDIRECTION, Random(0,160));
+			}
+			A_SpawnItemEx("AmmoGranate",Random(-8,8), Random(-8,8), 0, Random(0,2), Random(0,2), 0, Random(0,360), failchance: 240);
+			A_SpawnItemEx("AmmoTNT",Random(-8,8), Random(-8,8), 0, Random(0,2), Random(0,2), 0, Random(0,360), failchance: 252);
+			A_SpawnItemEx("Ammo9mm_2",Random(-8,8), Random(-8,8), 0, Random(0,2), Random(0,2), 0, Random(0,360), failchance: 32);
+			A_SpawnItemEx("Small_HealthPack",Random(-8,8), Random(-8,8), 0, Random(0,2), Random(0,2), 0, Random(0,360), failchance: 128);
+			A_SpawnItemEx("Medium_HealthPack",Random(-8,8), Random(-8,8), 0, Random(0,2), Random(0,2), 0, Random(0,360), failchance: 64);
+			A_SpawnItemEx("ArmoredHelmet",Random(-8,8), Random(-8,8), 0, Random(0,2), Random(0,2), 0, Random(0,360), failchance: 192);
+
+			A_SetTics(GetCVar("Kriegspfad_Casing")*2); bSOLID = False;
+		}
+		#### # 1 A_FadeOut(0.1);
+		Wait;
+	Death.Fire:
+		TNT1 A 0
+		{
+			For(int i; i<5; i++) { A_SpawnProjectile("Shards_Burnt", 4, 0, Random(0,360), CMF_ABSOLUTEPITCH|CMF_OFFSETPITCH|CMF_AIMDIRECTION, Random(0,160)); }
+			If(random(0,9) == 0)
+			{
+				A_StartSound("granate/explode");
+				A_Explode(256, 256, XF_HURTSOURCE, True, 192);
+				A_SpawnItemEx("HalfLife_Explosion_Small");
+			}
+		}
+		Stop;
+	}
+}
+
+Class Shards_Wood : Actor // ABCD
+{
+	Property FrameMin: FrameMin;
+	Int FrameMin;
+	Property FrameMax: FrameMax;
+	Int FrameMax;
+	Default
+	{
+		Radius 8;
+		Height 8;
+		Speed 8;
+		Mass 1;
+		Gravity 0.5;
+		BounceFactor 0.5;
+		+DOOMBOUNCE
+		+MISSILE
+		+MOVEWITHSECTOR
+		+NOBLOCKMAP
+		+NOTELEPORT
+		Shards_Wood.FrameMin 0;
+		Shards_Wood.FrameMax 3;
+	}
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		bSPRITEFLIP = Random(True,False);
+	}
+	States
+	{
+	Spawn:
+		WOOD A 0 NoDelay { Frame = Random(FrameMin,FrameMax); A_SetScale(frandom(0.8,2.4)); }
+	Looping:
+		#### # 2;
+		#### # 0 { Frame = Frame >= FrameMax ? FrameMin : Frame + 1; }
+		Loop;
+	Death:
+		#### # 0
+		{
+			bFLATSPRITE = Random(True,False);
+			angle = Random(0,360);
+			Frame = Frame != FrameMin+1 ? FrameMin+1 : FrameMin+1;
+			A_SetTics(GetCVar("Kriegspfad_Casing")*2);
+		}
+		#### # 1 A_FadeOut(0.1);
+		Wait;
+	}
+}
+
+Class Shards_Metal : Shards_Wood // EFGH
+{
+	Default
+	{
+		Shards_Wood.FrameMin 4;
+		Shards_Wood.FrameMax 7;
+	}
+}
+
+Class Shards_Strap : Shards_Wood // IJKL
+{
+	Default
+	{
+		Shards_Wood.FrameMin 8;
+		Shards_Wood.FrameMax 11;
+	}
+}
+
+Class Shards_Burnt : Shards_Wood // MNOP
+{
+	Default
+	{
+		Shards_Wood.FrameMin 12;
+		Shards_Wood.FrameMax 15;
+	}
+}
