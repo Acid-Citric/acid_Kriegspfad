@@ -1,10 +1,10 @@
-Class SuperCharge : PowerupGiver
+/*
+Class Panzerschokolade : PowerupGiver
 {
 	Default
 	{
-		+FLOATBOB
-		FloatBobStrength 0.5;
-		+INVENTORY.NOSCREENFLASH
+		//Scale 0.6;
+
 		+COUNTITEM
 		+INVENTORY.AUTOACTIVATE
 		+INVENTORY.ALWAYSPICKUP
@@ -13,46 +13,20 @@ Class SuperCharge : PowerupGiver
 		Powerup.Type "PowerRegeneration";
 		Inventory.PickupMessage "$GOTSUPER"; // "Supercharge!"
 		//Inventory.PickupSound "powerups/super";
-		Translation "0:255=@50[0,128,0]";
 	}
-	Override Bool TryPickup(In Out Actor Toucher)
+	/*Override Void PostBeginPlay()
 	{
-		Toucher.A_SetBlend("00FF00",0.4,35);
-		Return Super.TryPickup(Toucher);
-	}
+		Super.PostBeginPlay();
+		frame = random[Panzerschokolade](20,21); //U,V
+	}*//*
 	States
 	{
 	Spawn:
-		POW0 A 1 NoDelay Bright A_SpawnItemEx("SuperChargeFX", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
-		POW0 A 3 Bright;
-		Loop;
-	}
-}
-
-Class MegaChargeHealth : Health
-{
-	Default
-	{
-		Inventory.Amount 200;
-		Inventory.MaxAmount 999;
-		+INVENTORY.ALWAYSPICKUP
-	}
-}
-Class MegaCharge : Megasphere
-{
-	Default
-	{
-		+FLOATBOB
-		FloatBobStrength 0.5;
-	}
-	States
-	{
-	Pickup:
-		TNT1 A 0 A_GiveInventory("FlakJacket", 1);
-		TNT1 A 0 A_GiveInventory("MegaChargeHealth", 1);
+		HEAL U -1;
 		Stop;
 	}
-} 
+}
+*/
 
 Class Berserk_HealthPack : Berserk
 {
@@ -88,30 +62,129 @@ Class Berserk_HealthPack : Berserk
 	}
 }
 
-Class InvulnSphere : InvulnerabilitySphere
+Class Pervitin : PowerupGiver
 {
 	Default
 	{
-		+FLOATBOB
-		FloatBobStrength 0.5;
-		+INVENTORY.FANCYPICKUPSOUND
-		+INVENTORY.NOSCREENFLASH
-		Powerup.Color "GoldMap";
-		Inventory.PickupMessage "$GOTINVUL"; // "Invulnerability!"
-		Inventory.PickupSound "powerups/invul";
-		Translation "0:255=@50[255,255,0]";
-	}
-	Override Bool TryPickup(In Out Actor Toucher)
-	{
-		Toucher.A_SetBlend("FFFF66",0.4,35);
-		Return Super.TryPickup(Toucher);
+		+INVENTORY.AUTOACTIVATE
+		+INVENTORY.ALWAYSPICKUP
+		+INVENTORY.BIGPOWERUP
+		Inventory.MaxAmount 0;
+		Inventory.PickupMessage "$PICKUP_POWERUP_PERVITIN";
+		Inventory.PickupSound "pervitin/use";
+		Powerup.Type "PowerDummy";
+		XScale 0.6;
 	}
 	States
 	{
 	Spawn:
-		POW0 A 1 NoDelay Bright A_SpawnItemEx("InvulnSphereFX", FRandom(-5.0,5.0), FRandom(-5.0,5.0), 20.0+FRandom(-1.0,1.0), 0, 0, FRandom(0.3,0.7), 0, SXF_CLIENTSIDE, 0);
-		POW0 A 3 Bright;
-		Loop;
+		METH A -1;
+		Stop;
+	}
+}
+
+Class PowerDummy : Powerup
+{
+	Int Duration;
+	Default
+	{
+		+INVENTORY.NOSCREENBLINK
+		Powerup.Duration -3;
+	}
+	Override Void DoEffect()
+	{
+		Super.DoEffect();
+		
+		Duration = EffectTics;
+		Duration--;
+		If(Duration == 35)
+		{
+			Owner.A_GiveInventory("PowerUber");
+			Owner.A_GiveInventory("PowerUberSpeed");
+			Owner.A_GiveInventory("PowerUberDoubleFiringSpeed");
+			Owner.A_GiveInventory("PowerUberProtection");
+			//Owner.A_GiveInventory("PowerUberSlowMotion");
+		}
+	}
+}
+
+Class PowerUber : Powerup
+{
+	Int Duration;
+	Default
+	{
+		+INVENTORY.ADDITIVETIME
+		Powerup.Duration -30;
+	}
+	Override Void DoEffect()
+	{
+		Super.DoEffect();
+
+		Duration = EffectTics;
+		Duration--;
+		If(Duration == 105 || Duration == 70 || Duration == 35) { Owner.A_StartSound("*regenerate",slot:CHAN_AUTO,flags:CHANF_DEFAULT,attenuation:ATTN_NONE); }
+		If(Duration == 0 && Owner.Health > 50) { Owner.A_DamageSelf(50, "None", DMSS_NOPROTECT); }
+	}
+}
+Class PowerUberSpeed : PowerSpeed
+{
+	Default
+	{
+		Powerup.Duration -30;
+		Speed 1.5;
+		PowerSpeed.NoTrail 1;
+		+POWERSPEED.NOTRAIL
+		+INVENTORY.ADDITIVETIME
+		+INVENTORY.NOTELEPORTFREEZE
+	}
+}
+Class PowerUberDoubleFiringSpeed : PowerDoubleFiringSpeed
+{
+	Default
+	{
+		+INVENTORY.ADDITIVETIME
+		Powerup.Duration -30;
+	}
+}
+Class PowerUberProtection : PowerProtection
+{
+	Default
+	{
+		Powerup.Duration -30;
+
+		DamageFactor "Normal", 0.2; // 80% of protection
+		DamageFactor "Fire", 0.4; // 60% of protection
+		DamageFactor "Ice", 0.4;
+		DamageFactor "Slime", 0.3; // 70%
+		DamageFactor "Poison", 0.3;
+		//DamageFactor "Drowning", 0.0; provided by the ironfeet side.
+		DamageFactor "PoisonCloud", 0.3;
+
+		+INVENTORY.ADDITIVETIME
+		+NORADIUSDMG
+		+DONTRIP
+		+NOPAIN
+	}
+}
+Class PowerUberSlowMotion : Powerup
+{
+	Int Duration;
+	Default
+	{
+		+INVENTORY.ADDITIVETIME
+		Powerup.Duration -30;
+	}
+	Override Void DoEffect()
+	{
+		Super.DoEffect();
+
+		Duration = EffectTics;
+		Duration--;
+		If(Duration > 0)
+		{
+			If(Level.MapTime & 1) { Level.SetFrozen(True); }
+			Else { Level.SetFrozen(False); }
+		}
 	}
 }
 
@@ -204,37 +277,3 @@ Class Blueprints : Allmap
 		Stop;
 	}
 }
-
-
-Class PowerupFx : Actor
-{
-	Default
-	{
-		Renderstyle "Add";
-		Alpha 0.8;
-		+NOINTERACTION
-	}
-	States
-	{
-	Spawn:
-		TNT1 A 0 NoDelay
-		{
-			// Credits to Jekyll Grim Payne aka Agent_Ash (Beautiful Doom)
-			if (self is "SuperChargeFX") sprite = GetSpriteIndex("POW4");
-			//else if (self is "BerserkSphereFX") sprite = GetSpriteIndex("POW3");
-			else if (self is "InvulnSphereFX") sprite = GetSpriteIndex("POW1");
-			//else if (self is "InvisSphereFX") sprite = GetSpriteIndex("POW2");
-			return ResolveState(null);
-		}
-	Looping:
-		#### A 1 Bright A_FadeOut(0.05);
-		Loop;
-	LoadSprites: // Used for 'GetSpriteIndex'
-		POW1 A 0; POW2 A 0; POW3 A 0; POW4 A 0;
-		Stop;
-	}
-}
-Class SuperChargeFX : PowerupFx { Default {} }
-// Class BerserkSphereFX : PowerupFx { Default {} }
-Class InvulnSphereFX : PowerupFx { Default {} }
-// Class InvisSphereFX : PowerupFx { Default {} }
