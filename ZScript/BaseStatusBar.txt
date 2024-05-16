@@ -31,12 +31,6 @@ Class WW2StatusBar : BaseStatusBar
 
 	Color PlayerColor;
 
-	Protected void DrawCompass(int x, int y)
-	{
-		double ang = CPlayer.mo.angle;//+180;
-		Screen.DrawTexture(TexMan.CheckForTexture("Graphics/NSNORTH.png", TexMan.Type_Any), False, x, y, DTA_CenterOffset, True, DTA_Rotate, ang);
-	}
-
 	override void Init()
 	{
 		Super.Init();
@@ -87,42 +81,9 @@ Class WW2StatusBar : BaseStatusBar
 			if(state == HUD_StatusBar || state == HUD_Fullscreen)
 			{
 				DrawFullScreenStuff();
-
-				DrawCompass(160, 150);
-				If(CPlayer.Health <= 100) { DrawStatusIndicator(160, 150, CPlayer.Health, 0, 100, 0x00FF00); }
-				Else { DrawStatusIndicator(160, 150, CPlayer.Health - 100, 0, CPlayer.mo.GetMaxHealth(False), 0x0000FF); }
 			}
 		}
 	}
-
-
-	void DrawStatusIndicator(int x, int y, int amount, int min = 0, int max = 100, color clr = 0x0, String tex = "STATFILL")
-	{
-		// Calculate angle of indicator
-		int angle = 90 - amount * 360 / (max - min); // Scales value to 360 degree range, subtracts from 90 to start movement clockwise from top
-
-		// Graphic used by indicator; graphic will rotate around the centerpoint
-		TextureID fill = TexMan.CheckForTexture(tex); // Fill image (half circle arc)
-		if (!fill.IsValid()) { return; }
-
-		// Draw the fill at the correct angle, with a second fill drawn for the second half of the circle
-		// This uses the DTA_Clip* tags to allow clipping the part of the graphic that should 
-		// remain unseen while smoothly drawing the progress indicator as it moves.
-
-		// First half - clipped on the left side
-		// If a tint color is defined, tint the image, otherwise draw it normally
-		if (clr) { screen.DrawTexture (fill, true, x, y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Rotate, clamp(angle, -90, 90), DTA_ClipLeft, x); }
-		else { screen.DrawTexture (fill, true, x, y, DTA_CenterOffset, true, DTA_Rotate, clamp(angle, -90, 90), DTA_ClipLeft, x); }
-
-		// Second half - clipped on the right side
-		if (angle > 90 || angle < -90)
-		{
-			// If a tint color is defined, tint the image, otherwise draw it normally
-			if (clr) { screen.DrawTexture (fill, true, x, y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Rotate, angle, DTA_ClipRight, x); }
-			else {  screen.DrawTexture (fill, true, x, y, DTA_CenterOffset, true, DTA_Rotate, angle, DTA_ClipRight, x); }
-		}
-	}
-
 
 	protected void DrawFullScreenStuff()
 	{
