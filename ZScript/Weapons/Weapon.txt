@@ -3,6 +3,7 @@ Class AxisWeapon : Weapon
 	Default
     {
 		+WEAPON.NOALERT
+		+WEAPON.AMMO_OPTIONAL
 		Scale 0.3;
 		Weapon.BobStyle "Smooth";
 		Weapon.BobSpeed 1.0;
@@ -14,11 +15,22 @@ Class AxisWeapon : Weapon
 		Super.PostBeginPlay();
 		If(bTOSSED) { A_DropItem("AmmoGranate",1,16); A_DropItem("AmmoTNT",1,4); }
 	}
+
+    Action Void SetWeaponState(statelabel st, int layer = PSP_WEAPON)
+    {
+        if(player) player.setpsprite(layer, invoker.findstate(st));
+    }
+    Action Bool JustPressed(int which) // "which" being any BT_* value
+    {
+        return player.cmd.buttons & which && !(player.oldbuttons & which);
+    }
+	// BT_ATTACK / BT_ALTATTACK / BT_RELOAD / BT_ZOOM / BT_USER1 / BT_USER2 / BT_USER3 / BT_USER4 / BT_USE
+
 	//Credit Agent_Ash aka Jekyll Grim Payne and Boondorl
 	//Changes ammo type
 	Action Void SetAmmoType1(bool set, Class<Ammo> AmmoClass)
 	{
-		If(set) 
+		If(set)
 		{
 			Invoker.AmmoType1 = AmmoClass;
 			Invoker.Ammo1 = Ammo(FindInventory(AmmoClass));
@@ -26,6 +38,7 @@ Class AxisWeapon : Weapon
 		}
 		Invoker.Ammo1 = null;
 	}
+
     Override String PickupMessage()
     {
         If(Owner)
@@ -37,21 +50,25 @@ Class AxisWeapon : Weapon
 		Else
 			return String.Format("+%d %ss",AmmoGive2,GetDefaultByType(AmmoType2).GetTag());
     }
+
 	//Credit Agent_Ash aka Jekyll Grim Payne
-    Action Void A_MagazineReload(Class<Ammo> AmmoType1) //Edited for the MP40/1	- Ac!d
+    Action Void A_MagazineReload(Class<Ammo> AmmoType1, int TakeAmount = 1, int GiveAmount = 1) //Edited for the MP40/1	- Ac!d
     {
-        While(Invoker.Ammo2.Amount > 0 && Invoker.Ammo1.Amount < Invoker.Ammo1.MaxAmount) 
+        While(Invoker.Ammo2.Amount > 0 && Invoker.Ammo1.Amount < Invoker.Ammo1.MaxAmount)
         {
-            TakeInventory(Invoker.AmmoType2, 1);
-            GiveInventory(Invoker.AmmoType1, 1);
+            TakeInventory(Invoker.AmmoType2, TakeAmount);
+            GiveInventory(Invoker.AmmoType1, GiveAmount);
         }
     }
 
 	//Based on A_MagazineReload. For shotguns, Kar98k and G43	- Ac!d
-    Action Void A_HandReload(Class<Ammo> AmmoType1, int amount = 1)
+    Action Void A_HandReload(Class<Ammo> AmmoType1, int TakeAmount = 1, int GiveAmount = 1)
     {
-		TakeInventory(Invoker.AmmoType2, amount);
-		GiveInventory(Invoker.AmmoType1, amount);
+        If(Invoker.Ammo2.Amount > 0 && Invoker.Ammo1.Amount < Invoker.Ammo1.MaxAmount)
+        {
+            TakeInventory(Invoker.AmmoType2, TakeAmount);
+            GiveInventory(Invoker.AmmoType1, GiveAmount);
+        }
     }
 }
 
@@ -59,11 +76,24 @@ Class BulletPuff_2 : BulletPuff
 {
 	Default
     {
-		Alpha .9;
-		RenderStyle "Add";
-		Scale 0.4;
-		VSpeed 0;
 	    +NOEXTREMEDEATH
+		//+ALWAYSPUFF // Used for A_RailAttack()
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1;
+		TNT1 A 0
+		{
+			For(int i; i<5; i++)
+			{
+				color col = Color(0xFF,0x99+random(0,50),0x00);
+				A_SpawnParticle(col, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_REPLACE, random(3,5), frandom(6,8), 0, 0,0,0, frandom(-5,5), frandom(-6,6), frandom(-5,5), 0,0,-1, 0.98, -1);
+				A_SpawnParticle("C0C0C0", SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_REPLACE, random(3,5), frandom(6,8), 0, 0,0,0, frandom(-5,5), frandom(-6,6), frandom(-5,5), 0,0,-1, 0.98, -1);
+			}
+		}
+		PUFF BCD 4;
+		Stop;
 	}
 }
 
@@ -72,9 +102,23 @@ Class KnifePuff : BulletPuff
 	Default
     {
 		AttackSound "knife/hitwall";
-		SeeSound "knife/slash";
+		//SeeSound "knife/slash";
 	}
 }
+Class NoKnifePuff : BulletPuff
+{
+	Default
+    {
+		+NODECAL
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0;
+		Stop;
+	}
+}
+
 
 Class Casing_Spawner_Base : Actor
 {
@@ -89,7 +133,7 @@ Class Casing_Spawner_Base : Actor
 	{
 	Spawn:
 		TNT1 A 0;
-		TNT1 A 1 A_SpawnProjectile(Invoker.type, 0, 0, random(-95,-85), CMF_AIMDIRECTION, random(-10,10));
+		TNT1 A 1 A_SpawnProjectile(Invoker.type, -5, 0, random(-95,-85), CMF_AIMDIRECTION, random(-10,10));
 		Stop;
 	}
 }
@@ -102,16 +146,17 @@ Class Casing_Base : Actor
 {
 	Int CasingLife; // Casings can keep rooling on the ground...
 	Default
-	{
+    {
 		PROJECTILE;
 		-NOGRAVITY
 		+BOUNCEONACTORS
 		+BOUNCEONCEILINGS
 		+ROLLSPRITE
-		+ROLLCENTER
+		//+ROLLCENTER
 		+FORCEXYBILLBOARD
 		+NOTONAUTOMAP
 		+BLOODLESSIMPACT
+		+MOVEWITHSECTOR
 		DamageFunction (random(1,3)*random(1,2));
 		BounceType "Doom";
 		BounceSound "casing/bounce";
@@ -131,28 +176,23 @@ Class Casing_Base : Actor
 			frame = 0;
 
 			// Credits to Jekyll Grim Payne aka Agent_Ash (Beautiful Doom)
-			if (self is "Casing_9MM") sprite = GetSpriteIndex("CAS0");
-			else if (self is "Casing_Shotgun") sprite = GetSpriteIndex("CAS1");
-			else if (self is "Casing_MauserRifle") sprite = GetSpriteIndex("CAS2");
+			If(Self is "Casing_9MM") sprite = GetSpriteIndex("CAS0");
+			Else If(Self is "Casing_Shotgun") sprite = GetSpriteIndex("CAS1");
+			Else If(Self is "Casing_MauserRifle") sprite = GetSpriteIndex("CAS2");
 			return ResolveState(null);
 		}
 	Looping:
-		#### A 0 A_JumpIf(Invoker.CasingLife == 20, "Death");
+		#### # 0 A_JumpIf(Invoker.CasingLife == 20, "Death");
 		#### # 2 { CasingLife++; }
-		#### # 0
-		{
-			If(frame == 7) { frame = 0; }
-			Else { frame = frame + 1; }
-		}
+		#### # 0 { Frame = Frame == 7 ? 0 : Frame + 1; }
 		Loop;
 	Death:
 		#### # 0
 		{
-			If(random(0,1)) { frame = 2; }
-			Else { frame = 6; }
+			Frame = Frame <= 2 ? 2 : 6;
 			A_SetTics(GetCVar("Kriegspfad_Casing"));
 		}
-		#### A 1 A_FadeOut(0.1);
+		#### # 1 A_FadeOut(0.1);
 		Wait;
 
 	LoadSprites: // Used for 'GetSpriteIndex'
@@ -160,7 +200,6 @@ Class Casing_Base : Actor
 		Stop;
 	}
 }
-
 Class Casing_9MM : Casing_Base { Default { Scale 0.3; } }
 Class Casing_Shotgun : Casing_Base { Default { Scale 0.15; } }
 Class Casing_MauserRifle : Casing_Base { Default { Scale 0.25; } }
