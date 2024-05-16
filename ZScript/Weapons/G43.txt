@@ -193,18 +193,21 @@ Class RifleGrenade : Rocket
 		+SHOOTABLE
 		Speed 150;
 		Gravity 0.4;
+		Scale 1.2;
 	}
 	States
 	{
 	Spawn:
-		SGRN A 1 BRIGHT;
+		//SGRN A
+		[RG] B 1 BRIGHT;
 		Loop;
 	Death:
 		TNT1 A 10
 		{
 			A_Explode(192, 256, XF_HURTSOURCE, True, 128);
-			A_SpawnItemEx("gta2_expl_explosion",0,0,0);
+			A_SpawnItemEx("fx_realisticexplosion_s",0,0,0); //gta2_expl_explosion
 		}
 		Stop;
 	}
 }
+
