@@ -1,7 +1,9 @@
 [enu default]
 
 STARTUP1 = "\c[Orange]Der Kriegspfad : Blut und Eisen\c-";
-STARTUP2 = "\c[Orange]- 01-11-2022 -\c-";
+STARTUP2 = "\c[Orange]- 16-05-2024 -\c-";
+
+//SECRETMESSAGE = "You found a secret area!";
 
 TAG_AMMO_9MM = "9 x 19 Parabellum round";
 TAG_AMMO_12GA = "12 Gauge brass shell";
@@ -16,14 +18,14 @@ PICKUP_AMMO_POUCHES = "Picked up some ammo pouches.";
 
 TAG_WEAPON_KNIFE = "Combat Knife";
 TAG_WEAPON_LUGERP08 = "Luger P08";
-TAG_WEAPON_WALTHERP38 = "Walther P38";
+TAG_WEAPON_WALTHERP38 = "Walther P38 s";
 TAG_WEAPON_WINCHESTERM1897 = "M1897 Trench Gun";
 TAG_WEAPON_BROWINGAUTO5 = "FN/Browning Auto-5";
 TAG_WEAPON_MP401 = "MaschinenPistole 40/1";
 TAG_WEAPON_STENMK2 = "STEN Mk II s";
 TAG_WEAPON_GEWEHR43 = "Gewehr 43";
 TAG_WEAPON_KAR98K = "Karabiner 98 kurz";
-TAG_WEAPON_FLAMMENWERFER = "Flammenwerfer";
+TAG_WEAPON_FLAMMENWERFER = "Flammenwerfer 35";
 TAG_WEAPON_UMG43 = "ÜberMaschinenGewehr 43";
 
 PICKUP_HEALTH_S = "Picked up a small health pack";
@@ -33,12 +35,21 @@ TAG_1938_LATOUR = "1938 Latour";
 PICKUP_HEALTH_DOGFOOD = "Ate some dog food, WOOF!";
 PICKUP_HEALTH_COLDMEAL = "Cold plate of food";
 PICKUP_HEALTH_HOTMEAL = "Hot plate of food";
-PICKUP_HEALTH_FIRSTAIDKIT = "First aid kit";
+PICKUP_HEALTH_FIRSTAIDKIT = "Verbandskästen";
 PICKUP_HEALTH_BERSERK = "Übermacht !";
 PICKUP_HEALTH_UPGRADE = "Picked up a health upgrade pack";
+//TAG_3K_MOONSHINE = "Three Kings' Moonshine";
+
+PICKUP_POWERUP_PERVITIN = "Pervitin !";
+
+PICKUP_SUPPLIES = "Picked up a box of millitary supplies";
+PICKUP_SUPPLIES_AMMO = "Picked up ammo from a box of millitary supplies";
+PICKUP_SUPPLIES_HEALTH = "Picked up health from a box of millitary supplies";
 
 KRIEGSPFAD_HEALTH = "Partial regeneration and OverCharge ability";
+KRIEGSPFAD_WEAPON = "One weapon per slot";
 KRIEGSPFAD_P38 = "Silencer sounds for the Walther P38";
+KRIEGSPFAD_BBQ = "Fire death effects for monsters";
 KRIEGSPFAD_SHOTGUNS = "Tactical empty reload for the shotguns";
 KRIEGSPFAD_CASING = "Shell Casing Lifetime";
 
@@ -53,3 +64,5 @@ QUIT_MSG6 = "Don't go now, there's a Schutzstaffel waiting at your desktop!"; //
 QUIT_MSG7 = "When you leave the battlefield, \nyou leave with Hitler!"; // -LossForWords
 QUIT_MSG8 = "Go ahead, leave.\n When you come back, I'll be waiting with a flamethrower at your head."; // -Renegade4339
 QUIT_MSG9 = "Yeah, right, like YOU have \nanything better to do !"; // Wolfenstein Enemy Territory
+QUIT_MSG10 = "Ich wiederhole : \nein Kilogramm Kartoffeln,\nein Liter Milch,\ndrei Eier, \nneunzig Gram Butter, \nSalz \nund… \nund… \nMUSKATNUSS !… \nMUSKATNUSS, HERR MÜLLER !!!";
+
