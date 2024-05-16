@@ -35,6 +35,7 @@ Class WW2Player : DoomPlayer
     Override Void Tick()
     {
         Super.Tick();
+
         If(Health <= 0) return;
 
 		If(CVar.FindCVar('Kriegspfad_Health').GetBool())
@@ -42,30 +43,54 @@ Class WW2Player : DoomPlayer
 			hpDecayTimer++;
 			If(painTimer) painTimer--;
 
+			If(!CountInv("PowerUber"))//... PowerRegeneration
+			{//...
+
 			If(InStateSequence(CurState,ResolveState("Pain"))) // If hurt, wait 2 seconds before regeneration
 			{
 				painTimer = 70;
 			}
+
+			If(Health > 999) { A_SetHealth(999); }
+
 			// Slowly remove HP if over maximum.
-			If((Health > 500 && hpDecayTimer >= 5) || (Health > 250 && hpDecayTimer >= 10) || (Health > 100 && hpDecayTimer >= 20))
+			If((Health > 500 && hpDecayTimer >= 5) || (Health > 250 && hpDecayTimer >= 10) || (Health > PlayerPawn.GetMaxHealth(True) && hpDecayTimer >= 20))
 			{
 				A_SetHealth(Health - 1);
 				hpDecayTimer = 0;
 			}
-			// Slowly gain HP if less than 100 health, every 5 tics.
+			// Slowly gain HP if less than Player.MaxHealth, every 5 tics.
 			// Only gain HP if we've not been hit recently.
-			If(painTimer <= 0 && hpDecayTimer >= 5 && Health < MaxHealth)
+			If(painTimer <= 0 && hpDecayTimer >= 5 && Health < PlayerPawn.GetMaxHealth(True))
 			{
 				 A_SetHealth(Health + 1);
 				 hpDecayTimer = 0;
 			}
-			Else If(!(Health%20) && Health <= 100) 
+			Else If(!(Health%20) && Health <= PlayerPawn.GetMaxHealth(True))
 			{
-				// If health is evenly divisible by 20 and not greater than 100.
+				// If health is evenly divisible by 20 and not greater than Player.MaxHealth.
+				hpDecayTimer = 0;
+			}
+
+			}//...
+
+			Else If(Health > 250 && hpDecayTimer >= 35)
+			{
+				A_SetHealth(Health - 1);
+				hpDecayTimer = 0;
+			}
+			Else If(Health == 250 && hpDecayTimer >= 35)
+			{
+				hpDecayTimer = 0;
+			}
+			Else If((Health >= 100 || Health > 250) && CountInv("PowerRegeneration") && hpDecayTimer >= 35)
+			{
+				A_StartSound("*regenerate", CHAN_AUTO);
+				A_SetHealth(Health + 5);
 				hpDecayTimer = 0;
 			}
 		}
-    }
+	}
 
 	Override Void CheatGive(String name, int amount)
 	{
