@@ -82,3 +82,20 @@ Class WW2Player : DoomPlayer
 		}
 	}
 }
+
+Class Wolfenstein3D_Aardwolf : Actor
+{
+	Default
+	{
+		Radius 16;
+		Height 128;
+		ProjectilePassHeight -16;
+		+SOLID
+	}
+	States
+	{
+	Spawn:
+		AC!D A -1;
+		Stop;
+	}
+}
