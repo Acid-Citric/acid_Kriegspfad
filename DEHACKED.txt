@@ -1,0 +1,5 @@
+Doom version = 21
+Patch format = 6
+
+Thing 19 (Lost Soul)
+Hit points = 25
