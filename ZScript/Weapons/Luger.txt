@@ -1,11 +1,5 @@
 Class Luger : AxisWeapon replaces Pistol
 {
-	/*Int Ammo_Load;
-    Override Void Tick()
-    {
-        Super.Tick();
-		If(health > 0) { Ammo_Load = random[shitgun](1,99); }
-	}*/
 	Default
 	{
 		Weapon.SelectionOrder 2100;
