@@ -29,15 +29,6 @@ Class MP40 : AxisWeapon
 			Return Super.TryPickup(toucher);
 	}
 
-	Override Void DoEffect()
-	{
-		If(Owner && Owner.Player && Owner.Player.ReadyWeapon)
-		{
-			If(CVar.FindCVar("Kriegspfad_OWPS").GetBool() == True) { Owner.A_TakeInventory("Sten"); }
-		}
-		Super.DoEffect();
-	}
-
 	States
 	{
 	Spawn:
