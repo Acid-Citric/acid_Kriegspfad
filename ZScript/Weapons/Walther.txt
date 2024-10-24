@@ -3,7 +3,8 @@ Class Walther : AxisWeapon
 	Default
 	{
 		Weapon.SelectionOrder 2100;
-
+		Weapon.SlotNumber 2;
+		Weapon.AmmoUse 1;
 		Weapon.AmmoType "WaltherLoaded";
 		Weapon.AmmoType2 "Ammo9mm";
 		Inventory.PickupMessage "You got the Walther P38!";
@@ -15,7 +16,7 @@ Class Walther : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("WaltherLoaded", random(1,bTOSSED ? 4 : 8));
+		other.A_GiveInventory("WaltherLoaded", random(1, bTOSSED ? 4 : 8));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
@@ -23,35 +24,40 @@ Class Walther : AxisWeapon
 		{
 			Let weap = toucher.FindInventory("Walther");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,8); }
+			Else { Self.AmmoGive2 = random(1,8); }
 		}
 			Return Super.TryPickup(toucher);
 	}
+
 	States
 	{
 	Spawn:
 		WP8P B -1;
 		Stop;
 	Select:
-		WP8U A 1 A_Raise(12);
+		WP8U B 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
+		WP8U A 0;
+		WP8U # 1 A_Raise(12);
 		Loop;
 	Ready:
-		WP8U A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		WP8U B 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
+		WP8U A 0;
+		WP8U # 1 A_WeaponReady(WRF_ALLOWRELOAD);
 		Loop;
 	Deselect:
-		WP8U A 1 A_Lower(12);
+		WP8U B 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
+		WP8U A 0;
+		WP8U # 1 A_Lower(12);
 		Loop;
 
 	Fire:
 		TNT1 A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), "Reload");
 		WP8U B 1
 		{
-			A_FireBullets(0.5, 0.5, -1, random(6,18), "BulletPuff_2", FBF_NORANDOMPUFFZ);
-			If(GetCVar('Kriegspfad_P38') == 2) { A_StartSound("P38/fire_silenced_3", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
-			Else If(GetCVar('Kriegspfad_P38') == 1) { A_StartSound("P38/fire_silenced_2", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
-			Else { A_StartSound("P38/fire_silenced", CHAN_WEAPON, CHANF_DEFAULT, 1.0); }
+			A_FireBullets(0.5, 0.5, -1, random(6,18), "BulletPuff_2", FBF_USEAMMO|FBF_NORANDOMPUFFZ);
+			Int snd = GetCVar('Kriegspfad_P38');
+			A_StartSound(snd == 2 ? "P38/fire_silenced_3" : snd == 1 ? "P38/fire_silenced_2" : "P38/fire_silenced", CHAN_WEAPON, CHANF_DEFAULT, 1.0);
 			A_AlertMonsters(256);
-			A_TakeInventory(Invoker.AmmoType1, 1);
 
 			A_FireProjectile("Casing_Spawner_9MM", 0, False, 1, 1, FPF_NOAUTOAIM);
 		}
@@ -59,9 +65,13 @@ Class Walther : AxisWeapon
 		#### D 1 A_WeaponOffset(0,41,WOF_INTERPOLATE);
 		#### E 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+		#### A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 3);
 		#### A 7;
 		#### # 0 A_ReFire();
 		Goto Ready;
+		#### H 5;
+		#### B 2 A_StartSound("weapon/noammo", CHAN_7, CHANF_OVERLAP, pitch: 3.0);
+		Goto Ready;		
 	Reload:
 		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount, 2);
 		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, "ReloadWork");
