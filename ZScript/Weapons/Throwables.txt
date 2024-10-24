@@ -26,16 +26,14 @@ Class Dynamite_Proj : Actor
 	}
 	Override Void Tick()
 	{
-		If(ticking >= 35)
+		If(ticking++ == 35)
 		{
 			A_StartSound("dynamite/bomb_ticker",CHAN_BODY,CHANF_DEFAULT,1);
 			ticking = 0;
 		}
-		ticking++;
 
 		Super.Tick();
-		If(timer == 0) { SetStateLabel("Explode"); }
-		timer--;
+		If(timer-- == 0) { SetStateLabel("Explode"); }
 	}
 	Override Bool Used(Actor User)
 	{
@@ -118,8 +116,7 @@ Class Granate_Thrown_A : Actor
 	Override Void Tick()
 	{
 		Super.Tick();
-		If(timer == 70) { SetStateLabel("Explode"); }
-		timer++;
+		If(timer++ == 70) { SetStateLabel("Explode"); }
 	}
 	Override Void PostBeginPlay()
 	{
@@ -140,7 +137,6 @@ Class Granate_Thrown_A : Actor
 		}
 		Stop;
 	Explode:
-		//TNT1 A 0 A_JumpIf(GetZAt(24,0) == floorz && GetZAt(-24,0) == floorz && GetZAt(0,24) == floorz && GetZAt(0,-24) == floorz, 2);
 		TNT1 A 0
 		{
 			A_StartSound("granate/explode", CHAN_WEAPON);
@@ -172,7 +168,6 @@ Class Granate_Thrown_B : Granate_Thrown_A
 		}
 		Stop;
 	Explode:
-		//TNT1 A 0 A_JumpIf(GetZAt(24,0) == floorz && GetZAt(-24,0) == floorz && GetZAt(0,24) == floorz && GetZAt(0,-24) == floorz, 2);
 		TNT1 A 0
 		{
 			A_StartSound("granate/explode", CHAN_WEAPON);
