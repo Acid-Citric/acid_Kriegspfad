@@ -1,9 +1,16 @@
 Class Luger : AxisWeapon replaces Pistol
 {
+	/*Int Ammo_Load;
+    Override Void Tick()
+    {
+        Super.Tick();
+		If(health > 0) { Ammo_Load = random[shitgun](1,99); }
+	}*/
 	Default
 	{
 		Weapon.SelectionOrder 2100;
-
+		Weapon.SlotNumber 2;
+		Weapon.AmmoUse 1;
 		Weapon.AmmoType "LugerLoaded";
 		Weapon.AmmoType2 "Ammo9mm";
 		Inventory.PickupMessage "You got the Luger P08!";
@@ -14,18 +21,19 @@ Class Luger : AxisWeapon replaces Pistol
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("LugerLoaded", random(1,bTOSSED ? 4 : 8));
-	}
+		other.A_GiveInventory("LugerLoaded", random(1, bTOSSED ? 4 : 8));
+	}	
    	Override Bool TryPickup(in out Actor toucher)  
     {
 		If(toucher)
 		{
 			Let weap = toucher.FindInventory("Luger");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,8); }
+			Else { Self.AmmoGive2 = random(1,8); }
 		}
 			Return Super.TryPickup(toucher);
 	}
+
 	States
 	{
 	Spawn:
@@ -37,10 +45,15 @@ Class Luger : AxisWeapon replaces Pistol
 		#### # 1 A_Raise(12);
 		Loop;
 	Ready:
+		WP1E A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 3);
+		WP1G FG 2;
+		WP1G A 0 A_JumpIf(CountInv(Invoker.Ammo1.GetClass()), 3);
+		WP1E CD 2;
+	ReadyLoop: // only for the 'take all' / 'give all' commands
 		WP1E A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
 		WP1G A 0;
 		#### # 1 A_WeaponReady(WRF_ALLOWRELOAD);
-		Loop;
+		Loop; //Wait;
 	Deselect:
 		WP1E C 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 2);
 		WP1G F 0;
@@ -53,10 +66,11 @@ Class Luger : AxisWeapon replaces Pistol
 		{
 			A_GunFlash();
 			A_AlertMonsters();
-			A_FireBullets(1, 1, -1, random(3,17), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_FireBullets(1, 1, -1, random(3,17), "BulletPuff_2", FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			A_StartSound("luger/fire", CHAN_WEAPON, CHANF_DEFAULT, 1);
-			A_TakeInventory(Invoker.AmmoType1, 1);
 
+			//Int SX_zofs = 32*GetCrouchFactor(AAPTR_Default);
+			//A_SpawnItemEx("Casing_9MM",cos(pitch)*12,-20,(SX_zofs)-(sin(pitch)*(SX_zofs)),cos(pitch)*8,random(-2,2),-sin(pitch)*random(0,4),random(-55,-80),SXF_TRANSFERPITCH);
 			A_FireProjectile("Casing_Spawner_9MM", 0, False, 1, 1, FPF_NOAUTOAIM);
 		}
 		#### C 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
@@ -64,27 +78,28 @@ Class Luger : AxisWeapon replaces Pistol
 		#### A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), 5);
 		#### E 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(0,33,WOF_INTERPOLATE);
-		#### G 1 A_WeaponOffset(0,31,WOF_INTERPOLATE);
+		#### G 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		Goto Ready;
+		Goto Ready+6;
 		WP1E B 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
 		#### C 1 A_WeaponOffset(0,33,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(0,31,WOF_INTERPOLATE);
+		#### D 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-		Goto Ready;
+		Goto Ready+6;
 		
 	Flash:
-		WP1F A 1 BRIGHT A_Light1;
+		WP1F A 1 BRIGHT A_Light1();
 		Goto LightDone;
 	Reload:
 		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount, 2);
 		TNT1 A 0 A_JumpIf(Invoker.Ammo2.Amount > 0, "ReloadWork");
 		TNT1 A 0;
-		Goto Ready;
+		Goto Ready+6;
 
 	ReloadWork:
 		WP1G E 1 A_JumpIf(!Invoker.Ammo1.GetClass(), 2);
-		#### # 1;
+		#### D 1;
+		#### C 1;
 		#### H 1
 		{
 			A_WeaponOffset(0,35,WOF_INTERPOLATE);
@@ -96,7 +111,7 @@ Class Luger : AxisWeapon replaces Pistol
 		#### # 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);	
 		TNT1 A 11;
 	ReloadLoop:
 		TNT1 A 0 A_MagazineReload(Invoker.AmmoType1);
@@ -104,11 +119,11 @@ Class Luger : AxisWeapon replaces Pistol
 		WP1G F 1 A_WeaponOffset(0,82,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,72,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,62,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
-		#### A 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
-		Goto Ready;
+		#### G 1 A_WeaponOffset(0,52,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
+		Goto Ready+6;
 	}
 }
 
