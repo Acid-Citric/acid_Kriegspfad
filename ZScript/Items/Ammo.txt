@@ -367,9 +367,9 @@ Class AmmoTNT : Ammo
 		Tag "$TAG_AMMO_TNT";
 		Inventory.Icon "TNT_A0";
 		Inventory.Amount 1;
-		Inventory.MaxAmount 5;
+		Inventory.MaxAmount 3;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount 5;
+		Ammo.BackpackMaxAmount 3;
 		Ammo.DropAmount 1;
 		Scale 1.0;
 		+INVENTORY.IGNORESKILL
@@ -415,7 +415,7 @@ Class AmmoTNT : Ammo
 						Case 35: dyn.timer = 1225; break;
 						Case 40: dyn.timer = 1400; break;
 						Case 45: dyn.timer = 1575; break;
-					}					
+					}
 				}
 			}
 			delay_ac = 20;
@@ -446,9 +446,9 @@ Class AmmoGranate : Ammo
 		Tag "$TAG_AMMO_GRANATE";
 		Inventory.Icon "SHG_A0";
 		Inventory.Amount 1;
-		Inventory.MaxAmount 10;
+		Inventory.MaxAmount 5;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount 15;
+		Ammo.BackpackMaxAmount 7;
 		Ammo.DropAmount 1;
 		Scale 0.75;
 		+INVENTORY.IGNORESKILL
@@ -488,7 +488,7 @@ Class AmmoGranate : Ammo
 			}
 			delay_ac = 20;
 		}
-		Return 0;
+		Return False;
 	}
 	Override Void Tick()
 	{
@@ -513,6 +513,7 @@ Class MilitaryBackpack : BackpackItem
 		Super.PostBeginPlay();
 		bSPRITEFLIP = random(0,1);
 		frame = random[AmmoPouches](0,1);
+		For(int i; i<1; i++) { A_SpawnItemEx("SuppliesCrate", Random(-8,8), Random(-8,8), 0, Random(0,1), Random(0,1), failchance: 64); }
 	}
 	States
 	{
