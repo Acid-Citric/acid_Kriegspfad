@@ -4,19 +4,19 @@ Class MP40 : AxisWeapon
 	Default
 	{
 		Weapon.SelectionOrder 700;
-
+		Weapon.SlotNumber 4;
+		Weapon.AmmoUse 1;
 		Weapon.AmmoType "MP40Loaded_1";
 		Weapon.AmmoType2 "Ammo9mm";
 		Inventory.PickupMessage "You got the MaschinenPistole 40/1!";
-		+WEAPON.NOALERT
 		Tag "$TAG_WEAPON_MP401";
 		Weapon.UpSound "mp40/select";
 	}
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		If(bTOSSED) { other.A_GiveInventory("MP40Loaded_1", random(1,32)); other.A_GiveInventory("MP40Loaded_2", random(1,32)); }
-		Else { other.A_GiveInventory("MP40Loaded_1", random(1,32)); other.A_GiveInventory("MP40Loaded_2", random(1,32)); }
+		other.A_GiveInventory("MP40Loaded_1", random(1,32));
+		other.A_GiveInventory("MP40Loaded_2", random(1,32));
 	}
    	Override Bool TryPickup(in out Actor toucher)
     {
@@ -24,10 +24,20 @@ Class MP40 : AxisWeapon
 		{
 			Let weap = toucher.FindInventory("MP40");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,64); }
+			Else { Self.AmmoGive2 = random(1,64); }
 		}
 			Return Super.TryPickup(toucher);
 	}
+
+	Override Void DoEffect()
+	{
+		If(Owner && Owner.Player && Owner.Player.ReadyWeapon)
+		{
+			If(CVar.FindCVar("Kriegspfad_OWPS").GetBool() == True) { Owner.A_TakeInventory("Sten"); }
+		}
+		Super.DoEffect();
+	}
+
 	States
 	{
 	Spawn:
@@ -49,17 +59,17 @@ Class MP40 : AxisWeapon
 		{
 			A_GunFlash();
 			A_AlertMonsters();
-			A_FireBullets(1.4, 1.4, 1, random(9,14), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_FireBullets(1.4, 1.4, 1, random(9,14), "BulletPuff_2", FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			A_StartSound("mp40/fire", CHAN_WEAPON);
-			A_TakeInventory(Invoker.AmmoType1, 1);	
 			A_FireProjectile("Casing_Spawner_9MM", 0, False, 0, 0, FPF_NOAUTOAIM);
 		}
-		#### A 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
-		#### # 0 A_JumpIf(Invoker.MP40Sequence == False, 2);
-		#### # 1 { A_WeaponOffset(0,36,WOF_INTERPOLATE); Invoker.MP40Sequence = False; }
-		#### # 0 { Invoker.MP40Sequence = True; }
+		#### A 3
+		{
+			If(Invoker.MP40Sequence) { A_SetTics(4); Invoker.MP40Sequence = False; }
+			Else { Invoker.MP40Sequence = True; }
+			A_WeaponOffset(0,random(33,34),WOF_INTERPOLATE);
+		}
+		#### # 0 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		#### # 0 A_ReFire();
 		Goto Ready;
 	Flash:
@@ -67,16 +77,24 @@ Class MP40 : AxisWeapon
 		Goto LightDone;
 
 	AltFire:
-		TNT1 A 0 A_JumpIf(!CountInv("MP40Loaded_1") && !CountInv("MP40Loaded_2"), "Reload");
+		TNT1 A 0 A_JumpIf(!CountInv("MP40Loaded_1") && !CountInv("MP40Loaded_2"), "Reload");	
+		TNT1 A 0 A_JumpIf(Invoker.AmmoType1 == "MP40Loaded_1" && !CountInv("MP40Loaded_2") || Invoker.AmmoType1 == "MP40Loaded_2" && !CountInv("MP40Loaded_1"), "Ready");
 		WP3G A 1 { A_WeaponOffset(0,35,WOF_INTERPOLATE); A_StartSound("mp40/magswitch", CHAN_WEAPON); }
 		#### # 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-2,44,WOF_INTERPOLATE);
-		#### # 11
+		#### # 5
 		{
 			A_WeaponOffset(-3,52,WOF_INTERPOLATE);
+
 			If(Invoker.AmmoType1 == "MP40Loaded_1") { SetAmmoType1(True, "MP40Loaded_2"); }
 			Else If(Invoker.AmmoType1 == "MP40Loaded_2") { SetAmmoType1(True, "MP40Loaded_1"); }
 		}
+		#### # 1 A_WeaponOffset(-4,64,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-4,67,WOF_INTERPOLATE);
+		#### # 2 A_WeaponOffset(-4,71,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-4,67,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-4,64,WOF_INTERPOLATE);
+		#### D 1 A_WeaponOffset(-3,52,WOF_INTERPOLATE);	
 		#### # 1 A_WeaponOffset(-2,44,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-1,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,35,WOF_INTERPOLATE);
@@ -94,7 +112,7 @@ Class MP40 : AxisWeapon
 		WP3G C 1
 		{
 			A_WeaponOffset(0,35,WOF_INTERPOLATE);
-			A_StartSound("mp40/reload", CHAN_WEAPON);
+			A_StartSound("mp40/reload", CHAN_WEAPON);		
 		}
 		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
@@ -109,19 +127,19 @@ Class MP40 : AxisWeapon
 		#### # 1 A_WeaponOffset(-3,51,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-3,53,WOF_INTERPOLATE);
 		#### # 1 A_WeaponOffset(-3,55,WOF_INTERPOLATE);
-		#### # 10 A_WeaponOffset(-3,56,WOF_INTERPOLATE);
+		#### # 6 A_WeaponOffset(-3,56,WOF_INTERPOLATE);
 	ReloadLoop:
 		#### A 0
 		{
-			If(CountInv("MP40Loaded_1") != Invoker.Ammo1.MaxAmount)
-			{
-				SetAmmoType1(True, "MP40Loaded_2");
-				A_MagazineReload("MP40Loaded_2");
-			}
-			Else If(CountInv("MP40Loaded_2") != Invoker.Ammo1.MaxAmount)
+			If(CountInv("MP40Loaded_2") != Invoker.Ammo1.MaxAmount)
 			{
 				SetAmmoType1(True, "MP40Loaded_1");
 				A_MagazineReload("MP40Loaded_1");
+			}
+			Else If(CountInv("MP40Loaded_1") != Invoker.Ammo1.MaxAmount)
+			{
+				SetAmmoType1(True, "MP40Loaded_2");
+				A_MagazineReload("MP40Loaded_2");
 			}
 		}
 		#### A 0 A_JumpIf(CountInv("MP40Loaded_1") == Invoker.Ammo1.MaxAmount && CountInv("MP40Loaded_2") == Invoker.Ammo1.MaxAmount || Invoker.Ammo2.Amount < 1, 1);
