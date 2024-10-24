@@ -31,6 +31,13 @@ Class WW2StatusBar : BaseStatusBar
 
 	Color PlayerColor;
 
+
+	Protected void DrawCompass(int x, int y)
+	{
+		double ang = CPlayer.mo.angle;//+180;
+		Screen.DrawTexture(TexMan.CheckForTexture("Graphics/NSNORTH.png", TexMan.Type_Any), False, x, y, DTA_CenterOffset, True, DTA_Rotate, ang);
+	}
+
 	override void Init()
 	{
 		Super.Init();
@@ -129,11 +136,7 @@ Class WW2StatusBar : BaseStatusBar
 			{
 				If(CheckWeaponSelected('Luger'))
 				{
-					for(int i = CPlayer.Mo.CountInv("LugerLoaded"); i > 0; i--)
-					{
-						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
-					}
+					DrawAmmoBar("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), 1, 0, 6);
 					DrawImage("WEAPON_1", (-57, -65), DI_ITEM_OFFSETS);
 				}
 				If(CheckWeaponSelected('Walther'))
@@ -147,59 +150,23 @@ Class WW2StatusBar : BaseStatusBar
 				}
 				If(CheckWeaponSelected('TrenchGun'))
 				{
-
-
-				//vector2 CylinderPos = (0, 0);
-				
-					for(int i = CPlayer.Mo.CountInv("TrenchGunLoaded"); i > 0; i--)
-					{
-						DrawImage("Graphics/Hud/HUD_AMMO_S.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
-				/*
-				Let lod = TrenchGun(CPlayer.mo.FindInventory('TrenchGun'));
-
-				if (lod.CountInv("TrenchGunLoaded") >= 0)
-				{
-					vector2 CylinderPos = (0, 0);
-					for (int i = 0; i < 6; ++i)
-					{
-						double DrawAngle = i * (360.0 / 6.0) - 180;
-						vector2 DrawPos = CylinderPos + (sin(DrawAngle), cos(DrawAngle)) * 7; // + : Top / - : Bottom 
-						Color ShellCol = Color(255, 167, 0, 0);
-						Fill(lod.CountInv("TrenchGunLoaded") > i ? ShellCol : Color(200, 30, 26, 24), DrawPos.x -28, DrawPos.y -21, 4,4, DI_SCREEN_CENTER_BOTTOM|DI_ITEM_RIGHT);
-					}
-				}
-				*/
-					}//
+					DrawAmmoBar("Graphics/Hud/HUD_AMMO_S.png", (-23, Ammo_Y), 1, 0, 6);
 					DrawImage("WEAPON_2", (-41, -114), DI_ITEM_OFFSETS);
 				}
 				If(CheckWeaponSelected('BA5'))
 				{
-					for(int i = CPlayer.Mo.CountInv("BA5Loaded"); i > 0; i--)
-					{
-						DrawImage("Graphics/Hud/HUD_AMMO_S.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
-					}
+					DrawAmmoBar("Graphics/Hud/HUD_AMMO_S.png", (-23, Ammo_Y), 1, 0, 6);
 					DrawImage("WEAPON_7", (-41, -114), DI_ITEM_OFFSETS);
 				}
 				If(CheckWeaponSelected('MP40'))
 				{
-					for(int i = CPlayer.Mo.CountInv(CPlayer.ReadyWeapon.AmmoType1); i > 0; i--)
-					{
-						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
-					}
+					DrawAmmoBar("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), 1, 0, 6);
 					DrawImage("WEAPON_3", (-60, -94), DI_ITEM_OFFSETS);
 				}
 				If(CheckWeaponSelected('STEN'))
 				{
 					Let ptr = STEN(CPlayer.mo.FindInventory('STEN'));
-
-					for(int i = CPlayer.Mo.CountInv("STENLoaded"); i > 0; i--)
-					{
-						DrawImage("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
-					}
+					DrawAmmoBar("Graphics/Hud/HUD_AMMO_P.png", (-23, Ammo_Y), 1, 0, 6);
 					DrawImage("WEAPON_9", (-51, -133), DI_ITEM_OFFSETS);
 
 					mHeatInterpolator.Update(ptr.STEN_Heat);
@@ -210,11 +177,7 @@ Class WW2StatusBar : BaseStatusBar
 					Let ptr = G43(CPlayer.mo.FindInventory('G43'));
 					If(!ptr.RGrenade)
 					{
-						for(int i = CPlayer.Mo.CountInv(CPlayer.ReadyWeapon.AmmoType1); i > 0; i--)
-						{
-							DrawImage("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-							Ammo_Y = Ammo_Y - 6;
-						}
+						DrawAmmoBar("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), 1, 0, 6);
 					}
 					Else { DrawImage("Graphics/Hud/HUD_AMMO_G.png", (-23, -12), DI_ITEM_OFFSETS); }
 					DrawImage("WEAPON_4", (-50, -165), DI_ITEM_OFFSETS);
@@ -223,11 +186,7 @@ Class WW2StatusBar : BaseStatusBar
 				}
 				If(CheckWeaponSelected('Kar98k'))
 				{
-					for(int i = CPlayer.Mo.CountInv("Kar98kLoaded"); i > 0; i--)
-					{
-						DrawImage("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), DI_ITEM_OFFSETS);
-						Ammo_Y = Ammo_Y - 6;
-					}
+					DrawAmmoBar("Graphics/Hud/HUD_AMMO_R.png", (-23, Ammo_Y), 1, 0, 6);
 					DrawImage("WEAPON_A", (-56, -171), DI_ITEM_OFFSETS);
 				}
 				If(!CheckWeaponSelected('MP40')) { DrawString(mSmallFont, FormatNumber(ammotype1.Amount, 3), (-60, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE); }
@@ -237,11 +196,6 @@ Class WW2StatusBar : BaseStatusBar
 					 DrawString(mSmallFont, FormatNumber(Ammo_Mp40b.Amount, 3), (-60, -22), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 				}
 				DrawString(mSmallFont, FormatNumber(ammotype2.Amount, 3), (-30, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
-
-				/*
-				Let lod = Luger(CPlayer.mo.FindInventory('Luger'));
-				DrawString(mSmallFont, FormatNumber(lod.Ammo_Load, 3), (-60, -32), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
-				*/
 			}
 			Else If(CPlayer.ReadyWeapon.Ammo1)
 			{
@@ -256,18 +210,6 @@ Class WW2StatusBar : BaseStatusBar
 					Let ptr = UMG43(CPlayer.mo.FindInventory('UMG43'));
 					DrawImage("WEAPON_5", (-66, -141), DI_ITEM_OFFSETS);
 					If(ptr.Empty) { DrawString(mSmallFont, "RELOAD", (-60, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE); }
-
-					//mHeatInterpolator.Update(ptr.UMG43_Heat);
-					/*Fill(color(96, 255, 0, 0), -35, -110, 7, -31, DI_ITEM_OFFSETS);
-					Fill(color(96, 255, 0, 0), -44, -110, 7, -31, DI_ITEM_OFFSETS);*/
-					/*Fill(color(96, 255, 0, 0), -45, -133, 1, -4, DI_ITEM_OFFSETS);
-					Fill(color(96, 255, 0, 0), -37, -133, 2, -4, DI_ITEM_OFFSETS);
-					Fill(color(96, 255, 0, 0), -28, -133, 1, -4, DI_ITEM_OFFSETS);
-					Fill(color(96, 255, 0, 0), -45, -123, 1, -5, DI_ITEM_OFFSETS);
-					Fill(color(96, 255, 0, 0), -37, -123, 2, -5, DI_ITEM_OFFSETS);
-					Fill(color(96, 255, 0, 0), -28, -123, 1, -5, DI_ITEM_OFFSETS);*/
-
-					//Fill(color(96, 255, 0, 0), -36, -96, 7, -31 * clamp(mHeatInterpolator.GetValue()/double(120), 0.0, 1.0), DI_ITEM_OFFSETS);
 				}
 				DrawString(mSmallFont, FormatNumber(ammotype1.Amount, 3), (-30, -12), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 			}
@@ -317,6 +259,25 @@ Class WW2StatusBar : BaseStatusBar
 					roww = 0;
 					rowc = 0;
 				}
+			}
+		}
+	}
+
+	void DrawAmmoBar(string texture, vector2 ammopos, int rowsize, int x_spacing, int y_spacing)
+    {
+		double defaulty = ammopos.y;
+		Inventory ammo = GetCurrentAmmo();
+		int prow = ammo.MaxAmount/rowsize;
+		int crow;
+		
+		For(int i=ammo.Amount; i>0; i--){
+			DrawImage(texture, ammopos, DI_ITEM_OFFSETS);
+			ammopos.y-=y_spacing;
+			crow++;
+			If(crow>=prow){
+				crow=0;
+				ammopos.y=defaulty;
+				ammopos.x-=x_spacing;
 			}
 		}
 	}
