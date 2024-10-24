@@ -5,7 +5,8 @@ Class STEN : AxisWeapon
 	Default
 	{
 		Weapon.SelectionOrder 700;
-
+		Weapon.SlotNumber 4;
+		Weapon.AmmoUse 1;
 		Weapon.AmmoType "STENLoaded";
 		Weapon.AmmoType2 "Ammo9mm";
 		Inventory.PickupMessage "You got the STEN Mk II!";
@@ -15,18 +16,19 @@ Class STEN : AxisWeapon
 	Override Void AttachToOwner(Actor other)
 	{
 		Super.AttachToOwner(other);
-		other.A_GiveInventory("STENLoaded", random(1,bTOSSED ? 16 : 32));
+		other.A_GiveInventory("STENLoaded", random(1, bTOSSED ? 16 : 32));
 	}
    	Override Bool TryPickup(in out Actor toucher)
-	{
+    {
 		If(toucher)
 		{
 			Let weap = toucher.FindInventory("STEN");
 			If(!weap) { Self.AmmoGive2 = 0; }
-			Else If(bTOSSED || !bTOSSED) { Self.AmmoGive2 = random(1,32); }
+			Else { Self.AmmoGive2 = random(1,32); }
 		}
 			Return Super.TryPickup(toucher);
 	}
+
 	Override Void DoEffect()
 	{
 		If(Owner && Owner.Player && Owner.Player.ReadyWeapon)
@@ -36,12 +38,13 @@ Class STEN : AxisWeapon
 			{
 				If(psp.Curstate && InStateSequence(psp.CurState, Owner.Player.ReadyWeapon.ResolveState("Fire")) == False)
 				{
-					If(level.time % 7 == 0) { If(STEN_Heat > 0) STEN_Heat--; }
+					If(level.time % 1 == 0) { If(STEN_Heat > 0) STEN_Heat -= 2; }
 				}
 			}
 		}
 		Super.DoEffect();
 	}
+
 	States
 	{
 	Spawn:
@@ -61,35 +64,34 @@ Class STEN : AxisWeapon
 		TNT1 A 0 A_JumpIf(!CountInv(Invoker.Ammo1.GetClass()), "Reload");
 		WP9U B 1
 		{
-			A_FireBullets(1.5, 1.5, 1, random(9,14), "BulletPuff_2", FBF_NORANDOMPUFFZ);
+			A_FireBullets(1.5, 1.5, 1, random(9,14), "BulletPuff_2", FBF_USEAMMO|FBF_NORANDOMPUFFZ);
 			A_StartSound("sten/fire_silenced", CHAN_WEAPON, CHANF_DEFAULT, 1.0);
 			A_AlertMonsters(384);
-			A_TakeInventory(Invoker.AmmoType1, 1);
-			Invoker.STEN_Heat++;
+
+			Invoker.STEN_Heat += 10;
+
 			A_FireProjectile("Casing_Spawner_9MM", 0, False, 0, 0, FPF_NOAUTOAIM);
 		}
-		#### A 0 A_JumpIf(Invoker.STENSequence == True, 2);
-		#### # 1 A_WeaponOffset(0,38,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,40,WOF_INTERPOLATE);
-		#### # 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-		#### # 0
+		#### A 3
 		{
-			If(Invoker.STENSequence == True) { Invoker.STENSequence = False; }
+			If(Invoker.STENSequence) { A_SetTics(4); Invoker.STENSequence = False; }
 			Else { Invoker.STENSequence = True; }
-			
-			return A_JumpIf(Invoker.STEN_Heat == 12, "OverHeat");
+			A_WeaponOffset(0,random(33,34),WOF_INTERPOLATE);
+
+			return A_JumpIf(Invoker.STEN_Heat >= 120, "OverHeat");
 		}
 		#### # 0 A_ReFire();
 		Goto Ready;
 
 	OverHeat:
-		WP9U A 0 A_JumpIf(Invoker.STEN_Heat == 0, "Ready");
+		WP9U A 0 { Invoker.STEN_Heat += 80; }
 		#### # 1
 		{
-			A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			A_WeaponReady(WRF_NOFIRE);// |WRF_NOSWITCH
 			A_FireProjectile("OverHeat_SmokeSpawner", random(-1,1), False, random(-1,1), random(2,4));
+			Return A_JumpIf(Invoker.STEN_Heat == 0, "Ready");
 		}
-		Loop;
+		Wait;
 
 	Reload:
 		TNT1 A 0 A_JumpIf(Invoker.Ammo1.Amount == Invoker.Ammo1.MaxAmount, 2);
@@ -104,33 +106,33 @@ Class STEN : AxisWeapon
 		}
 		#### # 1 A_WeaponOffset(0,44,WOF_INTERPOLATE);
 		#### F 1 A_WeaponOffset(0,56,WOF_INTERPOLATE);
-		#### F 1 A_WeaponOffset(-2,60,WOF_INTERPOLATE);
-		#### F 1 A_WeaponOffset(-4,72,WOF_INTERPOLATE);
-		#### F 1 A_WeaponOffset(-7,80,WOF_INTERPOLATE);	
-		#### F 1 A_WeaponOffset(-10,82,WOF_INTERPOLATE);
-		#### F 3 A_WeaponOffset(-11,84,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-2,60,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-4,72,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-7,80,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,82,WOF_INTERPOLATE);
+		#### # 3 A_WeaponOffset(-11,84,WOF_INTERPOLATE);
 	ReloadLoop:
 		TNT1 A 0 A_MagazineReload(Invoker.AmmoType1);
 	ReloadFinish:
 		WP9U D 1 A_WeaponOffset(-10,84,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-10,90,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-10,98,WOF_INTERPOLATE);	
-		#### D 1 A_WeaponOffset(-10,110,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-10,98,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-10,88,WOF_INTERPOLATE);	
-		#### D 1 A_WeaponOffset(-10,78,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-10,74,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-10,70,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-9,68,WOF_INTERPOLATE);
-		#### D 1 A_WeaponOffset(-8,60,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,90,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,98,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,110,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,98,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,88,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,78,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,74,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-10,70,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-9,68,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-8,60,WOF_INTERPOLATE);
 		#### E 1 A_WeaponOffset(-7,54,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-5,50,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-5,48,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-4,44,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-3,42,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-2,38,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-1,36,WOF_INTERPOLATE);
-		#### E 1 A_WeaponOffset(-0,34,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-5,50,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-5,48,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-4,44,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-3,42,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-2,38,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-1,36,WOF_INTERPOLATE);
+		#### # 1 A_WeaponOffset(-0,34,WOF_INTERPOLATE);
 		#### A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
 		Goto Ready;
 	}
