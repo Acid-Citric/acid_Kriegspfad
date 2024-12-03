@@ -45,8 +45,11 @@ Class Flammenwerfer : AxisWeapon
 	Ready:
 		WP6H A 1
 		{
-			If(WaterLevel == 0 && CountInv(Invoker.Ammo1.GetClass()) && Invoker.Empty == False)	{ return ResolveState("ReadyLoop"); }
-			Else If(WaterLevel == 0 && !CountInv(Invoker.Ammo1.GetClass())) { Invoker.Empty = True; }
+			If(WaterLevel == 0)
+			{
+				If(CountInv(Invoker.Ammo1.GetClass()) && Invoker.Empty == False)	{ return ResolveState("ReadyLoop"); }
+				Else If(!CountInv(Invoker.Ammo1.GetClass())) { Invoker.Empty = True; }
+			}
 			A_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD);
 			return A_JumpIf((CountInv(Invoker.Ammo1.GetClass()) && Invoker.Empty == False), "ReadyLoop");
 		}
