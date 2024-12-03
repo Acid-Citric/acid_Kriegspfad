@@ -107,7 +107,7 @@ Class WW2StatusBar : BaseStatusBar
 			int min = 0;
 			int max = 100;
 			double cur = mArmorInterpolator.GetValue()/double(1); //GetArmorAmount();
-			Fill(color(153, PlayerColor.R, PlayerColor.G, PlayerColor.B), 15, 165 + LinearMap(cur, min, max, max, min), 5, LinearMap(cur, min, max, min, max)); 
+			Fill(color(153, PlayerColor.R, PlayerColor.G, PlayerColor.B), 15, -105 + LinearMap(cur, min, max, max, min), 5, LinearMap(cur, min, max, min, max)); 
 
 			DrawString(mSmallFont, FormatNumber(armor.Amount), (30, -22), translation: radsuit? Font.CR_GREEN : Font.CR_WHITE);
 		}
